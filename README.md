@@ -1,3 +1,19 @@
 # Connectwork
 (GROUP 5)
 9 people from different  courses connect together for a unique project :)
+Autors:
+
+WVD:
+-CENNI VITTORIO
+-GIRAUDO ANDREA
+-CACHI ANTACHOQUE YOSSIANI MAY
+
+SWD:
+-VARDÈ DOMENICO
+-BENAGOUB OMAR
+-PIZZORNO SIMONE
+
+DSG:
+-MUSSANO ILARIA
+-CHIUSOLO SAVERIO
+-ALLIETTA TOMMASO
