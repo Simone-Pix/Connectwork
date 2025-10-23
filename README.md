@@ -1,5 +1,5 @@
 # Immobiliaris – Nuovo Portale Immobiliare  
-**ITS Academy ICT Piemonte – Laboratorio Integrato 2024/2025**
+**ITS Academy ICT Piemonte – Laboratorio Integrato 2024/2026**
 
 ### Team – Connectwork (Gruppo 5)
 | Ruolo | Nome | Descrizione |
@@ -55,32 +55,32 @@ SEO & Marketing Strategy (Digital Strategist)
 ## Ruoli e Attività
 
 ### Digital Strategist
-- Analisi **buyer persona** e **competitor**.  
-- Definizione **TOV** e linee editoriali.  
-- Creazione **logo**, **visual identity** e testi ottimizzati SEO.  
-- Pianificazione campagne **Meta Ads / Google Ads**.  
-- Strategia di **lead generation** e funnel di conversione.
+- Analisi *buyer persona* e *competitor*.  
+- Definizione *TOV* e linee editoriali.  
+- Creazione *logo*, *visual identity* e testi ottimizzati SEO.  
+- Pianificazione campagne *Meta Ads / Google Ads*.  
+- Strategia di *lead generation* e funnel di conversione.
 
 ### Web Developer
 - Conversione del mockup in codice.  
-- Cura dell’**UX/UI** e dell’accessibilità.  
+- Cura dell’*UX/UI* e dell’accessibilità.  
 - Integrazione API con backend.  
 - Ottimizzazione SEO e performance (Lighthouse, PageSpeed).  
-- Creazione file **robots.txt** e **sitemap.xml**.
+- Creazione file *robots.txt* e *sitemap.xml*.
 
-### ⚙️ Software Developer
-- Configurazione **database MySQL**.  
+### Software Developer
+- Configurazione *database MySQL*.  
 - Sviluppo **API REST** con Spring Boot.  
 - Logiche per valutazione e gestione immobili.  
 - Integrazione con servizi esterni di automazione marketing.
 ---
 
 ## Media e strumenti utilizzati
-- **Social:** Facebook, Instagram, WhatsApp
-- **Strumenti:** Facebook Ads, Google Ads, CRM, DEM / newsletter, Marketing Automation  
+- *Social:* Facebook, Instagram, WhatsApp
+- *Strumenti:* Facebook Ads, Google Ads, CRM, DEM / newsletter, Marketing Automation  
 ---
 ## Area geografica target
-Città medio-grandi del **Piemonte**:
+Città medio-grandi del *Piemonte*:
 - Torino  
 - Cuneo  
 - Alessandria  
@@ -88,5 +88,5 @@ Città medio-grandi del **Piemonte**:
 ---
 
 ## Credits
-Progetto sviluppato per **ITS Academy ICT Piemonte – Laboratorio Integrato 2024/2025**  
-**Gruppo:** *Connectwork (5)*  
+Progetto sviluppato per *ITS Academy ICT Piemonte – Laboratorio Integrato Biennio 2024/2026*  
+*Gruppo:* *Connectwork (5)*  
