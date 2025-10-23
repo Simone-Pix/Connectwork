@@ -1,19 +1,92 @@
-# Connectwork
-(GROUP 5)
-9 people from different  courses connect together for a unique project :)
-Autors:
+# Immobiliaris – Nuovo Portale Immobiliare  
+**ITS Academy ICT Piemonte – Laboratorio Integrato 2024/2025**
 
-WVD:
--CENNI VITTORIO
--GIRAUDO ANDREA
--CACHI ANTACHOQUE YOSSIANI MAY
+### Team – Connectwork (Gruppo 5)
+| Ruolo | Nome | Descrizione |
+|--------|------|--------------|
+| **Software Developer** | *BENAGOUB OMAR, VARDÉ DOMENICO, PIZZORNO SIMONE* | Backend, API, database |
+| **Web Developer** | *GIRAUDO ANDREA, CENNI VITTORIO, CACHI YOSSIANI MAYTÉ* | Frontend e UX/UI |
+| **Digital Strategist** | *MUSSANO ILARIA, CHIUSOLO SAVERIO, ALLIETTA TOMMASO* | Branding, SEO, campagne |
+---
+## Descrizione del progetto
+**Immobiliaris** è un portale web dedicato alla **compravendita immobiliare**, con focus sull’acquisizione di immobili in esclusiva per il territorio piemontese.  
+L’obiettivo è **modernizzare la presenza digitale** dell’agenzia Immobiliaris e attrarre un target più giovane (35–55 anni), prendendo ispirazione da modelli come [Gromia.com](https://www.gromia.com).
+---
+## Obiettivi del progetto
+- Realizzare un portale web moderno e responsive.  
+- Automatizzare la **valutazione immobiliare** entro 72 ore.  
+- Offrire un **onboarding semplice e guidato** per i proprietari.  
+- Creare un **backoffice amministrativo** per la gestione delle richieste.  
+- Sviluppare una **strategia digitale integrata** (SEO, campagne paid, lead generation).  
+---
+## Funzionalità principali
+- **Form multi-step** per raccolta dati dell’immobile.  
+- **Valutazione automatica** basata su parametri inseriti.  
+- **Generazione di contratto di vendita in esclusiva.**  
+- **Backoffice** per gestire richieste, immobili e contatti.  
+- **Integrazione con strumenti di marketing automation.**  
+- **Design responsive** e **ottimizzazione SEO** (on-page + technical).  
+---
 
-SWD:
--VARDÈ DOMENICO
--BENAGOUB OMAR
--PIZZORNO SIMONE
+## Requisiti tecnici
+| Area | Stack / Strumenti |
+|------|-------------------|
+| **Backend** | Java + Spring Boot |
+| **Frontend** | HTML / CSS / SCSS / JS / TypeScript oppure React |
+| **Database** | MySQL |
+| **Versionamento** | Git + GitHub |
+| **Gestione progetto** | GitHub Projects |
+| **Documentazione** | README.md, Swagger, JSDoc |
 
-DSG:
--MUSSANO ILARIA
--CHIUSOLO SAVERIO
--ALLIETTA TOMMASO
+---
+## Architettura del progetto
+```
+Frontend (React / HTML+CSS+JS)
+   ↓
+API REST (Spring Boot)
+   ↓
+Database MySQL
+   ↓
+GitHub Projects (gestione)
+   ↓
+SEO & Marketing Strategy (Digital Strategist)
+
+---
+## Ruoli e Attività
+
+### Digital Strategist
+- Analisi **buyer persona** e **competitor**.  
+- Definizione **TOV** e linee editoriali.  
+- Creazione **logo**, **visual identity** e testi ottimizzati SEO.  
+- Pianificazione campagne **Meta Ads / Google Ads**.  
+- Strategia di **lead generation** e funnel di conversione.
+
+### Web Developer
+- Conversione del mockup in codice.  
+- Cura dell’**UX/UI** e dell’accessibilità.  
+- Integrazione API con backend.  
+- Ottimizzazione SEO e performance (Lighthouse, PageSpeed).  
+- Creazione file **robots.txt** e **sitemap.xml**.
+
+### ⚙️ Software Developer
+- Configurazione **database MySQL**.  
+- Sviluppo **API REST** con Spring Boot.  
+- Logiche per valutazione e gestione immobili.  
+- Integrazione con servizi esterni di automazione marketing.
+---
+
+## Media e strumenti utilizzati
+- **Social:** Facebook, Instagram, WhatsApp
+- **Strumenti:** Facebook Ads, Google Ads, CRM, DEM / newsletter, Marketing Automation  
+---
+## Area geografica target
+Città medio-grandi del **Piemonte**:
+- Torino  
+- Cuneo  
+- Alessandria  
+- Asti  
+---
+
+## Credits
+Progetto sviluppato per **ITS Academy ICT Piemonte – Laboratorio Integrato 2024/2025**  
+**Gruppo:** *Connectwork (5)*  
