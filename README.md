@@ -53,22 +53,22 @@ SEO & Marketing Strategy (Digital Strategist)
 
 ---
 ## Ruoli e Attività
-
-### Digital Strategist
+```
+## Digital Strategist
 - Analisi *buyer persona* e *competitor*.  
 - Definizione *TOV* e linee editoriali.  
 - Creazione *logo*, *visual identity* e testi ottimizzati SEO.  
 - Pianificazione campagne *Meta Ads / Google Ads*.  
 - Strategia di *lead generation* e funnel di conversione.
-
-### Web Developer
+```
+## Web Developer
 - Conversione del mockup in codice.  
 - Cura dell’*UX/UI* e dell’accessibilità.  
 - Integrazione API con backend.  
 - Ottimizzazione SEO e performance (Lighthouse, PageSpeed).  
 - Creazione file *robots.txt* e *sitemap.xml*.
-
-### Software Developer
+```
+## Software Developer
 - Configurazione *database MySQL*.  
 - Sviluppo **API REST** con Spring Boot.  
 - Logiche per valutazione e gestione immobili.  
