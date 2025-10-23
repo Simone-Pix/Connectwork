@@ -60,19 +60,19 @@ SEO & Marketing Strategy (Digital Strategist)
 - Creazione *logo*, *visual identity* e testi ottimizzati SEO.  
 - Pianificazione campagne *Meta Ads / Google Ads*.  
 - Strategia di *lead generation* e funnel di conversione.
-```
+  
+## Software Developer
+- Configurazione *database MySQL*.  
+- Sviluppo **API REST** con Spring Boot.  
+- Logiche per valutazione e gestione immobili.  
+- Integrazione con servizi esterni di automazione marketing.
+  
 ## Web Developer
 - Conversione del mockup in codice.  
 - Cura dell’*UX/UI* e dell’accessibilità.  
 - Integrazione API con backend.  
 - Ottimizzazione SEO e performance (Lighthouse, PageSpeed).  
 - Creazione file *robots.txt* e *sitemap.xml*.
-```
-## Software Developer
-- Configurazione *database MySQL*.  
-- Sviluppo **API REST** con Spring Boot.  
-- Logiche per valutazione e gestione immobili.  
-- Integrazione con servizi esterni di automazione marketing.
 ---
 
 ## Media e strumenti utilizzati
