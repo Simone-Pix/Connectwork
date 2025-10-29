@@ -2,11 +2,11 @@
 **ITS Academy ICT Piemonte – Laboratorio Integrato 2024/2026**
 
 ### Team – Connectwork (Gruppo 5)
-| Ruolo | Nome | Descrizione |
+| Ruoli | Nomi | Descrizione |
 |--------|------|--------------|
-| **Software Developer** | *BENAGOUB OMAR, VARDÉ DOMENICO, PIZZORNO SIMONE* | Backend, API, database |
-| **Web Developer** | *GIRAUDO ANDREA, CENNI VITTORIO, CACHI YOSSIANI MAYTÉ* | Frontend e UX/UI |
-| **Digital Strategist** | *MUSSANO ILARIA, CHIUSOLO SAVERIO, ALLIETTA TOMMASO* | Branding, SEO, campagne |
+| **Software Developers** | *BENAGOUB OMAR @Omarben05, VARDÉ DOMENICO @domenicovarde, PIZZORNO SIMONE @Simone-Pix* | Backend, API, database |
+| **Web Developers** | *CENNI VITTORIO @ViTz1, GIRAUDO ANDREA @AndreaXVII17, CACHI YOSSIANI MAYTÉ @MayteCachi* | Frontend e UX/UI |
+| **Digital Strategists** | *MUSSANO ILARIA @ilariamussano-cyber, CHIUSOLO SAVERIO @saveriochiusolo-cell, ALLIETTA TOMMASO @tommasoallietta-beep* | Branding, SEO, campagne |
 ---
 ## Descrizione del progetto
 **Immobiliaris** è un portale web dedicato alla **compravendita immobiliare**, con focus sull’acquisizione di immobili in esclusiva per il territorio piemontese.  
