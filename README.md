@@ -32,8 +32,8 @@ L’obiettivo è **modernizzare la presenza digitale** dell’agenzia Immobiliar
 | Area | Stack / Strumenti |
 |------|-------------------|
 | **Backend** | Java + Spring Boot |
-| **Frontend** | HTML / CSS / SCSS / JS / TypeScript oppure React |
-| **Database** | MySQL |
+| **Frontend** | HTML / CSS / SCSS / JS / React |
+| **Database** | H2 |
 | **Versionamento** | Git + GitHub |
 | **Gestione progetto** | GitHub Projects |
 | **Documentazione** | README.md, Swagger, JSDoc |
@@ -45,7 +45,7 @@ Frontend (React / HTML+CSS+JS)
    ↓
 API REST (Spring Boot)
    ↓
-Database MySQL
+Database H2
    ↓
 GitHub Projects (gestione)
    ↓
@@ -62,7 +62,7 @@ SEO & Marketing Strategy (Digital Strategist)
 - Strategia di *lead generation* e funnel di conversione.
   
 ## Software Developer
-- Configurazione *database MySQL*.  
+- Configurazione *database*.  
 - Sviluppo **API REST** con Spring Boot.  
 - Logiche per valutazione e gestione immobili.  
 - Integrazione con servizi esterni di automazione marketing.
@@ -89,4 +89,7 @@ Città medio-grandi del *Piemonte*:
 
 ## Credits
 Progetto sviluppato per *ITS Academy ICT Piemonte – Laboratorio Integrato Biennio 2024/2026*  
-*Gruppo:* *Connectwork (5)*  
+*Software Developers* | *BENAGOUB OMAR @Omarben05, VARDÉ DOMENICO @domenicovarde, PIZZORNO SIMONE @Simone-Pix*
+*Web Developers* | *CENNI VITTORIO @ViTz1, GIRAUDO ANDREA @AndreaXVII17, CACHI YOSSIANI MAYTÉ @MayteCachi* 
+*Digital Strategists* | *MUSSANO ILARIA @ilariamussano-cyber, CHIUSOLO SAVERIO @saveriochiusolo-cell, ALLIETTA TOMMASO @tommasoallietta-beep* 
+*Gruppo 5:* *Connectwork*  
