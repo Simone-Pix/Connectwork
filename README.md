@@ -4,9 +4,9 @@
 ### Team – Connectwork (Gruppo 5)
 | Ruoli | Nomi | Descrizione |
 |--------|------|--------------|
-| **Software Developers** | *BENAGOUB OMAR @Omarben05, VARDÉ DOMENICO @domenicovarde, PIZZORNO SIMONE @Simone-Pix* | Backend, API, database |
-| **Web Developers** | *CENNI VITTORIO @ViTz1, GIRAUDO ANDREA @AndreaXVII17, CACHI YOSSIANI MAYTÉ @MayteCachi* | Frontend e UX/UI |
-| **Digital Strategists** | *MUSSANO ILARIA @ilariamussano-cyber, CHIUSOLO SAVERIO @saveriochiusolo-cell, ALLIETTA TOMMASO @tommasoallietta-beep* | Branding, SEO, campagne |
+| **Software Developers** | *BENAGOUB OMAR [@Omarben05](https://github.com/Omarben05), VARDÉ DOMENICO [@domenicovarde](https://github.com/domenicovarde), PIZZORNO SIMONE [@Simone-Pix](https://github.com/Simone-Pix)* | Backend, API, database |
+| **Web Developers** | *CENNI VITTORIO [@ViTz1](https://github.com/ViTz1), GIRAUDO ANDREA [@AndreaXVII17](https://github.com/AndreaXVII17), CACHI YOSSIANI MAYTÉ [@MayteCachi](https://github.com/MayteCachi)* | Frontend e UX/UI |
+| **Digital Strategists** | *MUSSANO ILARIA [@ilariamussano-cyber](https://github.com/ilariamussano-cyber), CHIUSOLO SAVERIO [@saveriochiusolo-cell](https://github.com/saveriochiusolo-cell), ALLIETTA TOMMASO [@tommasoallietta-beep](https://github.com/tommasoallietta-beep)* | Branding, SEO, campagne |
 ---
 ## Descrizione del progetto
 **Immobiliaris** è un portale web dedicato alla **compravendita immobiliare**, con focus sull’acquisizione di immobili in esclusiva per il territorio piemontese.  
@@ -88,8 +88,5 @@ Città medio-grandi del *Piemonte*:
 ---
 
 ## Credits
-Progetto sviluppato per *ITS Academy ICT Piemonte – Laboratorio Integrato Biennio 2024/2026*  
-*Software Developers* | *BENAGOUB OMAR @Omarben05, VARDÉ DOMENICO @domenicovarde, PIZZORNO SIMONE @Simone-Pix*
-*Web Developers* | *CENNI VITTORIO @ViTz1, GIRAUDO ANDREA @AndreaXVII17, CACHI YOSSIANI MAYTÉ @MayteCachi* 
-*Digital Strategists* | *MUSSANO ILARIA @ilariamussano-cyber, CHIUSOLO SAVERIO @saveriochiusolo-cell, ALLIETTA TOMMASO @tommasoallietta-beep* 
+Progetto sviluppato per *ITS Academy ICT Piemonte – Laboratorio Integrato Biennio 2024/2026*   
 *Gruppo 5:* *Connectwork*  
