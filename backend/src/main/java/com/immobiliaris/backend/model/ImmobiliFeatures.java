@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "immobile_features")
 public class ImmobiliFeatures {
-
+//////
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
