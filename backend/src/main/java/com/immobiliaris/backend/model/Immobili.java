@@ -1,14 +1,12 @@
 package com.immobiliaris.backend.model;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -21,12 +19,11 @@ public class Immobili{
 	private Long id;
 
 	@Column(name = "proprietario_id", nullable = false)
-    ///da cambiare
+	///da cambiare
 	private Long proprietarioId;
 
-	@Convert(converter = Converters.TipoImmobileConverter.class)
 	@Column(name = "tipo_immobile", length = 50, nullable = false)
-	private Enums.TipoImmobile tipoImmobile;
+	private String tipoImmobile;
 
 	@Column(name = "indirizzo", length = 255, nullable = false)
 	private String indirizzo;
@@ -55,13 +52,11 @@ public class Immobili{
 	@Column(name = "anno_costruzione")
 	private Integer annoCostruzione;
 
-	@Convert(converter = Converters.StatoConservazioneConverter.class)
 	@Column(name = "stato_conservazione", length = 50)
-	private Enums.StatoConservazione statoConservazione;
+	private String statoConservazione;
 
-	@Convert(converter = Converters.ClasseEnergeticaConverter.class)
 	@Column(name = "classe_energetica", length = 2)
-	private Enums.ClasseEnergetica classeEnergetica;
+	private String classeEnergetica;
 
 	@Column(name = "prezzo_richiesto", precision = 12, scale = 2)
 	private BigDecimal prezzoRichiesto;
@@ -73,9 +68,8 @@ public class Immobili{
 	@Column(name = "disponibile_esclusiva")
 	private Boolean disponibileEsclusiva = Boolean.FALSE;
 
-	@Convert(converter = Converters.StatoImmobileConverter.class)
 	@Column(name = "stato", length = 20)
-	private Enums.StatoImmobile stato = Enums.StatoImmobile.BOZZA;
+	private String stato = "bozza";
 
 	@Column(name = "data_inserimento")
 	private LocalDateTime dataInserimento = LocalDateTime.now();
@@ -101,11 +95,11 @@ public class Immobili{
 		this.proprietarioId = proprietarioId;
 	}
 
-	public Enums.TipoImmobile getTipoImmobile() {
+	public String getTipoImmobile() {
 		return tipoImmobile;
 	}
 
-	public void setTipoImmobile(Enums.TipoImmobile tipoImmobile) {
+	public void setTipoImmobile(String tipoImmobile) {
 		this.tipoImmobile = tipoImmobile;
 	}
 
@@ -181,19 +175,19 @@ public class Immobili{
 		this.annoCostruzione = annoCostruzione;
 	}
 
-	public Enums.StatoConservazione getStatoConservazione() {
+	public String getStatoConservazione() {
 		return statoConservazione;
 	}
 
-	public void setStatoConservazione(Enums.StatoConservazione statoConservazione) {
+	public void setStatoConservazione(String statoConservazione) {
 		this.statoConservazione = statoConservazione;
 	}
 
-	public Enums.ClasseEnergetica getClasseEnergetica() {
+	public String getClasseEnergetica() {
 		return classeEnergetica;
 	}
 
-	public void setClasseEnergetica(Enums.ClasseEnergetica classeEnergetica) {
+	public void setClasseEnergetica(String classeEnergetica) {
 		this.classeEnergetica = classeEnergetica;
 	}
 
@@ -221,11 +215,11 @@ public class Immobili{
 		this.disponibileEsclusiva = disponibileEsclusiva;
 	}
 
-	public Enums.StatoImmobile getStato() {
+	public String getStato() {
 		return stato;
 	}
 
-	public void setStato(Enums.StatoImmobile stato) {
+	public void setStato(String stato) {
 		this.stato = stato;
 	}
 
