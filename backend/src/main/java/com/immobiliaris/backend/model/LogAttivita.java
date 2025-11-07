@@ -14,7 +14,7 @@ public class LogAttivita {
 
     // Riferimento all'utente che ha compiuto l'azione
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id")///sul db è scritto cosi
     private Users utente;
 
     // Riferimento all'immobile su cui è stata fatta l'azione
