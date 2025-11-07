@@ -21,6 +21,7 @@ public class Immobili{
 	private Long id;
 
 	@Column(name = "proprietario_id", nullable = false)
+    ///da cambiare
 	private Long proprietarioId;
 
 	@Convert(converter = Converters.TipoImmobileConverter.class)
