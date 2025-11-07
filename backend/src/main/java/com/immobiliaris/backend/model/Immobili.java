@@ -19,8 +19,8 @@ public class Immobili{
 	private Long id;
 
 	@Column(name = "proprietario_id", nullable = false)
-	///da cambiare
-	private Long proprietarioId;
+
+	private Users proprietarioId;
 
 	@Column(name = "tipo_immobile", length = 50, nullable = false)
 	private String tipoImmobile;
@@ -87,11 +87,11 @@ public class Immobili{
 		this.id = id;
 	}
 
-	public Long getProprietarioId() {
+	public Users getProprietarioId() {
 		return proprietarioId;
 	}
 
-	public void setProprietarioId(Long proprietarioId) {
+	public void setProprietarioId(Users proprietarioId) {
 		this.proprietarioId = proprietarioId;
 	}
 

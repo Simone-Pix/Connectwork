@@ -52,11 +52,12 @@ public class Contratti {
     public Long getIdContract() { return idContract; }
     public void setIdContract(Long idContract) { this.idContract = idContract; }
 
-    public Immobile getImmobile() { return immobile; }
-    public void setImmobile(Immobile immobile) { this.immobile = immobile; }
+    public Immobili getImmobile() { return immobile; }
+    public void setImmobile(Immobili immobile) { this.immobile = immobile; }
 
-    public Utente getProprietario() { return proprietario; }
-    public void setProprietario(Utente proprietario) { this.proprietario = proprietario; }
+    public Users
+     getProprietario() { return proprietario; }
+    public void setProprietario(Users proprietario) { this.proprietario = proprietario; }
 
     public String getTipo() { return tipo; }
     public void setTipo(String tipo) { this.tipo = tipo; }
