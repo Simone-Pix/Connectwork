@@ -5,7 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -18,9 +20,10 @@ public class Immobili{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "proprietario_id", nullable = false)
+	@ManyToOne
+	@JoinColumn(name = "proprietario_id", nullable = false)
+	private Users proprietario;
 
-	private Users proprietarioId;
 
 	@Column(name = "tipo_immobile", length = 50, nullable = false)
 	private String tipoImmobile;
@@ -78,7 +81,6 @@ public class Immobili{
 	public Immobili() {
 	}
 
-	// Getters and setters
 	public Long getId() {
 		return id;
 	}
@@ -87,12 +89,12 @@ public class Immobili{
 		this.id = id;
 	}
 
-	public Users getProprietarioId() {
-		return proprietarioId;
+	public Users getProprietario() {
+		return proprietario;
 	}
 
-	public void setProprietarioId(Users proprietarioId) {
-		this.proprietarioId = proprietarioId;
+	public void setProprietario(Users proprietario) {
+		this.proprietario = proprietario;
 	}
 
 	public String getTipoImmobile() {
@@ -233,14 +235,13 @@ public class Immobili{
 
 	@Override
 	public String toString() {
-		return "Immobili{" +
-				"id=" + id +
-				", proprietarioId=" + proprietarioId +
-				", tipoImmobile='" + tipoImmobile + '\'' +
-				", indirizzo='" + indirizzo + '\'' +
-				", citta='" + citta + '\'' +
-				", provincia='" + provincia + '\'' +
-				", cap='" + cap + '\'' +
-				'}';
+		return "Immobili [id=" + id + ", proprietario=" + proprietario + ", tipoImmobile=" + tipoImmobile
+				+ ", indirizzo=" + indirizzo + ", citta=" + citta + ", provincia=" + provincia + ", cap=" + cap
+				+ ", superficie=" + superficie + ", numLocali=" + numLocali + ", numBagni=" + numBagni + ", piano="
+				+ piano + ", annoCostruzione=" + annoCostruzione + ", statoConservazione=" + statoConservazione
+				+ ", classeEnergetica=" + classeEnergetica + ", prezzoRichiesto=" + prezzoRichiesto + ", descrizione="
+				+ descrizione + ", disponibileEsclusiva=" + disponibileEsclusiva + ", stato=" + stato
+				+ ", dataInserimento=" + dataInserimento + "]";
 	}
+
 }
