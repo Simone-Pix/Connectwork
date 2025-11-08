@@ -5,10 +5,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.ManyToOne;
 
 @Entity
 @Table(name = "immobili")
@@ -18,9 +22,9 @@ public class Immobili{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "proprietario_id", nullable = false)
-
-	private Users proprietarioId;
+	@ManyToOne
+	@JoinColumn(name = "proprietario_id", nullable = false)
+	private Users proprietario;
 
 	@Column(name = "tipo_immobile", length = 50, nullable = false)
 	private String tipoImmobile;
@@ -88,11 +92,11 @@ public class Immobili{
 	}
 
 	public Users getProprietarioId() {
-		return proprietarioId;
+		return proprietario;
 	}
 
-	public void setProprietarioId(Users proprietarioId) {
-		this.proprietarioId = proprietarioId;
+	public void setProprietario(Users proprietario) {
+		this.proprietario = proprietario;
 	}
 
 	public String getTipoImmobile() {
@@ -235,7 +239,7 @@ public class Immobili{
 	public String toString() {
 		return "Immobili{" +
 				"id=" + id +
-				", proprietarioId=" + proprietarioId +
+				", proprietario=" + proprietario +
 				", tipoImmobile='" + tipoImmobile + '\'' +
 				", indirizzo='" + indirizzo + '\'' +
 				", citta='" + citta + '\'' +
