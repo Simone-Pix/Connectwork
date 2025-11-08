@@ -91,7 +91,7 @@ public class Immobili{
 		this.id = id;
 	}
 
-	public Users getProprietarioId() {
+	public Users getProprietario() {
 		return proprietario;
 	}
 
