@@ -24,10 +24,17 @@ public class LogAttivitaService {
         return logAttivitaRepository.findByUserId(userId);
     }
 
+
+    
+/* da capire se inserire o no     (collegato al blocco commentato in LogAttivitaController)
+
     // Recupera log per immobile
     public List<LogAttivita> getLogByImmobile(Long immobileId) {
         return logAttivitaRepository.findByImmobileId(immobileId);
     }
+*/
+
+
 
     // Recupera un log per ID
     public Optional<LogAttivita> getLogById(Long id) {
