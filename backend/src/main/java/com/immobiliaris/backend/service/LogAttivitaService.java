@@ -26,13 +26,12 @@ public class LogAttivitaService {
 
 
     
-/* da capire se inserire o no     (collegato al blocco commentato in LogAttivitaController)
 
     // Recupera log per immobile
     public List<LogAttivita> getLogByImmobile(Long immobileId) {
         return logAttivitaRepository.findByImmobileId(immobileId);
     }
-*/
+
 
 
 

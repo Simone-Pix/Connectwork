@@ -33,13 +33,11 @@ public class LogAttivitaController {
     }
 
 
-/*  da capire se inserire o no (collegato al blocco commentato in LogAttivitaService)
-
     @GetMapping("/immobile/{immobileId}")
     public List<LogAttivita> getLogByImmobile(@PathVariable Long immobileId) {
         return logAttivitaService.getLogByImmobile(immobileId);
     }
-*/
+
 
 
 
