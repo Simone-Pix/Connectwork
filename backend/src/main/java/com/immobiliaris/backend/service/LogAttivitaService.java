@@ -21,7 +21,7 @@ public class LogAttivitaService {
 
     // Recupera log per utente
     public List<LogAttivita> getLogByUser(Long userId) {
-        return logAttivitaRepository.findByUserId(userId);
+        return logAttivitaRepository.findByUtente_Id(userId);
     }
 
 
@@ -29,9 +29,8 @@ public class LogAttivitaService {
 
     // Recupera log per immobile
     public List<LogAttivita> getLogByImmobile(Long immobileId) {
-        return logAttivitaRepository.findByImmobileId(immobileId);
+        return logAttivitaRepository.findByImmobile_Id(immobileId);
     }
-
 
 
 

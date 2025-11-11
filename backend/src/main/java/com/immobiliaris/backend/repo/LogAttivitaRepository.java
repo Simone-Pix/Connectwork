@@ -8,7 +8,13 @@ import java.util.List;
 
 @Repository
 public interface LogAttivitaRepository extends JpaRepository<LogAttivita, Long> {
-    List<LogAttivita> findByUserId(Long userId);
-    List<LogAttivita> findByImmobileId(Long immobileId);
+
+    // Corretto: filtra per l'id dell'utente associato
+    List<LogAttivita> findByUtente_Id(Long id);
+
+    // Corretto: filtra per l'id dell'immobile associato
+    List<LogAttivita> findByImmobile_Id(Long id);
+
+    // Questo va bene così, perché il campo "azione" esiste nel model
     List<LogAttivita> findByAzioneContainingIgnoreCase(String azione);
 }
