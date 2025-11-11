@@ -2,6 +2,9 @@ package com.immobiliaris.backend.controller;
 
 import com.immobiliaris.backend.model.Users;
 import com.immobiliaris.backend.repo.UsersRepository;
+
+import org.springframework.ui.Model;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +20,13 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UsersMVC {
 
+
     private final UsersRepository usersRepository;
 
     public UsersMVC(UsersRepository usersRepository) {
         this.usersRepository = usersRepository;
+
+      
     }
 
     /**
@@ -34,16 +40,27 @@ public class UsersMVC {
     /**
      * Recupera un utente per id. Restituisce 404 se non trovato.
      */
-    @GetMapping("/login")
+    @GetMapping("/{id}")
     public ResponseEntity<Users> getById(@PathVariable Long id) {
         Optional<Users> u = usersRepository.findById(id);
         return u.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/login") //ogni volta che sul link scrivi login e la richiesta è di tipo get esegui il meotodo sotto
+    public String login() {
+        return "login";
+    }
+
+     @GetMapping("/backoffice/users")
+    public String backofficeUsers(Model m) {
+        m.addAttribute("users", usersRepository.findAll());
+        return "backofficeUsers";
+    }
+
     /**
      * Crea un nuovo utente. Se l'email è già presente restituisce 409.
      */
-    @PostMapping("/signup")
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody Users user) {
         if (user.getEmail() == null || user.getEmail().isBlank()) {
             return ResponseEntity.badRequest().body("email is required");
@@ -58,7 +75,7 @@ public class UsersMVC {
     /**
      * Aggiorna un utente esistente. Restituisce 404 se l'id non esiste.
      */
-    @PutMapping("/backoffice/utenti/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Users update) {
         Optional<Users> existing = usersRepository.findById(id);
         if (existing.isEmpty()) return ResponseEntity.notFound().build();
@@ -77,7 +94,7 @@ public class UsersMVC {
      * Elimina un utente per id. Restituisce 204 anche se l'id non esiste
      * (idempotenza), o 200 se eliminazione avvenuta.
      */
-    @DeleteMapping("/backoffice/utenti/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (usersRepository.existsById(id)) {
             usersRepository.deleteById(id);
