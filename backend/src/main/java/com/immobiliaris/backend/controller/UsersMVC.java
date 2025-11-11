@@ -34,7 +34,7 @@ public class UsersMVC {
     /**
      * Recupera un utente per id. Restituisce 404 se non trovato.
      */
-    @GetMapping("/{id}")
+    @GetMapping("/login")
     public ResponseEntity<Users> getById(@PathVariable Long id) {
         Optional<Users> u = usersRepository.findById(id);
         return u.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
@@ -43,7 +43,7 @@ public class UsersMVC {
     /**
      * Crea un nuovo utente. Se l'email è già presente restituisce 409.
      */
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<?> create(@RequestBody Users user) {
         if (user.getEmail() == null || user.getEmail().isBlank()) {
             return ResponseEntity.badRequest().body("email is required");
@@ -58,7 +58,7 @@ public class UsersMVC {
     /**
      * Aggiorna un utente esistente. Restituisce 404 se l'id non esiste.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/backoffice/utenti/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Users update) {
         Optional<Users> existing = usersRepository.findById(id);
         if (existing.isEmpty()) return ResponseEntity.notFound().build();
@@ -77,7 +77,7 @@ public class UsersMVC {
      * Elimina un utente per id. Restituisce 204 anche se l'id non esiste
      * (idempotenza), o 200 se eliminazione avvenuta.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/backoffice/utenti/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (usersRepository.existsById(id)) {
             usersRepository.deleteById(id);
