@@ -1,4 +1,4 @@
-:root {
+/* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -64,5 +64,149 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+} */
+
+/* General container */
+.step-container {
+  background-color: #111;
+  color: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 700px;
+  margin: 3rem auto;
+  box-shadow: 0 0 20px rgba(255, 102, 0, 0.2);
+  font-family: "Inter", sans-serif;
+}
+
+/* Progress bar */
+.progress-bar {
+  height: 5px;
+  background-color: #333;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.progress {
+  height: 100%;
+  background-color: #ff6600;
+  transition: width 0.3s ease;
+}
+
+.step-count {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+}
+
+/* Title and subtitles */
+.step-title {
+  text-align: center;
+  color: #ff6600;
+  margin-bottom: 0.25rem;
+}
+
+.step-subtitle {
+  text-align: center;
+  opacity: 0.8;
+  margin-bottom: 2rem;
+}
+
+/* Option cards */
+.options {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.card {
+  flex: 1;
+  min-width: 180px;
+  background-color: #1c1c1c;
+  border: 2px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.card:hover {
+  border-color: #ff6600;
+  transform: translateY(-3px);
+}
+
+.card.selected {
+  background-color: #2a1b0b;
+  border-color: #ff6600;
+  box-shadow: 0 0 10px rgba(255, 102, 0, 0.4);
+}
+
+.icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.checkmark {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: #ff6600;
+  font-size: 1.2rem;
+}
+
+/* Navigation buttons */
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.btn-back,
+.btn-next {
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-back {
+  background-color: #222;
+  color: #ccc;
+}
+
+.btn-back:hover {
+  background-color: #333;
+}
+
+.btn-next {
+  background-color: #ff6600;
+  color: #fff;
+}
+
+.btn-next:hover {
+  background-color: #ff8533;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .options {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 1rem;
   }
 }

@@ -4,7 +4,7 @@ import { Suspense, lazy } from "react";
 import './App.css'
 import Home from './pages/Home'
 import Search from './pages/Search'
-import PageStep1 from './'
+import PageStepOne from './pages/PageStepOne'
 
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/cerca" element={<Search />} />
-          <Route path="/valuta" element={<PageStep1 />}/>
+          <Route path="/valuta" element={<PageStepOne />}/>
         </Routes>
       </Suspense>
     </BrowserRouter>
