@@ -3,6 +3,8 @@ package com.immobiliaris.backend.controller;
 import com.immobiliaris.backend.model.Users;
 import com.immobiliaris.backend.repo.UsersRepository;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.ui.Model;
 
 import org.springframework.http.HttpStatus;
@@ -45,11 +47,79 @@ public class UsersMVC {
         Optional<Users> u = usersRepository.findById(id);
         return u.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+    //SIGN IN
+     @GetMapping("/signin")
+    public String showSignin() {
+        return "signin";  // Thymeleaf cerca templates/signin.html
+    }
 
+   // mostra form registrazione
+   @GetMapping("/signin")
+    public String showSigninForm() {
+         return "signin";
+    }
+    // processa il form di registrazione
+    @PostMapping("/signin")
+    public String doSignin(@RequestParam String nome,
+                           @RequestParam String cognome,
+                           @RequestParam String email,
+                           @RequestParam String password,
+                           @RequestParam String telefono,
+                           Model model) {
+        // controlla se email già esiste
+        if (usersRepository.findByEmail(email).isPresent()) {
+            model.addAttribute("error", "Email già in uso");
+            return "signin";
+        }
+
+        // crea nuovo utente
+        Users u = new Users();
+        u.setNome(nome);
+        u.setCognome(cognome);
+        u.setEmail(email);
+        u.setPassword(password); // in chiaro 
+        u.setRuolo("USER");
+        usersRepository.save(u);
+        return "redirect:/login"; // dopo registrazione vai al login
+    }
+
+   // mostra form login
     @GetMapping("/login") //ogni volta che sul link scrivi login e la richiesta è di tipo get esegui il meotodo sotto
-    public String login() {
+    public String showLogin() {
         return "login";
     }
+
+    // processa il login form
+    @PostMapping("/login")
+    public String doLogin(@RequestParam String email,
+                        @RequestParam String password,
+                        HttpSession session,
+                        Model model) {
+        Optional<Users> opt = usersRepository.findByEmail(email);
+        if (opt.isEmpty()) {
+            model.addAttribute("error", "Email o password errati");
+            return "login";
+        }
+        Users u = opt.get();
+        // confronto in chiaro
+        if (!u.getPassword().equals(password)) {
+            model.addAttribute("error", "Email o password errati");
+            return "login";
+        }
+        // login valido: memorizza l'utente in sessione
+        session.setAttribute("userId", u.getId());
+        session.setAttribute("userName", u.getNome());
+        return "redirect:/home"; // o dashboard
+    }
+
+    // logout
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+
+
 
      @GetMapping("/backoffice/users")
     public String backofficeUsers(Model m) {
