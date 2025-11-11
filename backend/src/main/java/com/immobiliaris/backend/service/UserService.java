@@ -9,5 +9,6 @@ public interface UserService {
     List<Users> getAllUsers();
     Users getUserById(Long id);
     Users updateUser(Long id, Users user);
+    Users updateRoleUsers(Long id, Users user);
     Users deleteUser(Long id);
 }
