@@ -6,6 +6,7 @@ import com.immobiliaris.backend.repo.UsersRepository;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ import java.util.Optional;
  * Controller REST per la gestione degli utenti.
  * Espone operazioni CRUD su `Users`.
  */
-@RestController
+@Controller
 @RequestMapping("/api/users")
 public class UsersMVC {
 
@@ -35,6 +36,7 @@ public class UsersMVC {
      * Lista tutti gli utenti.
      */
     @GetMapping
+    @ResponseBody
     public List<Users> listAll() {
         return usersRepository.findAll();
     }
@@ -51,12 +53,6 @@ public class UsersMVC {
      @GetMapping("/signin")
     public String showSignin() {
         return "signin";  // Thymeleaf cerca templates/signin.html
-    }
-
-   // mostra form registrazione
-   @GetMapping("/signin")
-    public String showSigninForm() {
-         return "signin";
     }
     // processa il form di registrazione
     @PostMapping("/signin")
@@ -78,6 +74,7 @@ public class UsersMVC {
         u.setCognome(cognome);
         u.setEmail(email);
         u.setPassword(password); // in chiaro 
+        u.setTelefono(telefono);
         u.setRuolo("USER");
         usersRepository.save(u);
         return "redirect:/login"; // dopo registrazione vai al login
