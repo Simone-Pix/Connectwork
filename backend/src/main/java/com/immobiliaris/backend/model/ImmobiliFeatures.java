@@ -20,7 +20,10 @@ public class ImmobiliFeatures {
     
 
     // === GETTER E SETTER ===
+    public ImmobiliFeatures() {}
+
     public Long getId() { return id; }
+    
     public ImmobiliFeatures(Long id, Immobili immobile, String featureTipo) {
         this.id = id;
         this.immobile = immobile;
