@@ -9,8 +9,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.ManyToOne;
 
 @Entity
 @Table(name = "immobili")
@@ -23,7 +26,6 @@ public class Immobili{
 	@ManyToOne
 	@JoinColumn(name = "proprietario_id", nullable = false)
 	private Users proprietario;
-
 
 	@Column(name = "tipo_immobile", length = 50, nullable = false)
 	private String tipoImmobile;
@@ -235,13 +237,14 @@ public class Immobili{
 
 	@Override
 	public String toString() {
-		return "Immobili [id=" + id + ", proprietario=" + proprietario + ", tipoImmobile=" + tipoImmobile
-				+ ", indirizzo=" + indirizzo + ", citta=" + citta + ", provincia=" + provincia + ", cap=" + cap
-				+ ", superficie=" + superficie + ", numLocali=" + numLocali + ", numBagni=" + numBagni + ", piano="
-				+ piano + ", annoCostruzione=" + annoCostruzione + ", statoConservazione=" + statoConservazione
-				+ ", classeEnergetica=" + classeEnergetica + ", prezzoRichiesto=" + prezzoRichiesto + ", descrizione="
-				+ descrizione + ", disponibileEsclusiva=" + disponibileEsclusiva + ", stato=" + stato
-				+ ", dataInserimento=" + dataInserimento + "]";
+		return "Immobili{" +
+				"id=" + id +
+				", proprietario=" + proprietario +
+				", tipoImmobile='" + tipoImmobile + '\'' +
+				", indirizzo='" + indirizzo + '\'' +
+				", citta='" + citta + '\'' +
+				", provincia='" + provincia + '\'' +
+				", cap='" + cap + '\'' +
+				'}';
 	}
-
 }
