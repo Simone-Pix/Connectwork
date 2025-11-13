@@ -1,10 +1,7 @@
-import Navbar from "../components/navbar";
-
 function Search() {
   return (
     <div>
-      <Navbar />
-      <h1>Welcome to the Search Page</h1>
+      <p>Welcome to the Search Page</p>
     </div>
   );
 }

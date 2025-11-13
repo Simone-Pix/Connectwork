@@ -1,11 +1,18 @@
-import Navbar from "../components/navbar";
+import backgroundImg from "../assets/img_background.png"
 
 function Home() {
   return (
-    <div>
-      <Navbar />
-      <h1>Welcome to the Home Page</h1>
-    </div>
+    <section className="hero">
+      <img src={backgroundImg} alt="Background edificio" className="hero-bg" />
+      <div className="hero-overlay"></div>
+
+      <div className="hero-content">
+        <h1>
+          Trova la casa dei <span>tuoi sogni</span><br />
+          <span class="subtitle">Migliaia di annunci verificati di case in vendita e affitto in tutta Italia</span>
+        </h1>
+      </div>
+    </section>
   );
 }
 
