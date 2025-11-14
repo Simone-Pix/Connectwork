@@ -320,6 +320,33 @@ body {
   color: #fff;
 }
 
+.input-step2 {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 20px;
+}
+
+.form-grid-step3 {
+  display: grid;
+  gap: 15px;
+}
+.form-grid-step3 input {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+}
+
+.form-grid-step6 {
+  display: grid;
+  gap: 15px;
+}
+.form-grid-step6 input {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+}
 
 /* ===========================
    📱 VERSIONE RESPONSIVE

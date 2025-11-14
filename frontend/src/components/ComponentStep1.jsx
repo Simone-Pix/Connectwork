@@ -1,4 +1,7 @@
-function ComponentStep1() {
+function ComponentStep1({ data, updateField, next }) {
+  const handleSelect = (value) => {
+    updateField("tipoOperazione", value);
+  };
 
   return (
     <div className="configurator">
@@ -13,31 +16,32 @@ function ComponentStep1() {
       <p className="section-subtitle">Seleziona il tipo di operazione</p>
 
       <div className="card-container">
-        <div className="card active">
+        <div
+          className={`card ${data.tipoOperazione === "appartamento" ? "active" : ""}`}
+          onClick={() => handleSelect("appartamento")}
+        >
           <div className="icon">🔑</div>
           <h4>Appartamento</h4>
           <p>Vendi il tuo immobile</p>
         </div>
 
-        <div className="card">
+        <div
+          className={`card ${data.tipoOperazione === "villa" ? "active" : ""}`}
+          onClick={() => handleSelect("villa")}
+        >
           <div className="icon">🏠</div>
           <h4>Villa/Casa indipendente</h4>
           <p>Vendi il tuo immobile</p>
         </div>
-{/* 
-        <div className="card">
-          <div className="icon">🏗️</div>
-          <h4>Nuove costruzioni</h4>
-          <p>Scopri i nuovi progetti</p>
-        </div> */}
       </div>
 
       <div className="button-group">
-        <button className="back-btn">Indietro</button>
-        <button className="next-btn">Avanti →</button>
+        <button className="next-btn" onClick={next}>
+          Avanti →
+        </button>
       </div>
     </div>
-    );
-};
+  );
+}
 
 export default ComponentStep1;
