@@ -1,4 +1,4 @@
-:root {
+/* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -65,4 +65,126 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+} */
+
+/* FONT E REGOLE GENERALI */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background-color: #f4f6f9;
+  color: #fff;
+}
+
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 70px;
+  background-color: #0f2d52;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  z-index: 100;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar-left p {
+  font-size: 20px;
+  color: #fff;
+}
+
+.logo {
+  width: 28px;
+  height: 28px;
+}
+
+.navbar-menu {
+  display: flex;
+  gap: 30px;
+}
+
+.Link {
+  color: #cdd6e3;
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.2s;
+}
+
+.Link:hover {
+  color: #fff;
+}
+
+.publish-btn {
+  background-color: #ff7300;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+/* HERO SECTION */
+.hero {
+  position: relative;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  z-index: -2;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 45, 82, 0.55);
+  z-index: -1;
+}
+
+.hero-content {
+  color: #fff;
+  max-width: 900px;
+}
+
+.hero-content h1 {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.hero-content h1 span {
+  color: #ff7300;
+}
+
+.hero-content h1 .subtitle {
+  font-size: 18px;
+  color: #d9e3f1;
+  margin-bottom: 40px;
 }
