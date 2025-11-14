@@ -24,12 +24,6 @@ function ComponentStepHome() {
           <h4>Vendi</h4>
           <p>Vendi il tuo immobile</p>
         </div>
-{/* 
-        <div className="card">
-          <div className="icon">🏗️</div>
-          <h4>Nuove costruzioni</h4>
-          <p>Scopri i nuovi progetti</p>
-        </div> */}
       </div>
 
       <div className="button-group">
