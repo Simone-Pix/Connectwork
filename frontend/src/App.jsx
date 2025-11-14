@@ -5,7 +5,7 @@ import Navbar from './components/navbar';
 
 const Home = lazy(() => import('./pages/Home'));
 const Search = lazy(() => import('./pages/Search'));
-const PageStep1 = lazy(() => import('./pages/PageStep1'));
+const Configurator = lazy(() => import('./pages/Configurator'));
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/cerca" element={<Search />} />
-          <Route path="/valuta" element={<PageStep1 />} />
+          <Route path="/valuta" element={<Configurator />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

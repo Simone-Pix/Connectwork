@@ -1,4 +1,4 @@
-function ComponentStep1() {
+function ComponentStepHome() {
 
   return (
     <div className="configurator">
@@ -14,14 +14,14 @@ function ComponentStep1() {
 
       <div className="card-container">
         <div className="card active">
-          <div className="icon">🔑</div>
-          <h4>Appartamento</h4>
-          <p>Vendi il tuo immobile</p>
+          <div className="icon">🏠</div>
+          <h4>Acquista</h4>
+          <p>Trova la casa dei tuoi sogni</p>
         </div>
 
         <div className="card">
-          <div className="icon">🏠</div>
-          <h4>Villa/Casa indipendente</h4>
+          <div className="icon">🔑</div>
+          <h4>Vendi</h4>
           <p>Vendi il tuo immobile</p>
         </div>
 {/* 
@@ -40,4 +40,4 @@ function ComponentStep1() {
     );
 };
 
-export default ComponentStep1;
+export default ComponentStepHome;
