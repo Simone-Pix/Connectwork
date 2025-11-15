@@ -217,6 +217,42 @@ public class ImmobiliService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Recupera la lista delle feature (tipi) associate a un immobile.
+     * @param immobileId ID dell'immobile
+     * @return lista di tipi feature (String)
+     */
+    public List<String> getFeaturesByImmobileId(Long immobileId) {
+        List<ImmobiliFeatures> features = immobiliFeaturesRepository.findByImmobileId(immobileId);
+        return features.stream().map(ImmobiliFeatures::getFeatureTipo).collect(Collectors.toList());
+    }
+
+    /**
+     * Aggiunge una singola feature a un immobile.
+     * @param immobileId ID immobile
+     * @param featureTipo tipo della feature
+     */
+    @Transactional
+    public void addFeature(Long immobileId, String featureTipo) {
+        Immobili immobile = immobiliRepository.findById(immobileId)
+                .orElseThrow(() -> new RuntimeException("Immobile non trovato con id: " + immobileId));
+        ImmobiliFeatures feature = new ImmobiliFeatures();
+        feature.setImmobile(immobile);
+        feature.setFeatureTipo(featureTipo);
+        immobiliFeaturesRepository.save(feature);
+    }
+
+    /**
+     * Elimina una feature per id (assume che la FK immobile sia verificata a monte)
+     * @param featureId ID della feature da eliminare
+     */
+    @Transactional
+    public void deleteFeature(Long featureId) {
+        ImmobiliFeatures feature = immobiliFeaturesRepository.findById(featureId)
+                .orElseThrow(() -> new RuntimeException("Feature non trovata con id: " + featureId));
+        immobiliFeaturesRepository.delete(feature);
+    }
+
     // ========== METODI PRIVATI DI CONVERSIONE ==========
 
     /**

@@ -13,7 +13,6 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.ManyToOne;
 
 @Entity
 @Table(name = "immobili")
