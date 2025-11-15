@@ -2,7 +2,7 @@ import PropertyCard from "./PropertyCard";
 
 function PropertyList({ properties }) {
   if (!properties || properties.length === 0) {
-    return <div className="no-results-search">No properties found.</div>;
+    return <div className="no-results-search">Nessuna proprietà trovata.</div>;
   }
 
   return (

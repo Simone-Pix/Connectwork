@@ -39,7 +39,7 @@ function Configurator() {
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch("Api dove mettere il backend", {
+      const res = await fetch("/api/immobili", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

@@ -2,18 +2,18 @@ function ComponentStepHome() {
 
   return (
     <div className="configurator">
-      <div className="progress-container">
+      {/* <div className="progress-container">
         <span>Passo 1 di 6</span>
         <div className="progress-bar">
           <div className="progress" style={{ width: "17%" }}></div>
         </div>
-      </div>
+      </div> */}
 
       <h3 className="section-title">Cosa stai cercando?</h3>
       <p className="section-subtitle">Seleziona il tipo di operazione</p>
 
       <div className="card-container">
-        <div className="card active">
+        <div className="card">
           <div className="icon">🏠</div>
           <h4>Acquista</h4>
           <p>Trova la casa dei tuoi sogni</p>
@@ -26,10 +26,10 @@ function ComponentStepHome() {
         </div>
       </div>
 
-      <div className="button-group">
+      {/* <div className="button-group">
         <button className="back-btn">Indietro</button>
         <button className="next-btn">Avanti →</button>
-      </div>
+      </div> */}
     </div>
     );
 };

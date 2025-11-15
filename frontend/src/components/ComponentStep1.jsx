@@ -37,7 +37,7 @@ function ComponentStep1({ data, updateField, next }) {
 
       <div className="button-group">
         <button className="next-btn" onClick={next}>
-          Avanti →
+          Avanti
         </button>
       </div>
     </div>

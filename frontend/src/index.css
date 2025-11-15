@@ -348,8 +348,6 @@ body {
   border: none;
 }
 
-/* search.css — rules end with -search so it's clear these belong to Search page */
-
 /* layout */
 .search-page-search {
   padding: 110px 24px 40px; /* allow for fixed navbar */
@@ -587,7 +585,6 @@ body {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-/* search.css — rules end with -search so it's clear these belong to Search page */
 
 /* layout */
 .search-page-search {

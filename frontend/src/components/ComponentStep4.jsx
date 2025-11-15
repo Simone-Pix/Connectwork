@@ -34,7 +34,7 @@ function ComponentStep4({ data, updateField, next, back }) {
 
       <div className="button-group">
         <button className="back-btn" onClick={back}>Indietro</button>
-        <button className="next-btn" onClick={next}>Avanti →</button>
+        <button className="next-btn" onClick={next}>Avanti</button>
       </div>
     </div>
   );
