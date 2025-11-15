@@ -1,68 +1,509 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+/* FONT E REGOLE GENERALI */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
 }
 
 body {
-  margin: 0;
+  background-color: #f4f6f9;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 70px;
+  background-color: #0f2d52;
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  z-index: 100;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+.navbar-left p {
+  font-size: 20px;
+  color: #fff;
+}
+
+.logo {
+  width: 28px;
+  height: 28px;
+}
+
+.navbar-menu {
+  display: flex;
+  gap: 30px;
+}
+
+.Link {
+  color: #cdd6e3;
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.2s;
+}
+
+.Link:hover {
+  color: #fff;
+}
+
+.publish-btn {
+  background-color: #ff7300;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+
+/* HERO SECTION */
+.hero {
+  position: relative;
+  /* height: 90vh; */
+  min-height: calc(100vh - 70px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  z-index: -2;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 45, 82, 0.55);
+  z-index: -1;
+}
+
+.hero-content {
+  color: #fff;
+  max-width: 900px;
+}
+
+.hero-content h1 {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.hero-content h1 span {
+  color: #ff7300;
+}
+
+.hero-content h1 .subtitle {
+  font-size: 18px;
+  color: #d9e3f1;
+  margin-bottom: 40px;
+}
+
+/* PROGRESS BAR */
+.progress-container {
+  text-align: left;
+  margin: 0 auto 20px;
+  width: 60%;
+  font-size: 13px;
+  color: #fff;
+}
+
+.progress-bar {
+  background-color: rgba(255, 255, 255, 0.18);
+  height: 4px;
+  border-radius: 10px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 4px;
+  background: linear-gradient(90deg, #ffb27a 0%, #ff7300 60%, #ff4a00 100%);
+  border-radius: 10px;
+}
+
+/* SECTION TITLE (fuori configurator) */
+.section-title {
+  font-size: 22px;
+  color: #ff7300;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  color: #d0d8e5;
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+/* CARD SEZIONE (stili generali; verranno riutilizzati dentro configurator) */
+.card-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.12);
+  padding: 26px 30px;
+  border-radius: 12px;
+  width: 220px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
+
+
+.card h4 {
+  font-size: 18px;
+  margin-top: 10px;
+  color: #fff;
+}
+
+.card p {
+  font-size: 14px;
+  color: #d3d8e5;
+}
+
+.icon {
+  font-size: 32px;
+}
+
+/* BUTTONS */
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 0;
+}
+
+.back-btn, .next-btn {
+  border: none;
+  padding: 10px 25px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.back-btn {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.next-btn {
+  background-color: #ff7300;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(255,115,0,0.15);
+}
+
+/* ===========================
+   🔶 CONFIGURATORE (con SFUMATURA arancione)
+   =========================== */
+
+/* main container with gradient, subtle border glow and blur */
+.configurator {
+  position: relative;
+  background-image:
+    linear-gradient(135deg,
+      rgba(255, 147, 77, 0.30) 0%,
+      rgba(255, 115, 0, 0.22) 40%,
+      rgba(255, 94, 0, 0.12) 100%
+    );
+  border-radius: 20px;
+  padding: 40px 50px;
+  backdrop-filter: blur(6px); /* effetto vetro */
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px rgba(15,45,82,0.35), 0 2px 8px rgba(255,115,0,0.06);
+  
+  margin: 0 auto;
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+
+/* subtle glowing edge using pseudo-element */
+.configurator::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(255,140,80,0.08), rgba(255,90,0,0.06));
+  filter: blur(10px);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.configurator .section-title {
+  color: #fff;
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+.configurator .section-subtitle {
+  color: rgba(245,245,245,0.9);
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.configurator .card-container {
+  margin-bottom: 28px;
+}
+
+/* make card spacing slightly tighter inside configurator */
+.configurator .card {
+  padding: 22px 24px;
+  width: 210px;
+  background-color: rgba(255, 255, 255, 0); /* trasparente */
+  border: 3px solid rgba(245, 119, 15, 0.3); /* bordo arancione leggero */
+  border-radius: 12px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: none;
+}
+
+/* Hover leggero sulle card non selezionate */
+.configurator .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 15px rgba(15, 45, 82, 0.2);
+}
+
+
+/* Card selezionata (blu con bagliore) */
+.configurator .card.active {
+  background-color: #0f5fff; /* blu pieno */
+  border: 2px solid #0f5fff; /* bordo blu */
+  box-shadow: 0 8px 20px rgba(15, 95, 255, 0.4); /* bagliore blu */
+  color: #fff;
+  transform: translateY(-4px);
+}
+/* center the button group inside box and give some bottom spacing */
+.configurator .button-group {
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+/* small helper to ensure good contrast on text inside the orange area */
+.configurator p, .configurator h4, .configurator span {
+  color: #fff;
+}
+
+.input-step2 {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 20px;
+}
+
+.form-grid-step3 {
+  display: grid;
+  gap: 15px;
+}
+.form-grid-step3 input {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+}
+
+.form-grid-step6 {
+  display: grid;
+  gap: 15px;
+}
+.form-grid-step6 input {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+}
+
+/* ===========================
+   📱 VERSIONE RESPONSIVE
+   =========================== */
+
+/* Tablet (max 992px) */
+@media (max-width: 992px) {
+  .navbar {
+    padding: 0 20px;
   }
-  a:hover {
-    color: #747bff;
+
+  .navbar-menu {
+    gap: 20px;
   }
-  button {
-    background-color: #f9f9f9;
+
+  .hero-content h2 {
+    font-size: 36px;
+  }
+
+  .hero-content p {
+    font-size: 16px;
+  }
+
+  .progress-container {
+    width: 80%;
+  }
+
+  .card-container {
+    gap: 20px;
+  }
+
+  .hero {
+    min-height: auto;
+    padding-top: 100px;
+  }
+
+  /* configurator slightly larger on tablet */
+  .configurator {
+    padding: 32px 36px;
+    max-width: 820px;
+  }
+}
+
+/* Mobile (max 768px) */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
+    gap: 10px;
+  }
+
+  .navbar-menu {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .search-bar {
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+  }
+
+  .search-bar input {
+    width: 90%;
+  }
+
+  .hero {
+    padding: 80px 16px 60px;
+    min-height: auto;
+  }
+
+  .hero-content {
+    margin-top: 20px;
+  }
+
+  .hero-content h2 {
+    font-size: 30px;
+    line-height: 1.15;
+  }
+
+  .hero-content p {
+    font-size: 15px;
+  }
+
+  .progress-container {
+    width: 85%;
+  }
+
+  .card-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .card {
+    width: 84%;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .back-btn, .next-btn {
+    width: 84%;
+  }
+
+  /* configurator on mobile: tighter padding and full width */
+  .configurator {
+    padding: 20px;
+    width: 94%;
+    margin: 0 auto 12px;
+    border-radius: 16px;
+    backdrop-filter: blur(4px);
+  }
+
+  .configurator::before {
+    display: none; /* togliamo il bagliore su schermi piccoli per performance */
+  }
+}
+
+/* Piccoli smartphone (max 480px) */
+@media (max-width: 480px) {
+  .navbar-left h1 {
+    font-size: 18px;
+  }
+
+  .hero-content h2 {
+    font-size: 24px;
+  }
+
+  .hero-content p {
+    font-size: 14px;
+  }
+
+  .search-bar input,
+  .back-btn,
+  .next-btn {
+    font-size: 14px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .configurator {
+    padding: 16px;
+    width: 96%;
+  }
+
+  .configurator .section-title {
+    font-size: 18px;
+  }
+
+  .configurator .section-subtitle {
+    font-size: 13px;
   }
 }
