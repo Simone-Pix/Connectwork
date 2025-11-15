@@ -1,4 +1,5 @@
 import backgroundImg from "../assets/img_background.png"
+import StepHome from "../components/ComponentStepHome";
 
 function Home() {
   return (
@@ -11,6 +12,7 @@ function Home() {
           Trova la casa dei <span>tuoi sogni</span><br />
           <span class="subtitle">Migliaia di annunci verificati di case in vendita e affitto in tutta Italia</span>
         </h1>
+        <StepHome />
       </div>
     </section>
   );

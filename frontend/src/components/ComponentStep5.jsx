@@ -1,0 +1,35 @@
+const choices = ["Subito", "Entro 6 mesi", "Entro 12 mesi", "Non ho fretta"];
+
+function ComponentStep5({ data, updateField, next, back }) {
+  return (
+    <div className="configurator">
+      <div className="progress-container">
+        <span>Passo 5 di 6</span>
+        <div className="progress-bar">
+          <div className="progress" style={{ width: "85%" }}></div>
+        </div>
+      </div>
+
+      <h3 className="section-title">Entro quanto vuoi vendere?</h3>
+
+      <div className="card-container">
+        {choices.map((c) => (
+          <div
+            key={c}
+            className={`card ${data.tempistica === c ? "active" : ""}`}
+            onClick={() => updateField("tempistica", c)}
+          >
+            <h4>{c}</h4>
+          </div>
+        ))}
+      </div>
+
+      <div className="button-group">
+        <button className="back-btn" onClick={back}>Indietro</button>
+        <button className="next-btn" onClick={next}>Avanti →</button>
+      </div>
+    </div>
+  );
+}
+
+export default ComponentStep5;
