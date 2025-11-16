@@ -1,4 +1,3 @@
-// src/pages/Search.jsx
 import { useEffect, useState } from "react";
 import FiltersSidebar from "../components/FiltersSidebar";
 import PropertyList from "../components/PropertyList";

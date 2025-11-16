@@ -114,10 +114,17 @@ function Configurator() {
   };
 
   return (
-    <section className="hero">
-      <div className="heroContent">{renderStep()}</div>
-    </section>
-  );
+  <section className="min-h-screen flex items-center justify-center bg-gray-100 pt-16 pb-16 px-4">
+    <div className="w-full max-w-3xl">
+      <div className="relative bg-gradient-to-br from-orange-400/30 via-orange-500/20 to-orange-600/10 backdrop-blur-sm border border-white/10 rounded-2xl p-8 lg:p-10 shadow-xl">
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-400/10 to-transparent pointer-events-none -z-10 blur-xl opacity-70"></div>
+        <div className="relative z-10">
+          {renderStep()}
+        </div>
+      </div>
+    </div>
+  </section>
+);
 }
 
 export default Configurator;
