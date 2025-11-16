@@ -1,6 +1,6 @@
 function ComponentStep3({ data, updateField, next, back }) {
   return (
-    <div className="configurator">
+    <div className="">
       <div className="progress-container">
         <span>Passo 3 di 6</span>
         <div className="progress-bar">

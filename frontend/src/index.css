@@ -1,13 +1,14 @@
+@import "./styles/configurator_tailwind.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Stili globali aggiuntivi (se necessari) */
+
+/* Stili globali aggiuntivi */
 body {
   @apply bg-gray-100 text-gray-900 font-sans;
 }
 
-/* Se vuoi mantenere la font "Inter" */
 @layer base {
   body {
     font-family: 'Inter', sans-serif;
