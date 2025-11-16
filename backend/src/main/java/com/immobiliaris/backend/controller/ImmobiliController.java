@@ -16,7 +16,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/immobili")
-@CrossOrigin(origins = "*") // Permette richieste da React (modifica con l'URL specifico in produzione)
+//@CrossOrigin(origins = "*") // Permette richieste da React (modifica con l'URL specifico in produzione)
 public class ImmobiliController {
 
     @Autowired
