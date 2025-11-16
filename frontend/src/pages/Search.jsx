@@ -1,3 +1,4 @@
+// src/pages/Search.jsx
 import { useEffect, useState } from "react";
 import FiltersSidebar from "../components/FiltersSidebar";
 import PropertyList from "../components/PropertyList";
@@ -8,7 +9,7 @@ function Search() {
   const [loading, setLoading] = useState(true);
 
   const defaultFilters = {
-    tipoContratto: "all", // e.g. "in_vendita", "in_affitto" — uses property.stato
+    tipoContratto: "all",
     minPrice: "",
     maxPrice: "",
     rooms: "all",
@@ -18,7 +19,7 @@ function Search() {
 
   const [filters, setFilters] = useState(defaultFilters);
 
-  // Fetch properties from backend on mount
+  
   useEffect(() => {
     async function loadProperties() {
       try {
@@ -38,79 +39,54 @@ function Search() {
     loadProperties();
   }, []);
 
-  /**
-   * Apply filters to the full properties list and update state.
-   * @param {Object} newFilters
-   */
   function applyFilters(newFilters) {
     setFilters(newFilters);
-
     const result = allProperties.filter((p) => {
-      // tipoContratto / stato filter
-      if (newFilters.tipoContratto && newFilters.tipoContratto !== "all") {
-        if (!p.stato || p.stato !== newFilters.tipoContratto) return false;
-      }
-
-      // price filter
-      if (newFilters.minPrice) {
-        if (!p.prezzoRichiesto || Number(p.prezzoRichiesto) < Number(newFilters.minPrice)) return false;
-      }
-      if (newFilters.maxPrice) {
-        if (!p.prezzoRichiesto || Number(p.prezzoRichiesto) > Number(newFilters.maxPrice)) return false;
-      }
-
-      // rooms filter
-      if (newFilters.rooms && newFilters.rooms !== "all") {
-        if (!p.numLocali || Number(p.numLocali) < Number(newFilters.rooms)) return false;
-      }
-
-      // baths filter
-      if (newFilters.baths && newFilters.baths !== "all") {
-        if (!p.numBagni || Number(p.numBagni) < Number(newFilters.baths)) return false;
-      }
-
-      // surface filter
-      if (newFilters.minSurface) {
-        if (!p.superficie || Number(p.superficie) < Number(newFilters.minSurface)) return false;
-      }
-
+      if (newFilters.tipoContratto !== "all" && p.stato !== newFilters.tipoContratto) return false;
+      if (newFilters.minPrice && Number(p.prezzoRichiesto) < Number(newFilters.minPrice)) return false;
+      if (newFilters.maxPrice && Number(p.prezzoRichiesto) > Number(newFilters.maxPrice)) return false;
+      if (newFilters.rooms !== "all" && Number(p.numLocali) < Number(newFilters.rooms)) return false;
+      if (newFilters.baths !== "all" && Number(p.numBagni) < Number(newFilters.baths)) return false;
+      if (newFilters.minSurface && Number(p.superficie) < Number(newFilters.minSurface)) return false;
       return true;
     });
-
     setFilteredProperties(result);
   }
 
-  /**
-   * Reset filters back to defaults.
-   */
   function resetFilters() {
     setFilters(defaultFilters);
     setFilteredProperties(allProperties);
   }
 
   return (
-    <div className="search-page-search">
-      <div className="search-container-search">
-        <aside className="filters-sidebar-search">
-          <FiltersSidebar
-            filters={filters}
-            onApply={applyFilters}
-            onReset={resetFilters}
-          />
-        </aside>
+    <div className="bg-gray-100 pt-28 pb-10 min-h-screen"> 
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-7">
+          {/* Sidebar filtri */}
+          <aside className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+            <FiltersSidebar
+              filters={filters}
+              onApply={applyFilters}
+              onReset={resetFilters}
+            />
+          </aside>
 
-        <main className="results-area-search">
-          <header className="results-header-search">
-            <h2 className="section-title-search">Properties</h2>
-            <p className="section-subtitle-search">Available homes matching your search</p>
-          </header>
+          {/* Area risultati */}
+          <main>
+            <header className="mb-6">
+              <h2 className="text-gray-900 text-xl font-bold">Properties</h2>
+              <p className="text-gray-600 text-sm">Available homes matching your search</p>
+            </header>
 
-          {loading ? (
-            <div className="loading-search">Loading properties...</div>
-          ) : (
-            <PropertyList properties={filteredProperties} />
-          )}
-        </main>
+            {loading ? (
+              <div className="bg-white rounded-xl p-10 text-center text-gray-600 shadow-sm">
+                Loading properties...
+              </div>
+            ) : (
+              <PropertyList properties={filteredProperties} />
+            )}
+          </main>
+        </div>
       </div>
     </div>
   );
