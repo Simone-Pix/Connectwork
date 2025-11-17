@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import logo from "../assets/react.svg";
+import logo from "../assets/LogoImmobiliaris.png";
 
 function Navbar() {
   const { isAuthenticated, user, logout } = useAuth();
