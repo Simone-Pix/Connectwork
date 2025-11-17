@@ -68,6 +68,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/users/signin", "/api/users/login", "/api/users/logout", "/signin", "/login", "/css/**", "/js/**", "/images/**", "/", "/home").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/immobili/**", "/api/immagini/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/richieste/**").permitAll()
                 .anyRequest().authenticated()
         );
 
