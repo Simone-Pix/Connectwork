@@ -22,13 +22,14 @@ function ComponentStepHome() {
 
       <div className="card-container">
         <div className="card">
-          <div className="icon">🏠</div>
+          <div className="icon" onClick={() => handleSelect("acquista")}>🏠</div>
           <h4>Acquista</h4>
           <p>Trova la casa dei tuoi sogni</p>
         </div>
 
         <div className="card">
-          <div className="icon">🔑</div>
+          <div className="icon" onClick={() => handleSelect("vendi")}>🔑</div>
+          onClick={() => handleSelect("vendi")}
           <h4>Vendi</h4>
           <p>Vendi il tuo immobile</p>
         </div>
