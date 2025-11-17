@@ -61,8 +61,6 @@ VALUES
 (3, 2, 'esclusiva', 18, 2.75, 'rifiutato'),
 (4, 3, 'mandato', 6, 2.00, 'accettato');
 
--- ============================================================
--- 7️⃣ TABELLA LOG_ATTIVITA
 INSERT INTO log_attivita (user_id, immobile_id, azione)
 VALUES
 (1, 1, 'Ha inserito un nuovo immobile in vendita.'),
@@ -72,3 +70,9 @@ VALUES
 (3, 1, 'Ha modificato il prezzo richiesto.'),
 (1, 4, 'Ha aggiunto foto e planimetria.'),
 (2, 4, 'Ha contrassegnato come "in vendita".');
+
+-- ============================================================
+-- Tabella richieste (esempio dati forniti)
+INSERT INTO richieste (nome, cognome, email, telefono, indirizzo, tipo_operazione, tempistica, piano, stanze, bagni, superficie, optional_info)
+VALUES
+('utente', 'user', 'user@its.net', 'tgfw', 'daf', 'appartamento', 'Subito', 4, 4, 4, 4.00, 'Balcone');
