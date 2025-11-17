@@ -2,7 +2,7 @@ const choices = ["Subito", "Entro 6 mesi", "Entro 12 mesi", "Non ho fretta"];
 
 function ComponentStep5({ data, updateField, next, back }) {
   return (
-    <div className="configurator">
+    <div className="">
       <div className="progress-container">
         <span>Passo 5 di 6</span>
         <div className="progress-bar">
