@@ -50,11 +50,12 @@
 
   /* Card grid used for selecting options */
   .card-container {
-    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6;
+    /* @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6; */
+    @apply flex flex-wrap justify-center gap-6 mb-6;
   }
 
   .card {
-    @apply rounded-xl border border-gray-700 p-6 cursor-pointer flex flex-col items-center justify-center gap-3 text-white transition-transform transform hover:-translate-y-0.5;
+    @apply w-full sm:w-[280px] md:w-[300px] rounded-xl border border-gray-700 p-6 cursor-pointer flex flex-col items-center justify-center gap-3 text-white transition-transform transform hover:-translate-y-0.5;
     background: rgba(24,28,33,0.45);
     box-shadow: 0 4px 18px rgba(2,6,23,0.45);
   }
