@@ -1,0 +1,143 @@
+package com.immobiliaris.backend.controller;
+
+import com.immobiliaris.backend.model.Users;
+import com.immobiliaris.backend.repo.UsersRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Controller REST per l'autenticazione semplificata.
+ * Gestisce login/logout mantenendo l'auth backend-side senza complessità frontend.
+ */
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    @Autowired
+    private UsersRepository usersRepository;
+
+    /**
+     * GET/POST /api/auth/check
+     * Controlla se l'utente corrente è autenticato.
+     * Frontend può chiamare questo endpoint per verificare lo stato auth.
+     */
+    @RequestMapping(value = "/check", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseEntity<Map<String, Object>> checkAuth(HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<>();
+        
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("userId") != null) {
+            Long userId = (Long) session.getAttribute("userId");
+            String email = (String) session.getAttribute("userEmail");
+            
+            response.put("authenticated", true);
+            response.put("userId", userId);
+            response.put("email", email);
+            return ResponseEntity.ok(response);
+        }
+        
+        response.put("authenticated", false);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * POST /api/auth/session-login
+     * Login semplificato che mantiene la sessione.
+     * Frontend invia email/password, backend gestisce tutto.
+     */
+    @PostMapping("/session-login")
+    public ResponseEntity<Map<String, Object>> sessionLogin(
+            @RequestParam String email,
+            @RequestParam String password,
+            HttpServletRequest request) {
+        
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            // Validazione credenziali
+            if (email == null || email.trim().isEmpty() || 
+                password == null || password.trim().isEmpty()) {
+                response.put("success", false);
+                response.put("message", "Email e password sono obbligatori");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            // Verifica utente nel database
+            Users user = usersRepository.findByEmail(email).orElse(null);
+            if (user == null || !password.equals(user.getPassword())) {
+                response.put("success", false);
+                response.put("message", "Credenziali non valide");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            // Crea sessione
+            HttpSession session = request.getSession(true);
+            session.setAttribute("userId", user.getId());
+            session.setAttribute("userEmail", user.getEmail());
+            session.setAttribute("userRole", user.getRuolo());
+            session.setMaxInactiveInterval(3600); // 1 ora
+
+            response.put("success", true);
+            response.put("message", "Login effettuato con successo");
+            response.put("userId", user.getId());
+            response.put("email", user.getEmail());
+            response.put("role", user.getRuolo());
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Errore interno del server");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    /**
+     * POST /api/auth/logout
+     * Logout che invalida la sessione.
+     */
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, Object>> logout(HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<>();
+        
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        
+        response.put("success", true);
+        response.put("message", "Logout effettuato con successo");
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * GET /api/auth/status
+     * Endpoint per debugging - mostra info sessione corrente.
+     */
+    @GetMapping("/status")
+    public ResponseEntity<Map<String, Object>> getStatus(HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<>();
+        
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            response.put("sessionId", session.getId());
+            response.put("userId", session.getAttribute("userId"));
+            response.put("userEmail", session.getAttribute("userEmail"));
+            response.put("userRole", session.getAttribute("userRole"));
+            response.put("creationTime", session.getCreationTime());
+            response.put("lastAccessedTime", session.getLastAccessedTime());
+            response.put("maxInactiveInterval", session.getMaxInactiveInterval());
+        } else {
+            response.put("message", "Nessuna sessione attiva");
+        }
+        
+        return ResponseEntity.ok(response);
+    }
+}

@@ -64,12 +64,39 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // per semplicità disabilitiamo CSRF: in produzione abilitarlo e usare token
         http.csrf(csrf -> csrf.disable());
+        
+        // Permetti H2 console (solo per sviluppo) - nuova sintassi Spring Security 6
+        http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/users/signin", "/api/users/login", "/api/users/logout", "/signin", "/login", "/css/**", "/js/**", "/images/**", "/", "/home").permitAll()
+                // Pagine e risorse statiche sempre accessibili
+                .requestMatchers("/signin", "/login", "/css/**", "/js/**", "/images/**", "/", "/home").permitAll()
+                
+                // API completamente pubbliche (lettura)  
                 .requestMatchers(HttpMethod.GET, "/api/immobili/**", "/api/immagini/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/richieste/**").permitAll()
-                .anyRequest().authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/richieste/**").permitAll()  // Form contatti pubblico
+                .requestMatchers(HttpMethod.GET, "/api/richieste/**").permitAll()   // Lettura richieste pubblica
+                
+                // Auth endpoints sempre accessibili
+                .requestMatchers("/api/auth/**").permitAll()
+                
+                // Vecchi endpoint per compatibilità
+                .requestMatchers("/api/users/signin", "/api/users/login", "/api/users/logout").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/users").permitAll()  // Lista utenti pubblica
+                
+                // Console H2 per sviluppo
+                .requestMatchers("/h2-console/**").permitAll()
+                
+                // Admin/gestione dati protetti
+                .requestMatchers("/api/users/backoffice/**").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/immobili/**").authenticated() 
+                .requestMatchers(HttpMethod.PUT, "/api/immobili/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/api/immobili/**").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/richieste/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/api/richieste/**").authenticated()
+                
+                // Tutto il resto accessibile per gradualità
+                .anyRequest().permitAll()
         );
 
         // Configura il form login: pagina di login e URL di processing
@@ -104,6 +131,8 @@ public class SecurityConfig {
      */
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsService uds, PasswordEncoder encoder) {
+        // Deprecation warning ma funziona - Spring Boot 3.x compatibility
+        @SuppressWarnings("deprecation")
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(uds);
         provider.setPasswordEncoder(encoder);
