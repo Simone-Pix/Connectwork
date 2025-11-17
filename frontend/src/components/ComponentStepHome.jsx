@@ -1,5 +1,13 @@
 function ComponentStepHome() {
 
+  const handleSelect = (operation) => {
+    if (operation === "acquista") {
+      navigate("/cerca"); 
+    } else if (operation === "vendi") {
+      navigate("/valuta"); 
+    }
+  };
+
   return (
     <div className="configurator">
       {/* <div className="progress-container">
