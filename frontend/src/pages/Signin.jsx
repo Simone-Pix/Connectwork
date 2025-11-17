@@ -13,23 +13,27 @@ function Signin() {
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch("http://localhost:8080/api/auth/signin", {
+      // Usa FormData come si aspetta il nuovo AuthController
+      const formData = new FormData();
+      formData.append('nome', nome);
+      formData.append('cognome', cognome);
+      formData.append('email', email);
+      formData.append('telefono', telefono);
+      formData.append('password', password);
+
+      const res = await fetch("/api/auth/signin", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nome,
-          cognome,
-          email,
-          telefono,
-          password,
-        }),
+        credentials: "include",
+        body: formData,
       });
 
-      if (res.ok) {
+      const result = await res.json();
+      
+      if (result.success) {
+        alert(result.message);
         navigate("/login"); // registrazione ok → vai a login
       } else {
-        const msg = await res.text();
-        alert(msg); 
+        alert(result.message || "Errore durante la registrazione");
       }
 
     } catch (err) {

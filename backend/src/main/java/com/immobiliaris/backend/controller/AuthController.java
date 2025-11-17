@@ -71,7 +71,7 @@ public class AuthController {
 
             // Verifica utente nel database
             Users user = usersRepository.findByEmail(email).orElse(null);
-            if (user == null || !password.equals(user.getPassword())) {
+            if (user == null || !com.immobiliaris.backend.util.PasswordUtils.verifyPassword(password, user.getPassword())) {
                 response.put("success", false);
                 response.put("message", "Credenziali non valide");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
@@ -91,6 +91,66 @@ public class AuthController {
             response.put("role", user.getRuolo());
             
             return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Errore interno del server");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    /**
+     * POST /api/auth/signin
+     * Registrazione nuovo utente - compatibile con frontend.
+     */
+    @PostMapping("/signin")
+    public ResponseEntity<Map<String, Object>> signin(
+            @RequestParam String nome,
+            @RequestParam String cognome,
+            @RequestParam String email,
+            @RequestParam String password,
+            @RequestParam String telefono) {
+        
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            // Validazione input
+            String emailNorm = email == null ? "" : email.trim().toLowerCase();
+            if (emailNorm.isBlank()) {
+                response.put("success", false);
+                response.put("message", "Email è richiesta");
+                return ResponseEntity.badRequest().body(response);
+            }
+            if (password == null || password.length() < 8) {
+                response.put("success", false);
+                response.put("message", "La password deve essere lunga almeno 8 caratteri");
+                return ResponseEntity.badRequest().body(response);
+            }
+            
+            // Controlla se email già esiste
+            if (usersRepository.findByEmail(emailNorm).isPresent()) {
+                response.put("success", false);
+                response.put("message", "Email già in uso");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            }
+
+            // Crea nuovo utente
+            Users u = new Users();
+            u.setNome(nome);
+            u.setCognome(cognome);
+            u.setEmail(emailNorm);
+            // Hash della password prima di salvare
+            String hashed = com.immobiliaris.backend.util.PasswordUtils.hashPassword(password);
+            u.setPassword(hashed);
+            u.setTelefono(telefono);
+            u.setRuolo("utente");
+            u.setVerificato(false);
+            usersRepository.save(u);
+            
+            response.put("success", true);
+            response.put("message", "Registrazione completata con successo");
+            response.put("redirect", "/login");
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
             
         } catch (Exception e) {
             response.put("success", false);
