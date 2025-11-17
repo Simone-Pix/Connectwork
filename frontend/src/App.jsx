@@ -15,6 +15,7 @@ function App() {
       <Suspense fallback={<div>Loading…</div>}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/cerca" element={<Search />} />
           <Route path="/valuta" element={<Configurator />} />
         </Routes>

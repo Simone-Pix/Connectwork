@@ -7,6 +7,7 @@ function Search() {
   const [allProperties, setAllProperties] = useState([]);
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState([]);
 
   const defaultFilters = {
     tipoContratto: "all",
@@ -37,7 +38,26 @@ function Search() {
       }
     }
     loadProperties();
+
+    
   }, []);
+  
+useEffect(() => {
+  async function loadImages() {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/immagini");
+      const data = await res.json();
+      setImages(data);
+    } catch (err) {
+      console.error("Failed to fetch images", err);
+    } finally {
+      setLoading(false);
+    }
+  }
+  loadImages();
+}, []);
+  
 
   function applyFilters(newFilters) {
     setFilters(newFilters);
@@ -83,7 +103,7 @@ function Search() {
                 Loading properties...
               </div>
             ) : (
-              <PropertyList properties={filteredProperties} />
+              <PropertyList properties={filteredProperties} images={images} />
             )}
           </main>
         </div>

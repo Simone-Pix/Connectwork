@@ -6,10 +6,11 @@ function formatPrice(num) {
   return "€ " + Number(num).toLocaleString("it-IT");
 }
 
-function PropertyCard({ property }) {
+function PropertyCard({ property, images }) {
   const isExclusive = Boolean(property.disponibileEsclusiva);
   const isNew = property.annoCostruzione && Number(property.annoCostruzione) >= 2020;
-  const image = property.imageUrl || "/placeholder-property.jpg";
+const imageObj = images?.find(img => img.immobile.id === property.id && img.tipo === "foto");
+const image = imageObj?.url || "/placeholder-property.jpg";
 
   return (
     <article className="bg-white rounded-xl overflow-hidden border border-blue-900/10 shadow-sm hover:shadow-md transition-shadow duration-200">

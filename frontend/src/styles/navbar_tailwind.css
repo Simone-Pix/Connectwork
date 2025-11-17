@@ -1,0 +1,40 @@
+/* navbar.css */
+@layer components {
+  .navbar {
+    @apply fixed top-0 w-full h-16 bg-blue-900 flex items-center justify-between px-10 z-50;
+  }
+
+  .navbar-left {
+    @apply flex items-center gap-2.5;
+  }
+
+  .navbar-logo {
+    @apply w-7 h-7;
+  }
+
+  .navbar-title {
+    @apply text-white text-lg;
+  }
+
+  .navbar-links {
+    @apply flex gap-8;
+  }
+
+  .nav-link {
+    @apply text-gray-300 hover:text-white text-sm transition-colors duration-200;
+  }
+
+  /* blocco rimosso */
+  /* .navbar-button-container { @apply; } */
+
+  .navbar-button {
+    @apply bg-orange-500 text-white px-5 py-2 rounded-md font-semibold hover:bg-orange-600 transition-colors duration-200;
+  }
+  .navbar-signin {
+    @apply bg-gray-500 hover:bg-gray-600;
+  }
+  
+}
+
+
+

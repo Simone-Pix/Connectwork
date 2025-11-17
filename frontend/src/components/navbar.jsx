@@ -1,39 +1,64 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import logo from "../assets/react.svg";
 
 function Navbar() {
+  const [user, setUser] = useState(null); 
+  const navigate = useNavigate();
+
+  // Controlla se l'utente è loggato quando il componente monta
+  useEffect(() => {
+    fetch("/api/users/current")
+      .then(res => res.json())
+      .then(data => {
+        if (data.id) setUser(data);
+      })
+      .catch(err => console.log("No user logged in"));
+  }, []);
+
+  const handleLogout = () => {
+    fetch("/api/users/logout")
+      .then(() => {
+        setUser(null);
+        navigate("/");
+      })
+      .catch(err => console.log(err));
+  };
+
   return (
-    <nav className="fixed top-0 w-full h-16 bg-blue-900 flex items-center justify-between px-10 z-50">
-      {/* Left side: logo + text */}
-      <div className="flex items-center gap-2.5">
-        <img src={logo} alt="Logo Immobilaris" className="w-7 h-7" />
-        <p className="text-white text-lg">Immobilaris</p>
+    <nav className="navbar">
+      <div className="navbar-left">
+        <img src={logo} alt="Logo Immobilaris" className="navbar-logo" />
+        <p className="navbar-title">Immobilaris</p>
       </div>
 
-      {/* Middle: navigation links */}
-      <nav className="flex gap-8">
-        <Link to="/" className="text-gray-300 hover:text-white text-sm transition-colors duration-200">
-          Home
-        </Link>
-        <Link to="/cerca" className="text-gray-300 hover:text-white text-sm transition-colors duration-200">
-          Acquista
-        </Link>
-        <Link to="/" className="text-gray-300 hover:text-white text-sm transition-colors duration-200">
-          Affitta
-        </Link>
-        <Link to="/valuta" className="text-gray-300 hover:text-white text-sm transition-colors duration-200">
-          Vendi
-        </Link>
-        <Link to="/" className="text-gray-300 hover:text-white text-sm transition-colors duration-200">
-          Chi siamo
-        </Link>
-      </nav>
+      <div className="navbar-links">
+        <Link to="/" className="nav-link">Home</Link>
+        <Link to="/cerca" className="nav-link">Acquista</Link>
+        <Link to="/" className="nav-link">Affitta</Link>
+        <Link to="/valuta" className="nav-link">Vendi</Link>
+        <Link to="/" className="nav-link">Chi siamo</Link>
+      </div>
 
-      {/* Right side: button */}
-      <div>
-        <button className="bg-orange-500 text-white px-5 py-2 rounded-md font-semibold hover:bg-orange-600 transition-colors duration-200">
-          Pubblica annuncio
-        </button>
+      <div className="navbar-button-container flex gap-2">
+        {user ? (
+          <>
+            <button onClick={handleLogout} className="navbar-button">
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/login">
+              <button className="navbar-button">Login</button>
+            </Link>
+            <Link to="/signin">
+              <button className="navbar-button navbar-signin">
+                Registrati
+              </button>
+            </Link>
+          </>
+        )}
       </div>
     </nav>
   );

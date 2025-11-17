@@ -1,4 +1,5 @@
 @import "./styles/configurator_tailwind.css";
+@import "./styles/navbar_tailwind.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
