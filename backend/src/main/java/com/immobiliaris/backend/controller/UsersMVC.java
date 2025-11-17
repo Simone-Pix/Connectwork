@@ -4,9 +4,13 @@ import com.immobiliaris.backend.model.Users;
 import com.immobiliaris.backend.repo.UsersRepository;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,8 +66,18 @@ public class UsersMVC {
                            @RequestParam String password,
                            @RequestParam String telefono,
                            Model model) {
+        // normalize and validate email + password
+        String emailNorm = email == null ? "" : email.trim().toLowerCase();
+        if (emailNorm.isBlank()) {
+            model.addAttribute("error", "Email è richiesta");
+            return "signin";
+        }
+        if (password == null || password.length() < 8) {
+            model.addAttribute("error", "La password deve essere lunga almeno 8 caratteri");
+            return "signin";
+        }
         // controlla se email già esiste
-        if (usersRepository.findByEmail(email).isPresent()) {
+        if (usersRepository.findByEmail(emailNorm).isPresent()) {
             model.addAttribute("error", "Email già in uso");
             return "signin";
         }
@@ -72,10 +86,15 @@ public class UsersMVC {
         Users u = new Users();
         u.setNome(nome);
         u.setCognome(cognome);
-        u.setEmail(email);
-        u.setPassword(password); // in chiaro 
+        u.setEmail(emailNorm);
+        // Hash della password prima di salvare
+        String hashed = com.immobiliaris.backend.util.PasswordUtils.hashPassword(password);
+        u.setPassword(hashed);
         u.setTelefono(telefono);
-        u.setRuolo("USER");
+        // valore coerente con lo schema DB
+        u.setRuolo("utente");
+        // registrazione parte come non verificata
+        u.setVerificato(false);
         usersRepository.save(u);
         return "redirect:/login"; // dopo registrazione vai al login
     }
@@ -92,20 +111,29 @@ public class UsersMVC {
                         @RequestParam String password,
                         HttpSession session,
                         Model model) {
-        Optional<Users> opt = usersRepository.findByEmail(email);
+        String emailNorm = email == null ? "" : email.trim().toLowerCase();
+        Optional<Users> opt = usersRepository.findByEmail(emailNorm);
         if (opt.isEmpty()) {
             model.addAttribute("error", "Email o password errati");
             return "login";
         }
         Users u = opt.get();
-        // confronto in chiaro
-        if (!u.getPassword().equals(password)) {
+        // verifica usando l'hash memorizzato
+        if (!com.immobiliaris.backend.util.PasswordUtils.verifyPassword(password, u.getPassword())) {
             model.addAttribute("error", "Email o password errati");
             return "login";
         }
+        // Nota: permettiamo il login anche se `verificato == false`.
+        // Le azioni sensibili saranno protette tramite ruoli/authorities (es. ROLE_ADMIN).
         // login valido: memorizza l'utente in sessione
         session.setAttribute("userId", u.getId());
         session.setAttribute("userName", u.getNome());
+        session.setAttribute("userRole", u.getRuolo());
+        // Imposta il contesto di Spring Security in modo che il resto
+        // dell'app (filtri, autorizzazioni) riconosca l'utente autenticato.
+        SimpleGrantedAuthority auth = new SimpleGrantedAuthority("ROLE_" + (u.getRuolo() == null ? "UTENTE" : u.getRuolo().toUpperCase()));
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(u.getEmail(), null, List.of(auth));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         return "redirect:/home"; // o dashboard
     }
 
@@ -119,6 +147,7 @@ public class UsersMVC {
 
 
      @GetMapping("/backoffice/users")
+    @PreAuthorize("hasRole('ADMIN')")
     public String backofficeUsers(Model m) {
         m.addAttribute("users", usersRepository.findAll());
         return "backofficeUsers";
@@ -129,12 +158,22 @@ public class UsersMVC {
      */
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Users user) {
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
+        String emailNorm = user.getEmail() == null ? "" : user.getEmail().trim().toLowerCase();
+        if (emailNorm.isBlank()) {
             return ResponseEntity.badRequest().body("email is required");
         }
-        if (usersRepository.findByEmail(user.getEmail()).isPresent()) {
+        if (usersRepository.findByEmail(emailNorm).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("email already exists");
         }
+        // Hash password before saving to DB and validate length
+        if (user.getPassword() == null || user.getPassword().length() < 8) {
+            return ResponseEntity.badRequest().body("password must be at least 8 characters");
+        }
+        user.setPassword(com.immobiliaris.backend.util.PasswordUtils.hashPassword(user.getPassword()));
+        // Ensure role matches DB constraint and start as not verified
+        if (user.getRuolo() == null || user.getRuolo().isBlank()) user.setRuolo("utente");
+        user.setEmail(emailNorm);
+        user.setVerificato(false);
         Users saved = usersRepository.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
@@ -151,7 +190,10 @@ public class UsersMVC {
         u.setNome(update.getNome());
         u.setCognome(update.getCognome());
         u.setTelefono(update.getTelefono());
-        u.setPassword(update.getPassword());
+        if (update.getPassword() != null && !update.getPassword().isBlank()) {
+            // hash nuova password prima di salvare
+            u.setPassword(com.immobiliaris.backend.util.PasswordUtils.hashPassword(update.getPassword()));
+        }
         if (update.getRuolo() != null) u.setRuolo(update.getRuolo());
         usersRepository.save(u);
         return ResponseEntity.ok(u);
