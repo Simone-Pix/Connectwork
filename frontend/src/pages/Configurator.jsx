@@ -6,7 +6,7 @@ import ComponentStep3 from "../components/ComponentStep3";
 import ComponentStep4 from "../components/ComponentStep4";
 import ComponentStep5 from "../components/ComponentStep5";
 import ComponentStep6 from "../components/ComponentStep6";
-import ComponentSummary from "../components/ComponentSummary"; // nuovo
+import ComponentSummary from "../components/ComponentSummary";
 
 function Configurator() {
   const [step, setStep] = useState(1);
