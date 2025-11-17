@@ -29,7 +29,7 @@ function Signin() {
         navigate("/login"); // registrazione ok → vai a login
       } else {
         const msg = await res.text();
-        alert(msg); // mostra errore
+        alert(msg); 
       }
 
     } catch (err) {

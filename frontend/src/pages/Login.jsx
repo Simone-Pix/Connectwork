@@ -22,7 +22,7 @@ function Login() {
       const user = await res.json();
       console.log("Login OK:", user);
 
-      window.location.href = "/home"; // Redirect
+      window.location.href = "/home";
     } catch (err) {
       console.error("Errore login", err);
       alert("Errore durante il login");
