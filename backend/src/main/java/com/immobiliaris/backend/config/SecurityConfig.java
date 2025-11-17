@@ -4,6 +4,7 @@ import com.immobiliaris.backend.repo.UsersRepository;
 import com.immobiliaris.backend.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -66,6 +67,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/users/signin", "/api/users/login", "/api/users/logout", "/signin", "/login", "/css/**", "/js/**", "/images/**", "/", "/home").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/immobili/**", "/api/immagini/**").permitAll()
                 .anyRequest().authenticated()
         );
 
