@@ -114,10 +114,14 @@ function Configurator() {
   };
 
   return (
-    <section className="hero">
-      <div className="heroContent">{renderStep()}</div>
-    </section>
-  );
+  <section className="hero">
+    <div className="heroContent">
+      <div className="configurator">
+        <div className="step-wrapper">{renderStep()}</div>
+      </div>
+    </div>
+  </section>
+);
 }
 
 export default Configurator;

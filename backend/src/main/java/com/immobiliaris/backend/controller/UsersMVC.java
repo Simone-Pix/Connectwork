@@ -240,4 +240,23 @@ public class UsersMVC {
         }
         return ResponseEntity.noContent().build();
     }
+
+
+        // Ritorna l'utente loggato
+    @GetMapping("api/current")
+    @ResponseBody
+    public ResponseEntity<?> currentUser(HttpSession session) {
+
+        Long userId = (Long) session.getAttribute("userId");
+
+        if (userId == null) {
+            // Nessun utente loggato
+            return ResponseEntity.ok().body(null);
+        }
+
+        return usersRepository.findById(userId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.ok().body(null));
+    }
+
 }
