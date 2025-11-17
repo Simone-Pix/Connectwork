@@ -13,6 +13,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.Arrays;
 
 /**
  * Configurazione principale di Spring Security per l'app.
@@ -64,6 +68,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // per semplicità disabilitiamo CSRF: in produzione abilitarlo e usare token
         http.csrf(csrf -> csrf.disable());
+        
+        // Configura CORS per permettere richieste dal frontend React
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         
         // Permetti H2 console (solo per sviluppo) - nuova sintassi Spring Security 6
         http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));
@@ -129,6 +136,28 @@ public class SecurityConfig {
      * tramite Spring (es. login automatico). Il provider delega la verifica
      * della password al `PasswordEncoder` definito sopra.
      */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        
+        // Permetti richieste dal frontend React (sviluppo)
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://localhost:5173", "http://localhost:3000"));
+        
+        // Permetti tutti i metodi HTTP
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        
+        // Permetti tutti i headers
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        
+        // Permetti cookies e credenziali (importante per sessioni)
+        configuration.setAllowCredentials(true);
+        
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        
+        return source;
+    }
+
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsService uds, PasswordEncoder encoder) {
         // Deprecation warning ma funziona - Spring Boot 3.x compatibility

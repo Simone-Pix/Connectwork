@@ -7,22 +7,27 @@ function Login() {
     const password = document.querySelector('input[type="password"]').value;
 
     try {
-      const res = await fetch("http://localhost:8080/api/users/login", {
+      // Usa il nuovo endpoint auth e FormData come si aspetta il backend
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('password', password);
+
+      const res = await fetch("/api/auth/session-login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         credentials: "include", 
-        body: JSON.stringify({ email, password }),
+        body: formData,
       });
 
-      if (!res.ok) {
-        alert("Credenziali errate");
+      const result = await res.json();
+      
+      if (!result.success) {
+        alert(result.message || "Credenziali errate");
         return;
       }
 
-      const user = await res.json();
-      console.log("Login OK:", user);
-
-      window.location.href = "/home";
+      console.log("Login OK:", result);
+      alert("Login effettuato con successo!");
+      window.location.href = "/";
     } catch (err) {
       console.error("Errore login", err);
       alert("Errore durante il login");
