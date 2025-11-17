@@ -1,37 +1,47 @@
-// src/components/PropertyCard.jsx
-import React from 'react';
+
+import { useState, useEffect } from 'react';
+
 
 function formatPrice(num) {
   if (!num && num !== 0) return "";
   return "€ " + Number(num).toLocaleString("it-IT");
 }
 
-function PropertyCard({ property, images }) {
+
+function PropertyCard({ property }) {
+  const [imageUrl, setImageUrl] = useState("/placeholder-property.jpg");
+
+  // Carica la prima immagine dell'immobile
+  useEffect(() => {
+    const loadImage = async () => {
+      if (property.id) {
+        try {
+          const response = await fetch(`/api/immagini/immobile/${property.id}`);
+          if (response.ok) {
+            const images = await response.json();
+            if (images.length > 0) {
+              setImageUrl(images[0].url);
+            }
+          }
+        } catch (error) {
+          console.log('No images found for property', property.id);
+        }
+      }
+    };
+    loadImage();
+  }, [property.id]);
+
   const isExclusive = Boolean(property.disponibileEsclusiva);
   const isNew = property.annoCostruzione && Number(property.annoCostruzione) >= 2020;
-const imageObj = images?.find(img => img.immobile.id === property.id && img.tipo === "foto");
-const image = imageObj?.url || "/placeholder-property.jpg";
 
   return (
-    <article className="bg-white rounded-xl overflow-hidden border border-blue-900/10 shadow-sm hover:shadow-md transition-shadow duration-200">
-      {/* Immagine con badge */}
-      <div className="relative h-40">
-        <img
-          src={image}
-          alt={property.titolo || "Property image"}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute top-2.5 right-2.5 flex flex-wrap gap-1.5">
-          {isNew && (
-            <span className="bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
-              Nuovo
-            </span>
-          )}
-          {isExclusive && (
-            <span className="bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
-              Esclusiva
-            </span>
-          )}
+    <article className="property-card-search">
+      <div className="card-image-wrapper-search">
+        <img src={imageUrl} alt={property.titolo || "Property image"} className="card-image-search" />
+        <div className="card-badges-search">
+          {isNew && <span className="badge-new-search">Nuovo</span>}
+          {isExclusive && <span className="badge-exclusive-search">Esclusiva</span>}
+
         </div>
       </div>
 

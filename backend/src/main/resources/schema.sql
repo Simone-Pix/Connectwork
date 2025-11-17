@@ -90,3 +90,24 @@ CREATE TABLE IF NOT EXISTS log_attivita (
     CONSTRAINT FK_Log_Users FOREIGN KEY (user_id) REFERENCES users(id),
     CONSTRAINT FK_Log_Immobili FOREIGN KEY (immobile_id) REFERENCES immobili(id)
 );
+
+-- optional immobile null 
+
+--tabella: richieste (richieste contatto / annunci semplificati)
+CREATE TABLE IF NOT EXISTS richieste (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cognome VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    telefono VARCHAR(50) NOT NULL,
+    indirizzo VARCHAR(255) NOT NULL,
+    tipo_operazione VARCHAR(100) NOT NULL,
+    tempistica VARCHAR(100) NOT NULL,
+    piano INT NOT NULL,
+    stanze INT NOT NULL,
+    bagni INT NOT NULL,
+    superficie DECIMAL(10,2) NOT NULL,
+    optional_info VARCHAR(1000) NULL,
+    data_creazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+

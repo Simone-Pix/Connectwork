@@ -13,6 +13,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.Arrays;
 
 /**
  * Configurazione principale di Spring Security per l'app.
@@ -64,11 +68,42 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // per semplicità disabilitiamo CSRF: in produzione abilitarlo e usare token
         http.csrf(csrf -> csrf.disable());
+        
+        // Configura CORS per permettere richieste dal frontend React
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        
+        // Permetti H2 console (solo per sviluppo) - nuova sintassi Spring Security 6
+        http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/users/signin", "/api/users/login", "/api/users/logout", "/signin", "/login", "/css/**", "/js/**", "/images/**", "/", "/home").permitAll()
+                // Pagine e risorse statiche sempre accessibili
+                .requestMatchers("/signin", "/login", "/css/**", "/js/**", "/images/**", "/", "/home").permitAll()
+                
+                // API completamente pubbliche (lettura)  
                 .requestMatchers(HttpMethod.GET, "/api/immobili/**", "/api/immagini/**").permitAll()
-                .anyRequest().authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/richieste/**").permitAll()  // Form contatti pubblico
+                .requestMatchers(HttpMethod.GET, "/api/richieste/**").permitAll()   // Lettura richieste pubblica
+                
+                // Auth endpoints sempre accessibili
+                .requestMatchers("/api/auth/**").permitAll()
+                
+                // Vecchi endpoint per compatibilità
+                .requestMatchers("/api/users/signin", "/api/users/login", "/api/users/logout").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/users").permitAll()  // Lista utenti pubblica
+                
+                // Console H2 per sviluppo
+                .requestMatchers("/h2-console/**").permitAll()
+                
+                // Admin/gestione dati protetti
+                .requestMatchers("/api/users/backoffice/**").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/immobili/**").authenticated() 
+                .requestMatchers(HttpMethod.PUT, "/api/immobili/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/api/immobili/**").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/richieste/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/api/richieste/**").authenticated()
+                
+                // Tutto il resto accessibile per gradualità
+                .anyRequest().permitAll()
         );
 
         // Configura il form login: pagina di login e URL di processing
@@ -102,7 +137,31 @@ public class SecurityConfig {
      * della password al `PasswordEncoder` definito sopra.
      */
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        
+        // Permetti richieste dal frontend React (sviluppo)
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://localhost:5173", "http://localhost:3000"));
+        
+        // Permetti tutti i metodi HTTP
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        
+        // Permetti tutti i headers
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        
+        // Permetti cookies e credenziali (importante per sessioni)
+        configuration.setAllowCredentials(true);
+        
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        
+        return source;
+    }
+
+    @Bean
     public AuthenticationManager authenticationManager(UserDetailsService uds, PasswordEncoder encoder) {
+        // Deprecation warning ma funziona - Spring Boot 3.x compatibility
+        @SuppressWarnings("deprecation")
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(uds);
         provider.setPasswordEncoder(encoder);
