@@ -1,12 +1,11 @@
 import { useState } from "react";
 
 function ComponentStep6({ data, updateField, back, next }) {
-  // Regex validazioni
+
   const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/;
   const phoneRegex = /^[0-9]{7,15}$/;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  // Validazioni
   const isNameValid = nameRegex.test(data.nome);
   const isSurnameValid = nameRegex.test(data.cognome);
   const isEmailValid = emailRegex.test(data.email);

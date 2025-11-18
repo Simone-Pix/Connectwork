@@ -1,7 +1,7 @@
 import SuccessToast from "./SuccessToast";
 
 function ComponentSummary({ data, back, submit, showSuccess }) {
-  // Tutti i campi obbligatori devono essere compilati
+
   const requiredFields = [
     "tipoOperazione",
     "indirizzo",
@@ -15,7 +15,7 @@ function ComponentSummary({ data, back, submit, showSuccess }) {
     "telefono",
   ];
 
-  // Se TUTTI i campi richiesti sono presenti → form valido
+
   const isValid = requiredFields.every((field) => data[field]);
 
   return (
@@ -97,7 +97,7 @@ function ComponentSummary({ data, back, submit, showSuccess }) {
         <button
           onClick={isValid ? submit : undefined}
           disabled={!isValid}
-          className={`bg-primary text-white py-2 px-4 rounded-lg transition ${
+          className={`next-btn py-2 px-4 rounded-lg text-white bg-primary hover:bg-primary-dark transition ${
             !isValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-primary-dark"
           }`}
         >

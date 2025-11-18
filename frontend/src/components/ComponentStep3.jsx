@@ -1,5 +1,5 @@
 function ComponentStep3({ data, updateField, next, back }) {
-  // Controllo per abilitare il pulsante solo se tutti i campi numerici richiesti sono compilati
+
   const isDisabled =
     data.superficie === "" ||
     data.stanze === "" ||
