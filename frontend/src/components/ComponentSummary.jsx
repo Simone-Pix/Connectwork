@@ -97,7 +97,7 @@ function ComponentSummary({ data, back, submit, showSuccess }) {
         <button
           onClick={isValid ? submit : undefined}
           disabled={!isValid}
-          className={`bg-primary text-white py-2 px-4 rounded-lg transition ${
+          className={`next-btn py-2 px-4 rounded-lg text-white bg-primary hover:bg-primary-dark transition ${
             !isValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-primary-dark"
           }`}
         >
