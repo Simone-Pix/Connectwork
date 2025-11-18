@@ -134,4 +134,8 @@
   .input-step2:focus-visible {
     @apply outline-none ring-2 ring-orange-500/40;
   }
+
+  /* bottone avanti */
+
+
 }

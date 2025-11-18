@@ -1,28 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import logo from "../assets/react.svg";
+import useAuth from "../hooks/useAuth";
+import logo from "../assets/LogoImmobiliaris.png";
 
 function Navbar() {
-  const [user, setUser] = useState(null); 
+  const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
 
-  // Controlla se l'utente è loggato quando il componente monta
-  useEffect(() => {
-    fetch("/api/users/current")
-      .then(res => res.json())
-      .then(data => {
-        if (data.id) setUser(data);
-      })
-      .catch(err => console.log("No user logged in"));
-  }, []);
-
-  const handleLogout = () => {
-    fetch("/api/users/logout")
-      .then(() => {
-        setUser(null);
-        navigate("/");
-      })
-      .catch(err => console.log(err));
+  const handleLogout = async () => {
+    const res = await logout();
+    if (res.success) {
+      navigate("/");
+    }
   };
 
   return (
@@ -41,7 +29,7 @@ function Navbar() {
       </div>
 
       <div className="navbar-button-container flex gap-2">
-        {user ? (
+        {isAuthenticated ? (
           <>
             <button onClick={handleLogout} className="navbar-button">
               Logout

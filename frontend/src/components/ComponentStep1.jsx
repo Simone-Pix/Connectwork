@@ -3,6 +3,9 @@ function ComponentStep1({ data, updateField, next }) {
     updateField("tipoOperazione", value);
   };
 
+  const isDisabled = !data.tipoOperazione; 
+  // diventa true se non è stato scelto nulla
+
   return (
     <div className="">
       <div className="progress-container">
@@ -36,9 +39,22 @@ function ComponentStep1({ data, updateField, next }) {
       </div>
 
       <div className="button-group">
-        <button className="next-btn" onClick={next}>
-          Avanti
-        </button>
+        <button
+  onClick={next}
+  disabled={isDisabled} // variabile booleana che dice se il passo è completato
+  className={`
+    next-btn
+    py-2 px-4
+    rounded-lg
+    text-white
+    bg-primary
+    hover:bg-primary-dark
+    transition
+    ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+  `}
+>
+  Avanti
+</button>
       </div>
     </div>
   );

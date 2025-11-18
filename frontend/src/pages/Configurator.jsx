@@ -6,10 +6,10 @@ import ComponentStep3 from "../components/ComponentStep3";
 import ComponentStep4 from "../components/ComponentStep4";
 import ComponentStep5 from "../components/ComponentStep5";
 import ComponentStep6 from "../components/ComponentStep6";
+import ComponentSummary from "../components/ComponentSummary";
 
 function Configurator() {
   const [step, setStep] = useState(1);
-
   const [formData, setFormData] = useState({
     tipoOperazione: "",
     indirizzo: "",
@@ -25,103 +25,84 @@ function Configurator() {
     telefono: "",
   });
 
+  const [showSuccess, setShowSuccess] = useState(false);
+
   const updateField = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleNext = () => {
     if (step < 6) setStep(step + 1);
+    else if (step === 6) setStep(7); // Step riepilogo
   };
 
   const handleBack = () => {
     if (step > 1) setStep(step - 1);
   };
 
-  const handleSubmit = async () => {
-    try {
-      const res = await fetch("/api/richieste", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+ const handleSubmit = async () => {
+  try {
+    const res = await fetch("/api/richieste", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
 
-      console.log("Dati inviati:", formData);
+    console.log("Dati inviati:", formData);
 
-      alert("Richiesta inviata con successo!");
-    } catch (error) {
-      alert("Errore durante l'invio.");
-    }
-  };
+    // Mostra toast di successo
+    setShowSuccess(true);
+
+    // Dopo 3 secondi, nascondi toast e torna alla homepage
+    setTimeout(() => {
+      setShowSuccess(false);
+      window.location.href = "/"; // <- redirect classico
+    }, 3000);
+
+  } catch (error) {
+    console.error("Errore durante l'invio:", error);
+    // opzionale: mostrare un toast di errore
+  }
+};
+
 
   const renderStep = () => {
     switch (step) {
       case 1:
-        return (
-          <ComponentStep1
-            data={formData}
-            updateField={updateField}
-            next={handleNext}
-          />
-        );
+        return <ComponentStep1 data={formData} updateField={updateField} next={handleNext} />;
       case 2:
-        return (
-          <ComponentStep2
-            data={formData}
-            updateField={updateField}
-            next={handleNext}
-            back={handleBack}
-          />
-        );
+        return <ComponentStep2 data={formData} updateField={updateField} next={handleNext} back={handleBack} />;
       case 3:
-        return (
-          <ComponentStep3
-            data={formData}
-            updateField={updateField}
-            next={handleNext}
-            back={handleBack}
-          />
-        );
+        return <ComponentStep3 data={formData} updateField={updateField} next={handleNext} back={handleBack} />;
       case 4:
-        return (
-          <ComponentStep4
-            data={formData}
-            updateField={updateField}
-            next={handleNext}
-            back={handleBack}
-          />
-        );
+        return <ComponentStep4 data={formData} updateField={updateField} next={handleNext} back={handleBack} />;
       case 5:
-        return (
-          <ComponentStep5
-            data={formData}
-            updateField={updateField}
-            next={handleNext}
-            back={handleBack}
-          />
-        );
+        return <ComponentStep5 data={formData} updateField={updateField} next={handleNext} back={handleBack} />;
       case 6:
-        return (
-          <ComponentStep6
-            data={formData}
-            updateField={updateField}
-            back={handleBack}
-            submit={handleSubmit}
-          />
-        );
+        return <ComponentStep6 data={formData} updateField={updateField} back={handleBack} next={handleNext} />; // usa next invece di submit
+      case 7:
+  return (
+    <ComponentSummary
+      data={formData}
+      back={handleBack}
+      submit={handleSubmit}
+      showSuccess={showSuccess}
+    />
+  );
       default:
         return null;
     }
   };
 
   return (
-  <section className="hero">
-    <div className="heroContent">
-      <div className="configurator">
-        <div className="step-wrapper">{renderStep()}</div>
+    <section className="hero">
+      <div className="heroContent">
+        <div className="configurator">
+          <div className="step-wrapper">{renderStep()}</div>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
 }
 
 export default Configurator;

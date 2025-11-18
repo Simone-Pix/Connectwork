@@ -1,6 +1,10 @@
 const choices = ["Subito", "Entro 6 mesi", "Entro 12 mesi", "Non ho fretta"];
 
 function ComponentStep5({ data, updateField, next, back }) {
+  
+  // 🔒 Abilita "Avanti" solo se è stata selezionata una tempistica
+  const isDisabled = !data.tempistica;
+
   return (
     <div className="">
       <div className="progress-container">
@@ -26,7 +30,18 @@ function ComponentStep5({ data, updateField, next, back }) {
 
       <div className="button-group">
         <button className="back-btn" onClick={back}>Indietro</button>
-        <button className="next-btn" onClick={next}>Avanti</button>
+
+        <button
+  onClick={next}
+  disabled={isDisabled}
+  className={`
+    next-btn py-2 px-4 rounded-lg text-white bg-primary hover:bg-primary-dark transition
+    ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+  `}
+>
+  Avanti
+</button>
+
       </div>
     </div>
   );
