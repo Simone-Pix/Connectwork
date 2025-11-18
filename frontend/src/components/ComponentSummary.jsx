@@ -1,7 +1,7 @@
 import SuccessToast from "./SuccessToast";
 
 function ComponentSummary({ data, back, submit, showSuccess }) {
-  // Campi obbligatori per abilitare il bottone
+  // Tutti i campi obbligatori devono essere compilati
   const requiredFields = [
     "tipoOperazione",
     "indirizzo",
@@ -15,7 +15,8 @@ function ComponentSummary({ data, back, submit, showSuccess }) {
     "telefono",
   ];
 
-  const isDisabled = requiredFields.every((field) => data[field]);
+  // Se TUTTI i campi richiesti sono presenti → form valido
+  const isValid = requiredFields.every((field) => data[field]);
 
   return (
     <div className="max-w-3xl mx-auto p-4">
@@ -24,6 +25,7 @@ function ComponentSummary({ data, back, submit, showSuccess }) {
       {/* Card Dati Immobile */}
       <div className="bg-white shadow-xl rounded-2xl p-6 mb-6 hover:shadow-2xl transition">
         <h3 className="text-xl font-semibold text-primary mb-4">Dati immobile</h3>
+
         <div className="grid grid-cols-2 gap-4">
           <span className="text-gray-600">Tipo operazione</span>
           <span className="font-medium">{data.tipoOperazione}</span>
@@ -70,6 +72,7 @@ function ComponentSummary({ data, back, submit, showSuccess }) {
       {/* Card Dati Personali */}
       <div className="bg-white shadow-xl rounded-2xl p-6 mb-6 hover:shadow-2xl transition">
         <h3 className="text-xl font-semibold text-primary mb-4">Dati personali</h3>
+
         <div className="grid grid-cols-2 gap-4">
           <span className="text-gray-600">Nome / Cognome</span>
           <span className="font-medium">{data.nome} {data.cognome}</span>
@@ -84,23 +87,23 @@ function ComponentSummary({ data, back, submit, showSuccess }) {
 
       {/* Pulsanti */}
       <div className="flex justify-between mt-4 gap-4">
-  <button
-    onClick={back}
-    className="bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition"
-  >
-    Indietro
-  </button>
+        <button
+          onClick={back}
+          className="bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition"
+        >
+          Indietro
+        </button>
 
- <button
-  onClick={next}
-  disabled={!isValid} // oppure la variabile di controllo specifica dello step
-  className={`btn-next ${!isValid ? "btn-next-disabled" : "cursor-pointer"}`}
->
-  Avanti
-</button>
-
-</div>
-
+        <button
+          onClick={isValid ? submit : undefined}
+          disabled={!isValid}
+          className={`bg-primary text-white py-2 px-4 rounded-lg transition ${
+            !isValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-primary-dark"
+          }`}
+        >
+          Invia richiesta
+        </button>
+      </div>
 
       {/* Toast */}
       <SuccessToast

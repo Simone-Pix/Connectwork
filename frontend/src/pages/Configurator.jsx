@@ -42,7 +42,7 @@ function Configurator() {
 
  const handleSubmit = async () => {
   try {
-    const res = await fetch("/api/immobili", {
+    const res = await fetch("/api/richieste", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
