@@ -1,8 +1,7 @@
 const choices = ["Subito", "Entro 6 mesi", "Entro 12 mesi", "Non ho fretta"];
 
 function ComponentStep5({ data, updateField, next, back }) {
-  
-  // 🔒 Abilita "Avanti" solo se è stata selezionata una tempistica
+
   const isDisabled = !data.tempistica;
 
   return (

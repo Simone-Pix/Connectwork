@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import logo from "../assets/LogoImmobiliaris.png";
@@ -5,22 +6,23 @@ import logo from "../assets/LogoImmobiliaris.png";
 function Navbar() {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = async () => {
     const res = await logout();
-    if (res.success) {
-      navigate("/");
-    }
+    if (res.success) navigate("/");
   };
 
   return (
     <nav className="navbar">
+      {/* LEFT */}
       <div className="navbar-left">
-        <img src={logo} alt="Logo Immobilaris" className="navbar-logo" />
+        <img src={logo} alt="Logo Immobiliaris" className="navbar-logo" />
         <p className="navbar-title">Immobilaris</p>
       </div>
 
-      <div className="navbar-links">
+      {/* DESKTOP LINKS */}
+      <div className="navbar-links hidden md:flex">
         <Link to="/" className="nav-link">Home</Link>
         <Link to="/cerca" className="nav-link">Acquista</Link>
         <Link to="/" className="nav-link">Affitta</Link>
@@ -28,7 +30,8 @@ function Navbar() {
         <Link to="/" className="nav-link">Chi siamo</Link>
       </div>
 
-      <div className="navbar-button-container flex gap-2">
+      {/* DESKTOP BUTTONS */}
+      <div className="navbar-button-container hidden md:flex gap-2">
         {isAuthenticated ? (
           <>
             <button onClick={handleLogout} className="navbar-button">
@@ -48,6 +51,52 @@ function Navbar() {
           </>
         )}
       </div>
+
+      {/* HAMBURGER ICON (mobile) */}
+      <button
+        className="hamburger md:hidden"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span className={`bar ${isOpen ? "open" : ""}`}></span>
+        <span className={`bar ${isOpen ? "open" : ""}`}></span>
+        <span className={`bar ${isOpen ? "open" : ""}`}></span>
+      </button>
+
+      {/* MOBILE MENU */}
+      {isOpen && (
+        <div className="mobile-menu md:hidden">
+          <Link to="/" className="mobile-link" onClick={() => setIsOpen(false)}>Home</Link>
+          <Link to="/cerca" className="mobile-link" onClick={() => setIsOpen(false)}>Acquista</Link>
+          <Link to="/" className="mobile-link" onClick={() => setIsOpen(false)}>Affitta</Link>
+          <Link to="/valuta" className="mobile-link" onClick={() => setIsOpen(false)}>Vendi</Link>
+          <Link to="/" className="mobile-link" onClick={() => setIsOpen(false)}>Chi siamo</Link>
+
+          <div className="mt-4">
+            {isAuthenticated ? (
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setIsOpen(false);
+                }}
+                className="mobile-button"
+              >
+                Logout
+              </button>
+            ) : (
+              <>
+                <Link to="/login" onClick={() => setIsOpen(false)}>
+                  <button className="mobile-login-btn">Login</button>
+                </Link>
+                <Link to="/signin" onClick={() => setIsOpen(false)}>
+                  <button className="mobile-register-btn">
+                    Registrati
+                  </button>
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

@@ -4,7 +4,7 @@ function ComponentStep1({ data, updateField, next }) {
   };
 
   const isDisabled = !data.tipoOperazione; 
-  // diventa true se non è stato scelto nulla
+
 
   return (
     <div className="">
@@ -15,8 +15,8 @@ function ComponentStep1({ data, updateField, next }) {
         </div>
       </div>
 
-      <h3 className="section-title">Cosa stai cercando?</h3>
-      <p className="section-subtitle">Seleziona il tipo di operazione</p>
+      <h3 className="section-title">Cosa vuoi vendere?</h3>
+
 
       <div className="card-container">
         <div
@@ -41,7 +41,7 @@ function ComponentStep1({ data, updateField, next }) {
       <div className="button-group">
         <button
   onClick={next}
-  disabled={isDisabled} // variabile booleana che dice se il passo è completato
+  disabled={isDisabled} 
   className={`
     next-btn
     py-2 px-4

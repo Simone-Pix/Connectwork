@@ -1,7 +1,7 @@
 import SuccessToast from "./SuccessToast";
 
 function ComponentSummary({ data, back, submit, showSuccess }) {
-  // Tutti i campi obbligatori devono essere compilati
+
   const requiredFields = [
     "tipoOperazione",
     "indirizzo",
@@ -15,7 +15,7 @@ function ComponentSummary({ data, back, submit, showSuccess }) {
     "telefono",
   ];
 
-  // Se TUTTI i campi richiesti sono presenti → form valido
+
   const isValid = requiredFields.every((field) => data[field]);
 
   return (

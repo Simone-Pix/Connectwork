@@ -2,13 +2,12 @@ function ComponentStep2({ data, updateField, next, back }) {
 
   const addressRegex = /^(via|viale|vicolo|piazza|corso|largo)\s+.+\s+\d+[a-zA-Z]?$/i;
 
-  // TRIM dell’indirizzo per evitare problemi con spazi finali o iniziali
   const trimmedAddress = data.indirizzo.trim();
 
   const isAddressValid = addressRegex.test(trimmedAddress);
 
   return (
-    <div className="">
+    <div className="second-wrapper">
       <div className="progress-container">
         <span>Passo 2 di 6</span>
         <div className="progress-bar">
@@ -35,7 +34,7 @@ function ComponentStep2({ data, updateField, next, back }) {
 
        <button
   onClick={next}
-  disabled={!isAddressValid} // disabilita se l'indirizzo non è valido
+  disabled={!isAddressValid} 
   className={`
     next-btn
     py-2 px-4
