@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import { useAuthContext } from "../Contexts/AuthContext";
 import logo from "../assets/LogoImmobiliaris.png";
 
 function Navbar() {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, logout } = useAuthContext();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 

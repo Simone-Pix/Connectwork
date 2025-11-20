@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 function ComponentStep6({ data, updateField, back, next }) {
 
   const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/;
@@ -18,8 +16,8 @@ function ComponentStep6({ data, updateField, back, next }) {
     allFilled && isNameValid && isSurnameValid && isEmailValid && isPhoneValid;
 
   return (
-    <div className="relative">
-      <div className="progress-container mb-6">
+    <div className="wrapper-1-step">
+      <div className="progress-container">
         <span>Passo 6 di 6</span>
         <div className="progress-bar">
           <div className="progress" style={{ width: "100%" }}></div>
@@ -70,7 +68,7 @@ function ComponentStep6({ data, updateField, back, next }) {
         />
       </div>
 
-      <div className="button-group flex mt-6 gap-4">
+      <div className="button-group">
         <button className="back-btn" onClick={back}>Indietro</button>
 
         <button

@@ -5,7 +5,7 @@ function ComponentStep5({ data, updateField, next, back }) {
   const isDisabled = !data.tempistica;
 
   return (
-    <div className="">
+    <div className="wrapper-1-step">
       <div className="progress-container">
         <span>Passo 5 di 6</span>
         <div className="progress-bar">
