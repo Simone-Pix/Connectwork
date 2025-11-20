@@ -1,6 +1,3 @@
-// src/components/PropertyCard.jsx
-import React from 'react';
-
 function formatPrice(num) {
   if (!num && num !== 0) return "";
   return "€ " + Number(num).toLocaleString("it-IT");
