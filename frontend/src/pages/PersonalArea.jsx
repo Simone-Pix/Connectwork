@@ -1,47 +1,130 @@
-import { useAuthContext } from "../Contexts/AuthContext"
+import { useState } from "react";
+import { useAuthContext } from "../contexts/AuthContext";
 
-function PersonalArea() {
-  const { user } = useAuthContext();
+export default function PersonalArea() {
+  const { user, isAuthenticated, loading } = useAuthContext();
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [emailValue, setEmailValue] = useState(user?.email || "");
+
+  if (loading) {
+    return (
+      <div className="hero">
+        <div className="heroContent text-white">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || !user) {
+    return (
+      <div className="hero">
+        <div className="heroContent text-white text-center">
+          <h1 className="text-3xl font-bold mb-4">Not Logged In</h1>
+          <p className="text-gray-300">Please login to access your personal area.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Rotta update per email non ancora settata placeholder per mail
+  const handleSaveEmail = async () => {
+    try {
+      console.log("Email salvata →", emailValue);
+
+      // qui dovrai inserire la fetch reale:
+      // await fetch("/api/users/update-email", { ... })
+
+      setIsEditing(false);
+    } catch (e) {
+      console.error("Errore salvataggio email:", e);
+    }
+  };
 
   return (
-    <main className="min-h-screen bg-gray-100 py-10">
-      <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-8 border border-gray-200">
+    <main className="hero">
+      <div className="heroContent">
+        <div className="configurator text-black">
+          <h2 className="section-title">Personal Area</h2>
+          <p className="section-subtitle">Manage your profile information</p>
 
-        <h1 className="text-3xl font-bold text-blue-800 mb-6">
-          Area personale
-        </h1>
+          <div className="wrapper-1-step">
 
-        {!user ? (
-          <p className="text-gray-600">Nessun utente loggato.</p>
-        ) : (
-          <div className="space-y-4">
-
-            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <p className="text-lg">
-                <span className="font-semibold text-blue-900">ID: </span>
-                {user.id}
-              </p>
+            {/* --- ID --- */}
+            <div className="mb-6">
+              <label className="block text-orange-500 mb-2 font-semibold">
+                User ID
+              </label>
+              <input
+                type="text"
+                value={user.id}
+                disabled
+                className="input-step2 bg-gray-200 cursor-not-allowed"
+              />
             </div>
 
-            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <p className="text-lg">
-                <span className="font-semibold text-blue-900">Email: </span>
-                {user.email}
-              </p>
+            {/* --- ROLE --- */}
+            <div className="mb-6">
+              <label className="block text-orange-500 mb-2 font-semibold">
+                Role
+              </label>
+              <input
+                type="text"
+                value={user.role}
+                disabled
+                className="input-step2 bg-gray-200 cursor-not-allowed"
+              />
             </div>
 
-            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <p className="text-lg">
-                <span className="font-semibold text-blue-900">Ruolo: </span>
-                {user.role}
-              </p>
+            {/* --- EMAIL (modificabile) --- */}
+            <div className="mb-6">
+              <label className="block text-orange-500 mb-2 font-semibold">
+                Email
+              </label>
+
+              <div className="flex items-center gap-4">
+                <input
+                  type="email"
+                  value={emailValue}
+                  onChange={(e) => setEmailValue(e.target.value)}
+                  disabled={!isEditing}
+                  className={`
+                    input-step2 
+                    ${isEditing ? "" : "bg-gray-200 cursor-not-allowed"}
+                  `}
+                />
+
+                {!isEditing ? (
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="px-4 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition"
+                  >
+                    Change
+                  </button>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={handleSaveEmail}
+                      className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => {
+                        setEmailValue(user.email);
+                        setIsEditing(false);
+                      }}
+                      className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
 
           </div>
-        )}
+        </div>
       </div>
     </main>
   );
 }
-
-export default PersonalArea;
