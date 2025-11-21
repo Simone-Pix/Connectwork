@@ -1,18 +1,15 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
-// Crea il context
 const AuthContext = createContext();
 
-// AuthProvider wrapper
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // --- Check session status from backend ---
   const checkAuth = async () => {
     try {
-      const response = await fetch("/api/auth/check", { // qui la rotta del backend
+      const response = await fetch("/api/auth/check", { // qui la rotta del backend per il check della sessione da implementare
         method: "POST",
         credentials: "include"
       });
@@ -93,7 +90,7 @@ export const AuthProvider = ({ children }) => {
     return { success: true };
   };
 
-  // --- Check session on mount ---
+  // --- Check session ---
   useEffect(() => {
     checkAuth();
   }, []);

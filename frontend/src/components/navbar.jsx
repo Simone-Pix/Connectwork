@@ -28,6 +28,11 @@ function Navbar() {
         <Link to="/" className="nav-link">Affitta</Link>
         <Link to="/valuta" className="nav-link">Vendi</Link>
         <Link to="/" className="nav-link">Chi siamo</Link>
+        {isAuthenticated && (
+          <Link to="/personal-area" className="nav-link">
+            Area personale
+          </Link>
+        )}
       </div>
 
       {/* DESKTOP BUTTONS */}
@@ -70,7 +75,15 @@ function Navbar() {
           <Link to="/" className="mobile-link" onClick={() => setIsOpen(false)}>Affitta</Link>
           <Link to="/valuta" className="mobile-link" onClick={() => setIsOpen(false)}>Vendi</Link>
           <Link to="/" className="mobile-link" onClick={() => setIsOpen(false)}>Chi siamo</Link>
-
+          {isAuthenticated && (
+            <Link
+              to="/personal-area"
+              className="mobile-link"
+              onClick={() => setIsOpen(false)}
+            >
+              Area personale
+            </Link>
+          )}
           <div className="mt-4">
             {isAuthenticated ? (
               <button
