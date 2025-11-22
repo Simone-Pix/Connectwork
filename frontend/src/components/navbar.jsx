@@ -86,15 +86,15 @@ function Navbar() {
           )}
           <div className="mt-4">
             {isAuthenticated ? (
-              <button
-                onClick={() => {
-                  handleLogout();
-                  setIsOpen(false);
-                }}
-                className="mobile-button"
-              >
-                Logout
-              </button>
+              <div className="mobile-link">
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setIsOpen(false);
+                  }}>
+                  Logout
+                </button>
+              </div>
             ) : (
               <>
                 <Link to="/login" onClick={() => setIsOpen(false)}>

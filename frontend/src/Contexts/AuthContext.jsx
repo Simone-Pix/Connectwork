@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
         setUser({
           id: data.userId,
           email: data.email,
-          role: data.role
+          role: data.ruolo
         });
       } else {
         setIsAuthenticated(false);
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
         setUser({
           id: data.userId,
           email: data.email,
-          role: data.role
+          role: data.ruolo
         });
         return { success: true, message: data.message };
       }
