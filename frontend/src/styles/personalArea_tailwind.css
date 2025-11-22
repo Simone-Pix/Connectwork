@@ -1,0 +1,58 @@
+@layer components {
+  .hero-personal {
+    @apply flex items-center justify-center min-h-screen p-6;
+    background: transparent;
+  }
+
+  .heroContent-personal {
+    @apply w-full max-w-5xl;
+  }
+
+  .configurator-personal {
+    @apply relative rounded-2xl p-8 shadow-2xl;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 6px 28px rgba(2,6,23,0.6);
+  }
+
+  .wrapper-1-step-personal {
+    @apply flex-1 flex flex-col;
+    min-height: 420px;
+  }
+
+  .section-title-personal {
+    @apply text-2xl font-semibold text-center mt-4 mb-3;
+    color: #ff8a3d;
+  }
+
+  .section-subtitle-personal {
+    @apply text-sm text-center mb-8 text-gray-400;
+  }
+
+  .input-step2-personal {
+    @apply w-full bg-transparent border border-gray-700 rounded-lg px-4 py-3 placeholder-gray-400/70 text-black focus:outline-none focus:ring-2;
+    --tw-ring-color: rgb(255, 138, 61);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+  }
+
+  .btn-change-personal {
+    @apply px-4 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition;
+  }
+
+  .btn-save-personal {
+    @apply px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition;
+  }
+
+  .btn-cancel-personal {
+    @apply px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition;
+  }
+
+  @media (min-width: 768px) {
+    .configurator-personal {
+      @apply p-10;
+    }
+
+    .section-title-personal {
+      @apply text-3xl;
+    }
+  }
+}

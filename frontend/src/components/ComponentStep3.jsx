@@ -7,7 +7,7 @@ function ComponentStep3({ data, updateField, next, back }) {
     (data.tipoOperazione === "appartamento" && data.piano === "");
 
   return (
-    <div className="">
+    <div className="wrapper-1-step">
       <div className="progress-container">
         <span>Passo 3 di 6</span>
         <div className="progress-bar">
@@ -69,7 +69,7 @@ function ComponentStep3({ data, updateField, next, back }) {
         )}
       </div>
 
-      <div className="button-group flex mt-6 gap-4">
+      <div className="button-group">
         <button
           className="back-btn "
           onClick={back}

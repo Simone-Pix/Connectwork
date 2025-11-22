@@ -1,0 +1,47 @@
+.pc-card {
+  @apply bg-white rounded-xl overflow-hidden border border-blue-900/10 shadow-sm hover:shadow-md transition-shadow duration-200;
+}
+
+.pc-image-wrapper {
+  @apply relative h-40;
+}
+
+.pc-image {
+  @apply w-full h-full object-cover;
+}
+
+.pc-badge-container {
+  @apply absolute top-2.5 right-2.5 flex flex-wrap gap-1.5;
+}
+
+.pc-badge {
+  @apply bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md;
+}
+
+.pc-body {
+  @apply p-4;
+}
+
+.pc-title {
+  @apply text-gray-900 font-bold text-base leading-tight mb-2;
+}
+
+.pc-location-price {
+  @apply flex justify-between items-center text-sm mb-2;
+}
+
+.pc-location {
+  @apply flex items-center text-gray-600;
+}
+
+.pc-location-icon {
+  @apply mr-1;
+}
+
+.pc-price {
+  @apply text-blue-600 font-bold;
+}
+
+.pc-features {
+  @apply flex gap-3 text-gray-600 text-sm;
+}

@@ -7,7 +7,7 @@ function ComponentStep2({ data, updateField, next, back }) {
   const isAddressValid = addressRegex.test(trimmedAddress);
 
   return (
-    <div className="second-wrapper">
+    <div className="wrapper-1-step">
       <div className="progress-container">
         <span>Passo 2 di 6</span>
         <div className="progress-bar">
@@ -20,11 +20,10 @@ function ComponentStep2({ data, updateField, next, back }) {
       <input
         type="text"
         placeholder="Es: Via Roma 12"
-        className={`input-step2 border p-3 rounded-lg ${
-          trimmedAddress && !isAddressValid
+        className={`input-step2 border p-3 rounded-lg ${trimmedAddress && !isAddressValid
             ? "border-red-500"
             : "border-gray-300"
-        }`}
+          }`}
         value={data.indirizzo}
         onChange={(e) => updateField("indirizzo", e.target.value)}
       />
@@ -32,10 +31,10 @@ function ComponentStep2({ data, updateField, next, back }) {
       <div className="button-group">
         <button className="back-btn" onClick={back}>Indietro</button>
 
-       <button
-  onClick={next}
-  disabled={!isAddressValid} 
-  className={`
+        <button
+          onClick={next}
+          disabled={!isAddressValid}
+          className={`
     next-btn
     py-2 px-4
     rounded-lg
@@ -45,12 +44,13 @@ function ComponentStep2({ data, updateField, next, back }) {
     transition
     ${!isAddressValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
   `}
->
-  Avanti
-</button>
+        >
+          Avanti
+        </button>
 
       </div>
     </div>
+
   );
 }
 

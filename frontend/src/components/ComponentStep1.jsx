@@ -7,7 +7,7 @@ function ComponentStep1({ data, updateField, next }) {
 
 
   return (
-    <div className="">
+    <div className="wrapper-1-step">
       <div className="progress-container">
         <span>Passo 1 di 6</span>
         <div className="progress-bar">
