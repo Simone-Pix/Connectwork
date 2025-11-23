@@ -46,6 +46,24 @@
     @apply px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition;
   }
 
+    .configurator-personal-requests {
+    @apply relative rounded-2xl p-8 shadow-2xl mt-10;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 6px 28px rgba(2,6,23,0.6);
+  }
+
+  .lista-richieste-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6;
+  }
+
+  .richiesta-card {
+    @apply bg-white/70 rounded-xl p-5 shadow-md border border-gray-300;
+  }
+
+  .richiesta-title {
+    @apply text-lg font-semibold text-orange-500 mb-2;
+  }
+
   @media (min-width: 768px) {
     .configurator-personal {
       @apply p-10;

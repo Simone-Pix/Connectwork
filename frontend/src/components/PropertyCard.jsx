@@ -1,9 +1,13 @@
+import { useNavigate } from "react-router-dom";
+
 function formatPrice(num) {
   if (!num && num !== 0) return "";
   return "€ " + Number(num).toLocaleString("it-IT");
 }
 
 function PropertyCard({ property, images }) {
+  const navigate = useNavigate();
+
   const isExclusive = Boolean(property.disponibileEsclusiva);
   const isNew = property.annoCostruzione && Number(property.annoCostruzione) >= 2020;
 
@@ -12,8 +16,13 @@ function PropertyCard({ property, images }) {
   );
   const image = imageObj?.url || "/placeholder-property.jpg";
 
+
+function openDetail() {
+  navigate(`/immobile/${property.id}`);
+}
+
   return (
-    <article className="pc-card">
+    <article className="pc-card" onClick={openDetail} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter") openDetail(); }}>
       <div className="pc-image-wrapper">
         <img
           src={image}
