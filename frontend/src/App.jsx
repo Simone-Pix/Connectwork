@@ -10,6 +10,7 @@ const Configurator = lazy(() => import('./pages/Configurator'));
 const Login = lazy(() => import('./pages/Login'));
 const Signin = lazy(() => import('./pages/Signin'));
 const PersonalArea = lazy(() => import('./pages/PersonalArea'));
+const PropertyDetail = lazy(() => import('./pages/PropertyDetail'));
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/cerca" element={<Search />} />
+          <Route path="/immobile/:id" element={<PropertyDetail />} />
           <Route path="/valuta" element={<Configurator />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signin" element={<Signin />} />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuthContext } from "../contexts/AuthContext";
 
 export default function PersonalArea() {
@@ -6,6 +6,28 @@ export default function PersonalArea() {
 
   const [isEditing, setIsEditing] = useState(false);
   const [emailValue, setEmailValue] = useState(user?.email || "");
+  //per la parte di fetch delle richieste
+  const [richieste, setRichieste] = useState([]);
+  const [loadingRichieste, setLoadingRichieste] = useState(true);
+
+  // Fetch richieste dell’utente loggato
+  useEffect(() => {
+    if (!user?.email) return;
+
+    const fetchRichieste = async () => {
+      try {
+        const res = await fetch(`/api/richieste/email/${user.email}`);
+        const data = await res.json();
+        setRichieste(data);
+      } catch (e) {
+        console.error("Errore nel caricamento delle richieste:", e);
+      } finally {
+        setLoadingRichieste(false);
+      }
+    };
+
+    fetchRichieste();
+  }, [user]);
 
   if (loading) {
     return (
@@ -30,7 +52,7 @@ export default function PersonalArea() {
   // Rotta update per email non ancora settata placeholder per mail
   const handleSaveEmail = async () => {
     try {
-      console.log("Email salvata →", emailValue);
+      console.log("Email salvata:", emailValue);
 
       // qui dovrai inserire la fetch reale:
       // await fetch("/api/users/update-email", { ... })
@@ -125,6 +147,37 @@ export default function PersonalArea() {
 
           </div>
         </div>
+
+        {/* ===== CARD LISTA RICHIESTE ===== */}
+        <div className="configurator-personal-requests text-black">
+          <h2 className="section-title-personal">Le tue Valutazioni:</h2>
+          <p className="section-subtitle-personal">Tutte le richieste di valutazione associate alla tua email</p>
+
+          {loadingRichieste ? (
+            <p className="text-center text-gray-300">Loading configurations...</p>
+          ) : richieste.length === 0 ? (
+            <p className="text-center text-gray-300">No configurations found.</p>
+          ) : (
+            <div className="lista-richieste-grid">
+              {richieste.map((r) => (
+                <div key={r.id} className="richiesta-card">
+                  <p className="richiesta-title">{r.tipoOperazione}</p>
+                  <p><strong>Nome:</strong> {r.nome} {r.cognome}</p>
+                  <p><strong>Indirizzo:</strong> {r.indirizzo}</p>
+                  <p><strong>Stanze:</strong> {r.stanze}</p>
+                  <p><strong>Bagni:</strong> {r.bagni}</p>
+                  <p><strong>Superfice:</strong> {r.superficie} m²</p>
+                  <p><strong>Telefono:</strong> {r.telefono}</p>
+                  <p><strong>Tempistiche:</strong> {r.tempistica}</p>
+                  <p className="text-xs mt-2 text-gray-500">
+                    {new Date(r.dataCreazione).toLocaleString()}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
       </div>
     </main>
   );

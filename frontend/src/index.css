@@ -2,6 +2,7 @@
 @import "./styles/navbar_tailwind.css";
 @import "./styles/search_tailwind.css";
 @import "./styles/personalArea_tailwind.css";
+@import "./styles/propertyDetails_tailwind.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
