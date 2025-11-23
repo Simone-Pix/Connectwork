@@ -36,16 +36,19 @@ public class AuthController {
         if (session != null && session.getAttribute("userId") != null) {
             Long userId = (Long) session.getAttribute("userId");
             String email = (String) session.getAttribute("userEmail");
-            
+            String ruolo = (String) session.getAttribute("userRole");
+
             response.put("authenticated", true);
             response.put("userId", userId);
             response.put("email", email);
+            response.put("role", ruolo);  
             return ResponseEntity.ok(response);
         }
-        
+
         response.put("authenticated", false);
         return ResponseEntity.ok(response);
     }
+
 
     /**
      * POST /api/auth/session-login
