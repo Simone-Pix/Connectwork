@@ -35,13 +35,15 @@ VALUES
 -- 4️⃣ TABELLA IMMAGINI
 INSERT INTO immagini (immobile_id, url, tipo)
 VALUES
-(1, 'https://picsum.photos/id/1011/800/600', 'foto'),
-(1, 'https://picsum.photos/id/1012/800/600', 'planimetria'),
-(2, 'https://picsum.photos/id/1013/800/600', 'foto'),
-(2, 'https://picsum.photos/id/1014/800/600', 'foto'),
-(3, 'https://picsum.photos/id/1015/800/600', 'foto'),
-(4, 'https://picsum.photos/id/1016/800/600', 'foto'),
-(4, 'https://picsum.photos/id/1017/800/600', 'planimetria');
+(1, 'http://localhost:8080/immagini/Immobile1Foto1.jpg', 'foto'),
+(1, 'http://localhost:8080/immagini/Immobile1Foto2.jpg', 'planimetria'),
+(2, 'http://localhost:8080/immagini/Immobile2Foto1.jpg', 'foto'),
+(2, 'http://localhost:8080/immagini/Immobile2Foto2.jpg', 'foto'),
+(3, 'http://localhost:8080/immagini/Immobile3Foto1.jpg', 'foto'),
+(4, 'http://localhost:8080/immagini/Immobile4Foto1.jpg', 'foto'),
+(4, 'http://localhost:8080/immagini/Immobile4Foto2.jpg', 'planimetria');
+
+
 
 -- ============================================================
 -- 5️⃣ TABELLA VALUTAZIONI
