@@ -4,6 +4,7 @@
 @import "./styles/personalArea_tailwind.css";
 @import "./styles/propertyDetails_tailwind.css";
 @import "./styles/notFound_tailwind.css";
+@import "./styles/backoffice_tailwind.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

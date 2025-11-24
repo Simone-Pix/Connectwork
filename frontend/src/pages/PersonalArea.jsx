@@ -177,7 +177,6 @@ export default function PersonalArea() {
             </div>
           )}
         </div>
-
       </div>
     </main>
   );
