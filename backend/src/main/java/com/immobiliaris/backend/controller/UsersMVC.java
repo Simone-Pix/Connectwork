@@ -8,22 +8,22 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import org.springframework.ui.Model;
-import org.springframework.stereotype.Controller;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
  * Controller REST per la gestione degli utenti.
  * Espone operazioni CRUD su `Users`.
  */
-@Controller
+@RestController
 @RequestMapping("/api/users")
 public class UsersMVC {
 
@@ -40,7 +40,6 @@ public class UsersMVC {
      * Lista tutti gli utenti.
      */
     @GetMapping
-    @ResponseBody
     public List<Users> listAll() {
         return usersRepository.findAll();
     }
@@ -55,31 +54,38 @@ public class UsersMVC {
     }
     //SIGN IN
      @GetMapping("/signin")
-    public String showSignin() {
-        return "signin";  // Thymeleaf cerca templates/signin.html
+    public ResponseEntity<Map<String, String>> showSignin() {
+        Map<String, String> response = new HashMap<>();
+        response.put("page", "signin");
+        response.put("message", "Pagina di registrazione");
+        return ResponseEntity.ok(response);
     }
     // processa il form di registrazione
     @PostMapping("/signin")
-    public String doSignin(@RequestParam String nome,
+    public ResponseEntity<Map<String, Object>> doSignin(@RequestParam String nome,
                            @RequestParam String cognome,
                            @RequestParam String email,
                            @RequestParam String password,
-                           @RequestParam String telefono,
-                           Model model) {
+                           @RequestParam String telefono) {
+        Map<String, Object> response = new HashMap<>();
+        
         // normalize and validate email + password
         String emailNorm = email == null ? "" : email.trim().toLowerCase();
         if (emailNorm.isBlank()) {
-            model.addAttribute("error", "Email è richiesta");
-            return "signin";
+            response.put("success", false);
+            response.put("error", "Email è richiesta");
+            return ResponseEntity.badRequest().body(response);
         }
         if (password == null || password.length() < 8) {
-            model.addAttribute("error", "La password deve essere lunga almeno 8 caratteri");
-            return "signin";
+            response.put("success", false);
+            response.put("error", "La password deve essere lunga almeno 8 caratteri");
+            return ResponseEntity.badRequest().body(response);
         }
         // controlla se email già esiste
         if (usersRepository.findByEmail(emailNorm).isPresent()) {
-            model.addAttribute("error", "Email già in uso");
-            return "signin";
+            response.put("success", false);
+            response.put("error", "Email già in uso");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
 
         // crea nuovo utente
@@ -96,32 +102,42 @@ public class UsersMVC {
         // registrazione parte come non verificata
         u.setVerificato(false);
         usersRepository.save(u);
-        return "redirect:/login"; // dopo registrazione vai al login
+        
+        response.put("success", true);
+        response.put("message", "Registrazione completata con successo");
+        response.put("redirect", "/login");
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
    // mostra form login
     @GetMapping("/login") //ogni volta che sul link scrivi login e la richiesta è di tipo get esegui il meotodo sotto
-    public String showLogin() {
-        return "login";
+    public ResponseEntity<Map<String, String>> showLogin() {
+        Map<String, String> response = new HashMap<>();
+        response.put("page", "login");
+        response.put("message", "Pagina di login");
+        return ResponseEntity.ok(response);
     }
 
     // processa il login form
     @PostMapping("/login")
-    public String doLogin(@RequestParam String email,
+    public ResponseEntity<Map<String, Object>> doLogin(@RequestParam String email,
                         @RequestParam String password,
-                        HttpSession session,
-                        Model model) {
+                        HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+        
         String emailNorm = email == null ? "" : email.trim().toLowerCase();
         Optional<Users> opt = usersRepository.findByEmail(emailNorm);
         if (opt.isEmpty()) {
-            model.addAttribute("error", "Email o password errati");
-            return "login";
+            response.put("success", false);
+            response.put("error", "Email o password errati");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
         Users u = opt.get();
         // verifica usando l'hash memorizzato
         if (!com.immobiliaris.backend.util.PasswordUtils.verifyPassword(password, u.getPassword())) {
-            model.addAttribute("error", "Email o password errati");
-            return "login";
+            response.put("success", false);
+            response.put("error", "Email o password errati");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
         // Nota: permettiamo il login anche se `verificato == false`.
         // Le azioni sensibili saranno protette tramite ruoli/authorities (es. ROLE_ADMIN).
@@ -134,23 +150,36 @@ public class UsersMVC {
         SimpleGrantedAuthority auth = new SimpleGrantedAuthority("ROLE_" + (u.getRuolo() == null ? "UTENTE" : u.getRuolo().toUpperCase()));
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(u.getEmail(), null, List.of(auth));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return "redirect:/home"; // o dashboard
+        
+        response.put("success", true);
+        response.put("message", "Login effettuato con successo");
+        response.put("userId", u.getId());
+        response.put("email", u.getEmail());
+        response.put("role", u.getRuolo());
+        response.put("redirect", "/home");
+        return ResponseEntity.ok(response);
     }
 
     // logout
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
+    public ResponseEntity<Map<String, String>> logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/";
+        Map<String, String> response = new HashMap<>();
+        response.put("success", "true");
+        response.put("message", "Logout effettuato con successo");
+        response.put("redirect", "/");
+        return ResponseEntity.ok(response);
     }
 
 
 
      @GetMapping("/backoffice/users")
     @PreAuthorize("hasRole('ADMIN')")
-    public String backofficeUsers(Model m) {
-        m.addAttribute("users", usersRepository.findAll());
-        return "backofficeUsers";
+    public ResponseEntity<Map<String, Object>> backofficeUsers() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("users", usersRepository.findAll());
+        response.put("message", "Lista utenti per amministrazione");
+        return ResponseEntity.ok(response);
     }
 
     /**
@@ -213,21 +242,56 @@ public class UsersMVC {
     }
 
 
-        // Ritorna l'utente loggato
-    @GetMapping("api/current")
-    @ResponseBody
-    public ResponseEntity<?> currentUser(HttpSession session) {
 
+        /**
+     * Aggiorna la email dell'utente loggato.
+     * Usato dal frontend: PUT /api/users/update-email
+     */
+    @PutMapping("/update-email")
+    public ResponseEntity<?> updateEmail(
+            @RequestParam String newEmail,
+            HttpSession session) {
+
+        // Verifica sessione
         Long userId = (Long) session.getAttribute("userId");
-
         if (userId == null) {
-            // Nessun utente loggato
-            return ResponseEntity.ok().body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("success", false, "message", "Not logged in"));
         }
 
-        return usersRepository.findById(userId)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.ok().body(null));
+        // Validazione
+        if (newEmail == null || newEmail.trim().isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("success", false, "message", "Email cannot be empty"));
+        }
+
+        // Verifica se esiste già
+        if (usersRepository.findByEmail(newEmail).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("success", false, "message", "Email already in use"));
+        }
+
+        // Aggiornamento nel DB
+        Users user = usersRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("success", false, "message", "User not found"));
+        }
+
+        user.setEmail(newEmail);
+        usersRepository.save(user);
+
+        // Aggiornare la sessione
+        session.setAttribute("userEmail", newEmail);
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Email aggiornata",
+                "email", newEmail
+        ));
     }
+
+
+
 
 }

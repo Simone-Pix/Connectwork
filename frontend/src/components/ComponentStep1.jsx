@@ -3,8 +3,11 @@ function ComponentStep1({ data, updateField, next }) {
     updateField("tipoOperazione", value);
   };
 
+  const isDisabled = !data.tipoOperazione; 
+
+
   return (
-    <div className="">
+    <div className="wrapper-1-step">
       <div className="progress-container">
         <span>Passo 1 di 6</span>
         <div className="progress-bar">
@@ -12,8 +15,8 @@ function ComponentStep1({ data, updateField, next }) {
         </div>
       </div>
 
-      <h3 className="section-title">Cosa stai cercando?</h3>
-      <p className="section-subtitle">Seleziona il tipo di operazione</p>
+      <h3 className="section-title">Cosa vuoi vendere?</h3>
+
 
       <div className="card-container">
         <div
@@ -36,9 +39,22 @@ function ComponentStep1({ data, updateField, next }) {
       </div>
 
       <div className="button-group">
-        <button className="next-btn" onClick={next}>
-          Avanti
-        </button>
+        <button
+  onClick={next}
+  disabled={isDisabled} 
+  className={`
+    next-btn
+    py-2 px-4
+    rounded-lg
+    text-white
+    bg-primary
+    hover:bg-primary-dark
+    transition
+    ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+  `}
+>
+  Avanti
+</button>
       </div>
     </div>
   );

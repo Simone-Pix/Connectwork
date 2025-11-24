@@ -10,7 +10,7 @@ function ComponentStep4({ data, updateField, next, back }) {
   };
 
   return (
-    <div className="">
+    <div className="wrapper-1-step">
       <div className="progress-container">
         <span>Passo 4 di 6</span>
         <div className="progress-bar">
@@ -34,7 +34,13 @@ function ComponentStep4({ data, updateField, next, back }) {
 
       <div className="button-group">
         <button className="back-btn" onClick={back}>Indietro</button>
-        <button className="next-btn" onClick={next}>Avanti</button>
+        <button
+  onClick={next}
+  className="next-btn py-2 px-4 rounded-lg text-white bg-primary hover:bg-primary-dark transition cursor-pointer"
+>
+  Avanti
+</button>
+
       </div>
     </div>
   );

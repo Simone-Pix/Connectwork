@@ -1,6 +1,13 @@
 function ComponentStep3({ data, updateField, next, back }) {
+
+  const isDisabled =
+    data.superficie === "" ||
+    data.stanze === "" ||
+    data.bagni === "" ||
+    (data.tipoOperazione === "appartamento" && data.piano === "");
+
   return (
-    <div className="">
+    <div className="wrapper-1-step">
       <div className="progress-container">
         <span>Passo 3 di 6</span>
         <div className="progress-bar">
@@ -10,26 +17,41 @@ function ComponentStep3({ data, updateField, next, back }) {
 
       <h3 className="section-title">Dati dell'immobile</h3>
 
-      <div className="form-grid-step3">
+      <div className="form-grid-step3 grid gap-4">
         <input
           type="number"
           placeholder="Superficie in m²"
           value={data.superficie}
-          onChange={(e) => updateField("superficie", e.target.value)}
+          min={0}
+          onChange={(e) => {
+            const val = Math.max(0, Number(e.target.value));
+            updateField("superficie", val);
+          }}
+          className="p-3 border rounded-lg border-gray-300"
         />
 
         <input
           type="number"
           placeholder="Numero stanze"
           value={data.stanze}
-          onChange={(e) => updateField("stanze", e.target.value)}
+          min={0}
+          onChange={(e) => {
+            const val = Math.max(0, Number(e.target.value));
+            updateField("stanze", val);
+          }}
+          className="p-3 border rounded-lg border-gray-300"
         />
 
         <input
           type="number"
           placeholder="Numero bagni"
           value={data.bagni}
-          onChange={(e) => updateField("bagni", e.target.value)}
+          min={0}
+          onChange={(e) => {
+            const val = Math.max(0, Number(e.target.value));
+            updateField("bagni", val);
+          }}
+          className="p-3 border rounded-lg border-gray-300"
         />
 
         {data.tipoOperazione === "appartamento" && (
@@ -37,14 +59,33 @@ function ComponentStep3({ data, updateField, next, back }) {
             type="number"
             placeholder="Piano"
             value={data.piano}
-            onChange={(e) => updateField("piano", e.target.value)}
+            min={0}
+            onChange={(e) => {
+              const val = Math.max(0, Number(e.target.value));
+              updateField("piano", val);
+            }}
+            className="p-3 border rounded-lg border-gray-300"
           />
         )}
       </div>
 
       <div className="button-group">
-        <button className="back-btn" onClick={back}>Indietro</button>
-        <button className="next-btn" onClick={next}>Avanti</button>
+        <button
+          className="back-btn "
+          onClick={back}
+        >
+          Indietro
+        </button>
+
+        <button
+          className={`next-btn py-2 px-4 rounded-lg text-white bg-primary hover:bg-primary-dark transition ${
+            isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+          }`}
+          onClick={isDisabled ? undefined : next}
+          disabled={isDisabled}
+        >
+          Avanti
+        </button>
       </div>
     </div>
   );

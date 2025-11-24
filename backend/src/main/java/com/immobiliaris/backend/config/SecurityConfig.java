@@ -1,111 +1,132 @@
 package com.immobiliaris.backend.config;
 
-import com.immobiliaris.backend.repo.UsersRepository;
-import com.immobiliaris.backend.service.CustomUserDetailsService;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-/**
- * Configurazione principale di Spring Security per l'app.
- *
- * Spiegazione (italiano):
- * - Definisce un `PasswordEncoder` che usa `SpringPasswordEncoder`.
- *   Questo permette a Spring Security di verificare gli hash già
- *   memorizzati che sono generati tramite `PasswordUtils` (PBKDF2).
- * - Registra un `UserDetailsService` personalizzato che carica gli
- *   utenti dal DB e converte il campo `ruolo` in authority `ROLE_*`.
- * - Configura il `SecurityFilterChain` con queste regole principali:
- *   - permette l'accesso anonimo a login/signin, logout e risorse statiche
- *   - richiede autenticazione per tutte le altre richieste
- *   - usa il form login con endpoint `/api/users/login`
- *   - logout su `/api/users/logout` che reindirizza alla home
- *
- * Nota operativa:
- * - Per semplicità CSRF è disabilitato: in produzione riabilitarlo e
- *   adattare i form Thymeleaf per inviare il token CSRF.
- */
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    /**
-     * Bean PasswordEncoder.
-     * Restituisce l'adapter che richiama `PasswordUtils`.
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new SpringPasswordEncoder();
     }
 
     /**
-     * Bean UserDetailsService.
-     * Usa il repository per costruire il servizio che recupera gli utenti.
+     * FILTRO: Se la sessione contiene userEmail, allora l'utente è autenticato.
      */
-    @Bean
-    public UserDetailsService userDetailsService(UsersRepository usersRepository) {
-        return new CustomUserDetailsService(usersRepository);
+    public static class SessionAuthFilter extends OncePerRequestFilter {
+        @Override
+        protected void doFilterInternal(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        FilterChain filterChain)
+                throws ServletException, IOException {
+
+            HttpSession session = request.getSession(false);
+
+            if (session != null && session.getAttribute("userEmail") != null) {
+
+                String email = (String) session.getAttribute("userEmail");
+
+                Authentication auth = new UsernamePasswordAuthenticationToken(
+                        email,
+                        null,
+                        Collections.emptyList()
+                );
+
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+
+            filterChain.doFilter(request, response);
+        }
     }
 
-    /**
-     * Configura le regole HTTP di sicurezza e il form login.
-     * - `permitAll()` su pagine di login/registrazione e risorse statiche
-     * - tutte le altre richieste richiedono autenticazione
-     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // per semplicità disabilitiamo CSRF: in produzione abilitarlo e usare token
+
         http.csrf(csrf -> csrf.disable());
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+
+        http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
+
+        // Aggiungiamo il filtro prima di UsernamePasswordAuthenticationFilter
+        http.addFilterBefore(new SessionAuthFilter(),
+                org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/users/signin", "/api/users/login", "/api/users/logout", "/signin", "/login", "/css/**", "/js/**", "/images/**", "/", "/home").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/immobili/**", "/api/immagini/**").permitAll()
-                .anyRequest().authenticated()
+                // Pagine pubbliche
+                .requestMatchers("/", "/home", "/login", "/signin",
+                        "/css/**", "/js/**", "/images/**").permitAll()
+
+                // API pubbliche
+                .requestMatchers(HttpMethod.GET, "/api/immobili/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/immagini/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/richieste/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/richieste/**").permitAll()
+
+                // Auth custom → lasciamo gestire al tuo AuthController
+                .requestMatchers("/api/auth/**").permitAll()
+
+                // H2 console
+                .requestMatchers("/h2-console/**").permitAll()
+
+                // Rotte private
+                .requestMatchers("/personal-area/**").authenticated()
+                .requestMatchers("/auth/me").authenticated()
+
+                // Backoffice e operazioni sensibili
+                .requestMatchers("/api/users/backoffice/**").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/immobili/**").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/immobili/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/api/immobili/**").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/richieste/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/api/richieste/**").authenticated()
+
+                .anyRequest().permitAll()
         );
 
-        // Configura il form login: pagina di login e URL di processing
-        http.formLogin(form -> form
-            .loginPage("/api/users/login")
-            .loginProcessingUrl("/api/users/login")
-            // usiamo il parametro 'email' come username per i nostri form
-            .usernameParameter("email")
-            .passwordParameter("password")
-            // dopo il login reindirizza sempre a /home
-            .defaultSuccessUrl("/home", true)
-            .permitAll()
-        );
-
-        // Configura logout semplice
-        http.logout(logout -> logout
-                .logoutUrl("/api/users/logout")
-                .logoutSuccessUrl("/")
-                .permitAll()
-        );
+        // Disabilitiamo login form di Spring
+        http.formLogin(form -> form.disable());
 
         return http.build();
     }
 
-    /**
-     * AuthenticationManager che usa un DaoAuthenticationProvider con il
-     * nostro UserDetailsService e PasswordEncoder.
-     *
-     * Questo bean è utile se vuoi effettuare autenticazioni programmatiche
-     * tramite Spring (es. login automatico). Il provider delega la verifica
-     * della password al `PasswordEncoder` definito sopra.
-     */
     @Bean
-    public AuthenticationManager authenticationManager(UserDetailsService uds, PasswordEncoder encoder) {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(uds);
-        provider.setPasswordEncoder(encoder);
-        return new ProviderManager(provider);
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOriginPatterns(Arrays.asList(
+                "http://localhost:5173",
+                "http://localhost:3000"
+        ));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
     }
 }

@@ -1,0 +1,36 @@
+@layer components {
+
+  .error-page {
+    @apply min-h-screen flex items-center justify-center p-6;
+  }
+
+  .error-content {
+    @apply bg-white/30 backdrop-blur-xl rounded-2xl p-10 max-w-lg text-center;
+    box-shadow: 0 8px 28px rgba(2,6,23,0.45);
+    border: 1px solid rgba(30,58,138,0.15);
+  }
+
+  .error-code {
+    @apply text-6xl font-extrabold mb-2;
+    background: linear-gradient(90deg,#ff7a18,#ff9124);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .error-title {
+    @apply text-2xl font-semibold text-gray-900 mb-3;
+  }
+
+  .error-message {
+    @apply text-gray-600 text-sm leading-relaxed mb-6;
+  }
+
+  @media (min-width: 768px) {
+    .error-content {
+      @apply p-12;
+    }
+    .error-code {
+      @apply text-7xl;
+    }
+  }
+}

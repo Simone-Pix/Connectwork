@@ -1,40 +1,81 @@
-/* navbar.css */
 @layer components {
   .navbar {
-    @apply fixed top-0 w-full h-16 bg-blue-900 flex items-center justify-between px-10 z-50;
+    @apply fixed top-0 w-full h-16 bg-blue-900 flex items-center justify-between px-6 z-50 shadow-lg;
   }
 
   .navbar-left {
-    @apply flex items-center gap-2.5;
+    @apply flex items-center gap-3;
   }
 
   .navbar-logo {
-    @apply w-7 h-7;
+    @apply w-8 h-8;
   }
 
   .navbar-title {
-    @apply text-white text-lg;
+    @apply text-white text-xl font-semibold;
   }
 
-  .navbar-links {
-    @apply flex gap-8;
+  .navbar-links .nav-link {
+    @apply text-white text-sm px-3 py-2 hover:text-blue-300 transition;
   }
-
-  .nav-link {
-    @apply text-gray-300 hover:text-white text-sm transition-colors duration-200;
-  }
-
-  /* blocco rimosso */
-  /* .navbar-button-container { @apply; } */
 
   .navbar-button {
-    @apply bg-orange-500 text-white px-5 py-2 rounded-md font-semibold hover:bg-orange-600 transition-colors duration-200;
+    @apply bg-orange-500 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-600 transition;
   }
+
   .navbar-signin {
-    @apply bg-gray-500 hover:bg-gray-600;
+    @apply bg-white text-blue-900 hover:bg-gray-100;
   }
-  
+
+  /* HAMBURGER */
+  .hamburger {
+    @apply flex flex-col gap-1.5 cursor-pointer;
+  }
+
+  .hamburger .bar {
+    @apply w-6 h-0.5 bg-white transition-all duration-300;
+  }
+
+  .hamburger .bar.open:nth-child(1) {
+    @apply rotate-45 translate-y-2;
+  }
+
+  .hamburger .bar.open:nth-child(2) {
+    @apply opacity-0;
+  }
+
+  .hamburger .bar.open:nth-child(3) {
+    @apply -rotate-45 -translate-y-2;
+  }
+
+  /* MOBILE MENU */
+  .mobile-menu {
+    @apply absolute top-16 left-0 w-full bg-blue-900 flex flex-col py-4 shadow-lg animate-slideDown;
+  }
+
+  .mobile-link {
+    @apply text-white px-6 py-3 text-lg border-b border-blue-800 hover:bg-blue-800 transition;
+  }
+
+  .mobile-login-btn {
+    @apply w-full text-left bg-orange-500 text-white px-6 py-3 font-medium hover:bg-orange-600 transition mb-2;
+  }
+  .mobile-register-btn {
+    @apply w-full text-left bg-white text-blue-900 px-6 py-3 font-medium hover:bg-gray-100 transition mb-2;
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slideDown {
+    animation: slideDown 0.25s ease-out forwards;
+  }
 }
-
-
-

@@ -1,58 +1,69 @@
+import { useNavigate } from "react-router-dom";
+
 function formatPrice(num) {
   if (!num && num !== 0) return "";
   return "€ " + Number(num).toLocaleString("it-IT");
 }
 
 function PropertyCard({ property, images }) {
+  const navigate = useNavigate();
+
   const isExclusive = Boolean(property.disponibileEsclusiva);
   const isNew = property.annoCostruzione && Number(property.annoCostruzione) >= 2020;
-const imageObj = images?.find(img => img.immobile.id === property.id && img.tipo === "foto");
-const image = imageObj?.url || "/placeholder-property.jpg";
+
+  const imageObj = images?.find(
+    img => img.immobile.id === property.id && img.tipo === "foto"
+  );
+  const image = imageObj?.url || "/placeholder-property.jpg";
+
+
+function openDetail() {
+  navigate(`/immobile/${property.id}`);
+}
 
   return (
-    <article className="bg-white rounded-xl overflow-hidden border border-blue-900/10 shadow-sm hover:shadow-md transition-shadow duration-200">
-      {/* Immagine con badge */}
-      <div className="relative h-40">
+    <article className="pc-card" onClick={openDetail} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter") openDetail(); }}>
+      <div className="pc-image-wrapper">
         <img
           src={image}
           alt={property.titolo || "Property image"}
-          className="w-full h-full object-cover"
+          className="pc-image"
         />
-        <div className="absolute top-2.5 right-2.5 flex flex-wrap gap-1.5">
+
+        <div className="pc-badge-container">
           {isNew && (
-            <span className="bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
+            <span className="pc-badge">
               Nuovo
             </span>
           )}
           {isExclusive && (
-            <span className="bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
+            <span className="pc-badge">
               Esclusiva
             </span>
           )}
         </div>
       </div>
 
-      {/* Corpo della card */}
-      <div className="p-4">
-        <h3 className="text-gray-900 font-bold text-base leading-tight mb-2">
+      <div className="pc-body">
+        <h3 className="pc-title">
           {property.titolo || property.descrizione || "Unnamed property"}
         </h3>
 
-        {/* Metadati: località + prezzo */}
-        <div className="flex justify-between items-center text-sm mb-2">
-          <div className="flex items-center text-gray-600">
-            <span className="mr-1">📍</span>
+        <div className="pc-location-price">
+          <div className="pc-location">
+            <span className="pc-location-icon">📍</span>
             <span>
-              {property.citta || ""}{property.provincia ? `, ${property.provincia}` : ""}
+              {property.citta || ""}
+              {property.provincia ? `, ${property.provincia}` : ""}
             </span>
           </div>
-          <div className="text-blue-600 font-bold">
+
+          <div className="pc-price">
             {formatPrice(property.prezzoRichiesto)}
           </div>
         </div>
 
-        {/* Caratteristiche: camere, bagni, superficie */}
-        <div className="flex gap-3 text-gray-600 text-sm">
+        <div className="pc-features">
           <span>🛏 {property.numLocali ?? "-"}</span>
           <span>🛁 {property.numBagni ?? "-"}</span>
           <span>📐 {property.superficie ? `${property.superficie} m²` : "-"}</span>
