@@ -36,16 +36,19 @@ public class AuthController {
         if (session != null && session.getAttribute("userId") != null) {
             Long userId = (Long) session.getAttribute("userId");
             String email = (String) session.getAttribute("userEmail");
-            
+            String ruolo = (String) session.getAttribute("userRole");
+
             response.put("authenticated", true);
             response.put("userId", userId);
             response.put("email", email);
+            response.put("role", ruolo);  
             return ResponseEntity.ok(response);
         }
-        
+
         response.put("authenticated", false);
         return ResponseEntity.ok(response);
     }
+
 
     /**
      * POST /api/auth/session-login
@@ -200,4 +203,48 @@ public class AuthController {
         
         return ResponseEntity.ok(response);
     }
+
+
+
+
+    /**
+ * GET /api/auth/me
+ * Restituisce i dati completi dell’utente loggato.
+ * Accessibile solo se la sessione è valida.
+ */
+@GetMapping("/me")
+public ResponseEntity<?> getCurrentUser(HttpServletRequest request) {
+    HttpSession session = request.getSession(false);
+
+    // Nessuna sessione → non autenticato
+    if (session == null || session.getAttribute("userId") == null) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of(
+                        "authenticated", false,
+                        "message", "Utente non autenticato"
+                ));
+    }
+
+    // Recupero i dati dalla sessione
+    Long userId = (Long) session.getAttribute("userId");
+    String email = (String) session.getAttribute("userEmail");
+
+    // Recupero l'utente dal DB
+    return usersRepository.findById(userId)
+            .map(user -> ResponseEntity.ok(Map.of(
+                    "authenticated", true,
+                    "id", user.getId(),
+                    "nome", user.getNome(),
+                    "cognome", user.getCognome(),
+                    "email", user.getEmail(),
+                    "telefono", user.getTelefono(),
+                    "ruolo", user.getRuolo()
+            )))
+            .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of(
+                            "authenticated", false,
+                            "message", "Utente non trovato"
+                    )));
+}
+
 }

@@ -242,21 +242,56 @@ public class UsersMVC {
     }
 
 
-        // Ritorna l'utente loggato
-    @GetMapping("api/current")
-    @ResponseBody
-    public ResponseEntity<?> currentUser(HttpSession session) {
 
+        /**
+     * Aggiorna la email dell'utente loggato.
+     * Usato dal frontend: PUT /api/users/update-email
+     */
+    @PutMapping("/update-email")
+    public ResponseEntity<?> updateEmail(
+            @RequestParam String newEmail,
+            HttpSession session) {
+
+        // Verifica sessione
         Long userId = (Long) session.getAttribute("userId");
-
         if (userId == null) {
-            // Nessun utente loggato
-            return ResponseEntity.ok().body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("success", false, "message", "Not logged in"));
         }
 
-        return usersRepository.findById(userId)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.ok().body(null));
+        // Validazione
+        if (newEmail == null || newEmail.trim().isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("success", false, "message", "Email cannot be empty"));
+        }
+
+        // Verifica se esiste già
+        if (usersRepository.findByEmail(newEmail).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("success", false, "message", "Email already in use"));
+        }
+
+        // Aggiornamento nel DB
+        Users user = usersRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("success", false, "message", "User not found"));
+        }
+
+        user.setEmail(newEmail);
+        usersRepository.save(user);
+
+        // Aggiornare la sessione
+        session.setAttribute("userEmail", newEmail);
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Email aggiornata",
+                "email", newEmail
+        ));
     }
+
+
+
 
 }
