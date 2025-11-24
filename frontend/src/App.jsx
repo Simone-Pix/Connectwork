@@ -12,6 +12,7 @@ const Login = lazy(() => import('./pages/Login'));
 const Signin = lazy(() => import('./pages/Signin'));
 const PersonalArea = lazy(() => import('./pages/PersonalArea'));
 const PropertyDetail = lazy(() => import('./pages/PropertyDetail'));
+const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 
 function App() {
 
@@ -29,10 +30,8 @@ function App() {
           <Route path="/valuta" element={<Configurator />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signin" element={<Signin />} />
-          <Route
-           path="/area-personale" element={isAuthenticated ? <PersonalArea /> : <Navigate to="/login" />} //Versione per quando ci sarà rotta check
-            // path="/personal-area" element={<PersonalArea />}
-          />
+          <Route path="/area-personale" element={isAuthenticated ? <PersonalArea /> : <Navigate to="/login" />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
       <Footer />

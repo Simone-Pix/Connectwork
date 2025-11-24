@@ -3,6 +3,7 @@
 @import "./styles/search_tailwind.css";
 @import "./styles/personalArea_tailwind.css";
 @import "./styles/propertyDetails_tailwind.css";
+@import "./styles/notFound_tailwind.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,7 +11,8 @@
 
 /* Stili globali aggiuntivi */
 body {
-  @apply bg-gray-100 text-gray-900 font-sans;
+  /* @apply bg-gray-100 text-gray-900 font-sans; */
+  background: linear-gradient(to bottom, #1f242f, #13497e); /* SFONDO DI PROVA */
 }
 
 @layer base {
