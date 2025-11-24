@@ -28,10 +28,11 @@ function Navbar() {
         <Link to="/" className="nav-link">Affitta</Link>
         <Link to="/valuta" className="nav-link">Vendi</Link>
         <Link to="/" className="nav-link">Chi siamo</Link>
-        {isAuthenticated && (
-          <Link to="/personal-area" className="nav-link">
-            Area personale
-          </Link>
+        {isAuthenticated && user?.role === "admin" && (
+          <Link to="/backoffice" className="nav-link">Backoffice</Link>
+        )}
+        {isAuthenticated && user?.role !== "admin" && (
+          <Link to="/personal-area" className="nav-link">Area personale</Link>
         )}
       </div>
 
@@ -75,12 +76,13 @@ function Navbar() {
           <Link to="/" className="mobile-link" onClick={() => setIsOpen(false)}>Affitta</Link>
           <Link to="/valuta" className="mobile-link" onClick={() => setIsOpen(false)}>Vendi</Link>
           <Link to="/" className="mobile-link" onClick={() => setIsOpen(false)}>Chi siamo</Link>
-          {isAuthenticated && (
-            <Link
-              to="/personal-area"
-              className="mobile-link"
-              onClick={() => setIsOpen(false)}
-            >
+          {isAuthenticated && user?.role === "admin" && (
+            <Link to="/backoffice" className="mobile-link" onClick={() => setIsOpen(false)}>
+              Backoffice
+            </Link>
+          )}
+          {isAuthenticated && user?.role !== "admin" && (
+            <Link to="/personal-area" className="mobile-link" onClick={() => setIsOpen(false)}>
               Area personale
             </Link>
           )}

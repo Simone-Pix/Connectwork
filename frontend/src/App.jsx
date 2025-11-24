@@ -13,9 +13,10 @@ const Signin = lazy(() => import("./pages/Signin"));
 const PersonalArea = lazy(() => import("./pages/PersonalArea"));
 const PropertyDetail = lazy(() => import("./pages/PropertyDetail"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Backoffice = lazy(() => import("./pages/Backoffice"))
 
 function App() {
-  const { isAuthenticated, loading } = useAuthContext();
+  const { user, isAuthenticated, loading } = useAuthContext();
 
   return (
     <BrowserRouter>
@@ -32,7 +33,10 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signin" element={<Signin />} />
             <Route path="/personal-area" element={isAuthenticated ? (<PersonalArea />) : (<Navigate to="/login" />)} />
+            <Route path="/backoffice" element={!isAuthenticated ? <Navigate to="/login" /> : user?.role !== "admin" ? <Navigate to="/" /> : <Backoffice />} />
+            
             {/* 404 */}
+
             <Route path="*" element={<NotFound />} />
 
           </Route>
