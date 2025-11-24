@@ -33,7 +33,7 @@ function Configurator() {
 
   const handleNext = () => {
     if (step < 6) setStep(step + 1);
-    else if (step === 6) setStep(7); // Step riepilogo
+    else if (step === 6) setStep(7); 
   };
 
   const handleBack = () => {
@@ -50,18 +50,17 @@ function Configurator() {
 
     console.log("Dati inviati:", formData);
 
-    // Mostra toast di successo
+    //toast di successo
     setShowSuccess(true);
 
-    // Dopo 3 secondi, nascondi toast e torna alla homepage
+    //dopo 3 secondi, nascondi toast e torna alla homepage
     setTimeout(() => {
       setShowSuccess(false);
-      window.location.href = "/"; // <- redirect classico
+      window.location.href = "/"; 
     }, 3000);
 
   } catch (error) {
     console.error("Errore durante l'invio:", error);
-    // opzionale: mostrare un toast di errore
   }
 };
 
@@ -79,7 +78,7 @@ function Configurator() {
       case 5:
         return <ComponentStep5 data={formData} updateField={updateField} next={handleNext} back={handleBack} />;
       case 6:
-        return <ComponentStep6 data={formData} updateField={updateField} back={handleBack} next={handleNext} />; // usa next invece di submit
+        return <ComponentStep6 data={formData} updateField={updateField} back={handleBack} next={handleNext} />;
       case 7:
   return (
     <ComponentSummary

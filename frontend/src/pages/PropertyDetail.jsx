@@ -35,7 +35,7 @@ export default function PropertyDetail() {
 
   if (loading) {
     return (
-      <div className="bg-gray-100 pt-28 pb-10 min-h-screen">
+      <div className="pt-28 pb-10 min-h-screen">
         <div className="max-w-7xl mx-auto px-4">
           <div className="bg-white rounded-xl p-10 text-center text-gray-600 shadow-sm">
             Caricamento immobile...
@@ -47,7 +47,7 @@ export default function PropertyDetail() {
 
   if (!property) {
     return (
-      <div className="bg-gray-100 pt-28 pb-10 min-h-screen">
+      <div className="pt-28 pb-10 min-h-screen">
         <div className="max-w-7xl mx-auto px-4">
           <div className="bg-white rounded-xl p-10 text-center text-gray-600 shadow-sm">
             Impossibile trovare l'immobile.
@@ -66,7 +66,7 @@ export default function PropertyDetail() {
   const hasGarage = property.boxAuto ?? null;
 
   return (
-    <main className="bg-gray-100 pt-28 pb-10 min-h-screen">
+    <main className="pt-28 pb-10 min-h-screen">
       <div className="max-w-7xl mx-auto px-4">
 
         {/* HERO: immagine principale + piccole immagini a destra */}

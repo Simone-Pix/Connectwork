@@ -78,7 +78,7 @@ useEffect(() => {
   }
 
   return (
-    <div className="bg-gray-100 pt-28 pb-10 min-h-screen"> 
+    <div className="pt-28 pb-10 min-h-screen"> 
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-7">
           {/* Sidebar filtri */}

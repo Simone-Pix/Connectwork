@@ -1,7 +1,7 @@
 @layer components {
 
   .error-page {
-    @apply min-h-screen flex items-center justify-center p-6 bg-gray-100;
+    @apply min-h-screen flex items-center justify-center p-6;
   }
 
   .error-content {

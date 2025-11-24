@@ -1,7 +1,7 @@
 @layer components {
   .hero {
     @apply flex items-center justify-center min-h-screen p-6;
-    background: transparent;
+
   }
 
   .heroContent {
@@ -10,7 +10,7 @@
 
   .configurator {
     @apply relative rounded-2xl p-8 shadow-2xl;
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255);
     box-shadow: 0 6px 28px rgba(2,6,23,0.6);
   }
 
