@@ -4,6 +4,8 @@ import com.immobiliaris.backend.model.Immobili;
 import com.immobiliaris.backend.model.Valutazioni;
 import com.immobiliaris.backend.repo.ImmobiliRepository;
 import com.immobiliaris.backend.repo.ValutazioniRepository;
+import com.immobiliaris.backend.service.ValutazioniServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,9 @@ public class ValutazioniMVC {
 
     private final ValutazioniRepository valutazioniRepository;
     private final ImmobiliRepository immobiliRepository;
+    
+    @Autowired
+    private ValutazioniServiceImpl valutazioniService;
 
     public ValutazioniMVC(ValutazioniRepository valutazioniRepository, ImmobiliRepository immobiliRepository) {
         this.valutazioniRepository = valutazioniRepository;
@@ -94,6 +99,47 @@ public class ValutazioniMVC {
         if (!valutazioniRepository.existsById(id)) return ResponseEntity.notFound().build();
         valutazioniRepository.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * POST /api/valutazioni/genera-automatica/{immobileId}
+     * Genera una valutazione automatica per un immobile basandosi sul CAP e sui modificatori.
+     * 
+     * @param immobileId ID dell'immobile da valutare
+     * @return Valutazione generata
+     */
+    @PostMapping("/genera-automatica/{immobileId}")
+    public ResponseEntity<?> generaValutazioneAutomatica(@PathVariable Long immobileId) {
+        try {
+            Valutazioni valutazione = valutazioniService.generaValutazioneAutomatica(immobileId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(valutazione);
+        } catch (RuntimeException e) {
+            // Immobile non trovato o CAP non mappato
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponse(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse("Errore durante la generazione della valutazione"));
+        }
+    }
+
+    /**
+     * Classe di supporto per le risposte di errore
+     */
+    private static class ErrorResponse {
+        private String message;
+
+        public ErrorResponse(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
     }
 
 }

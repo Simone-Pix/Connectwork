@@ -78,3 +78,58 @@ VALUES
 INSERT INTO richieste (nome, cognome, email, telefono, indirizzo, tipo_operazione, tempistica, piano, stanze, bagni, superficie, optional_info)
 VALUES
 ('utente', 'user', 'user@its.net', 'tgfw', 'daf', 'appartamento', 'Subito', 4, 4, 4, 4.00, 'Balcone');
+
+
+-- Dati per la tabella zone_prezzi
+-- Prezzi medi al mq per le zone del Piemonte
+
+-- TORINO - CAP da 10121 a 10156
+INSERT INTO zone_prezzi (cap, citta, zona_nome, prezzo_mq_medio) VALUES
+('10121', 'Torino', 'Centro - Crocetta', 3500.00),
+('10122', 'Torino', 'Centro - Quadrilatero Romano', 4200.00),
+('10123', 'Torino', 'Centro - Via Roma / Piazza San Carlo', 4500.00),
+('10124', 'Torino', 'Centro - Vanchiglia', 3200.00),
+('10125', 'Torino', 'Centro - San Salvario', 2900.00),
+('10126', 'Torino', 'Cit Turin - Borgo San Paolo', 2600.00),
+('10127', 'Torino', 'Cenisia - San Paolo', 2400.00),
+('10128', 'Torino', 'Campidoglio - Parella', 2700.00),
+('10129', 'Torino', 'Pozzo Strada - Parella Nord', 2500.00),
+('10130', 'Torino', 'Madonna di Campagna', 2200.00),
+('10131', 'Torino', 'Vallette - Lucento', 2000.00),
+('10132', 'Torino', 'Madonna di Campagna Nord', 2100.00),
+('10133', 'Torino', 'Borgo Vittoria', 2300.00),
+('10134', 'Torino', 'Barriera di Milano', 1900.00),
+('10135', 'Torino', 'Regio Parco - Barca', 2000.00),
+('10136', 'Torino', 'Regio Parco Nord', 2100.00),
+('10137', 'Torino', 'Borgo Rossini - Vanchiglietta', 2800.00),
+('10138', 'Torino', 'Sassi - Madonna del Pilone', 2600.00),
+('10139', 'Torino', 'Borgo Po - Crimea', 3000.00),
+('10140', 'Torino', 'San Salvario Sud', 2700.00),
+('10141', 'Torino', 'Mirafiori Nord - Santa Rita', 2200.00),
+('10142', 'Torino', 'Mirafiori Sud', 2000.00),
+('10143', 'Torino', 'Lingotto - Italia 61', 2400.00),
+('10144', 'Torino', 'Nizza Millefonti', 2500.00),
+('10145', 'Torino', 'Cavoretto - Villa della Regina', 3200.00),
+('10146', 'Torino', 'Borgo Po Sud', 2900.00),
+('10147', 'Torino', 'Precollina - Pautasso', 2700.00),
+('10148', 'Torino', 'Moncalieri Borgo San Pietro', 2500.00),
+('10149', 'Torino', 'Filadelfia - Lingotto Sud', 2300.00),
+('10150', 'Torino', 'Mirafiori Sud Est', 2100.00),
+('10151', 'Torino', 'Cenisia Nord', 2400.00),
+('10152', 'Torino', 'Parella Ovest', 2600.00),
+('10153', 'Torino', 'Pozzo Strada Nord', 2500.00),
+('10154', 'Torino', 'Madonna di Campagna Ovest', 2200.00),
+('10155', 'Torino', 'Lucento Ovest', 2000.00),
+('10156', 'Torino', 'Vallette Nord', 1900.00);
+
+-- CUNEO - CAP unico per tutta la città
+INSERT INTO zone_prezzi (cap, citta, zona_nome, prezzo_mq_medio) VALUES
+('12100', 'Cuneo', 'Centro e periferia', 2200.00);
+
+-- ALESSANDRIA - CAP unico per tutta la città
+INSERT INTO zone_prezzi (cap, citta, zona_nome, prezzo_mq_medio) VALUES
+('15121', 'Alessandria', 'Centro e periferia', 1800.00);
+
+-- ASTI - CAP unico per tutta la città
+INSERT INTO zone_prezzi (cap, citta, zona_nome, prezzo_mq_medio) VALUES
+('14100', 'Asti', 'Centro e periferia', 1900.00);

@@ -84,6 +84,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/immagini/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/richieste/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/richieste/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/zone-prezzi/**").permitAll()
 
                 // Auth custom → lasciamo gestire al tuo AuthController
                 .requestMatchers("/api/auth/**").permitAll()
@@ -100,6 +101,12 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/immobili/**").authenticated()
                 .requestMatchers(HttpMethod.PUT, "/api/immobili/**").authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/api/immobili/**").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/valutazioni/**").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/valutazioni/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/api/valutazioni/**").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/zone-prezzi/**").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/zone-prezzi/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/api/zone-prezzi/**").authenticated()
                 .requestMatchers(HttpMethod.PUT, "/api/richieste/**").authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/api/richieste/**").authenticated()
 

@@ -54,6 +54,28 @@ public class Richieste {
     @Column(name = "optional_info", length = 1000)
     private String optionalInfo;
 
+    // Campi per valutazione automatica
+    @Column(length = 10)
+    private String cap;
+
+    @Column(length = 100)
+    private String citta;
+
+    @Column(length = 50)
+    private String provincia;
+
+    @Column(name = "tipo_immobile", length = 50)
+    private String tipoImmobile;
+
+    @Column(name = "anno_costruzione")
+    private Integer annoCostruzione;
+
+    @Column(name = "stato_conservazione", length = 50)
+    private String statoConservazione;
+
+    @Column(name = "classe_energetica", length = 2)
+    private String classeEnergetica;
+
     @CreationTimestamp
     @Column(name = "data_creazione", updatable = false)
     private LocalDateTime dataCreazione;
@@ -191,6 +213,62 @@ public class Richieste {
 
     public void setDataCreazione(LocalDateTime dataCreazione) {
         this.dataCreazione = dataCreazione;
+    }
+
+    public String getCap() {
+        return cap;
+    }
+
+    public void setCap(String cap) {
+        this.cap = cap;
+    }
+
+    public String getCitta() {
+        return citta;
+    }
+
+    public void setCitta(String citta) {
+        this.citta = citta;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+
+    public String getTipoImmobile() {
+        return tipoImmobile;
+    }
+
+    public void setTipoImmobile(String tipoImmobile) {
+        this.tipoImmobile = tipoImmobile;
+    }
+
+    public Integer getAnnoCostruzione() {
+        return annoCostruzione;
+    }
+
+    public void setAnnoCostruzione(Integer annoCostruzione) {
+        this.annoCostruzione = annoCostruzione;
+    }
+
+    public String getStatoConservazione() {
+        return statoConservazione;
+    }
+
+    public void setStatoConservazione(String statoConservazione) {
+        this.statoConservazione = statoConservazione;
+    }
+
+    public String getClasseEnergetica() {
+        return classeEnergetica;
+    }
+
+    public void setClasseEnergetica(String classeEnergetica) {
+        this.classeEnergetica = classeEnergetica;
     }
 
     @Override
