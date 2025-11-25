@@ -108,6 +108,7 @@ CREATE TABLE IF NOT EXISTS richieste (
     bagni INT NOT NULL,
     superficie DECIMAL(10,2) NOT NULL,
     optional_info VARCHAR(1000) NULL,
-    data_creazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    data_creazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+    valutata BOOLEAN DEFAULT FALSE
 );
 
