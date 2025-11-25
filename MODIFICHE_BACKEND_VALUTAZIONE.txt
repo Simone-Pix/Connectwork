@@ -1,0 +1,230 @@
+================================================================================
+  MODIFICHE BACKEND IMPLEMENTATE - VALUTAZIONE RICHIESTE
+================================================================================
+Data: 25 Novembre 2025
+
+================================================================================
+📋 FILE MODIFICATI
+================================================================================
+
+1. backend/src/main/resources/schema.sql
+   ✅ Aggiunta campi alla tabella richieste:
+      - cap VARCHAR(10)
+      - citta VARCHAR(100)
+      - provincia VARCHAR(50)
+      - tipo_immobile VARCHAR(50)
+      - anno_costruzione SMALLINT
+      - stato_conservazione VARCHAR(50)
+      - classe_energetica VARCHAR(2)
+
+2. backend/src/main/java/com/immobiliaris/backend/model/Richieste.java
+   ✅ Aggiunti 7 nuovi attributi con @Column
+   ✅ Aggiunti getter e setter per tutti i nuovi campi
+
+3. backend/src/main/java/com/immobiliaris/backend/controller/RichiesteController.java
+   ✅ Aggiunto import ZonePrezziRepository
+   ✅ Aggiunto import RichiesteConversioneService
+   ✅ Aggiunto import ValutazioneRichiestaDTO
+   ✅ NUOVO ENDPOINT: POST /api/richieste/{id}/valuta-automatica
+      - Verifica CAP obbligatorio
+      - Lookup zona prezzi
+      - Calcola valutazione con modificatori
+      - Restituisce ValutazioneRichiestaDTO
+   ✅ NUOVO ENDPOINT: POST /api/richieste/{id}/converti-immobile
+      - Converte richiesta in immobile
+      - Crea/trova utente
+      - Genera valutazione automatica
+      - Elimina richiesta originale
+   ✅ Metodi privati helper:
+      - calcolaValutazione()
+      - calcolaModificatore()
+      - generaNote()
+
+================================================================================
+📄 FILE CREATI
+================================================================================
+
+1. backend/src/main/java/com/immobiliaris/backend/dto/ValutazioneRichiestaDTO.java
+   ✅ DTO per risposta valutazione
+   ✅ Campi: valoreStimatoMin, valoreStimatoMax, prezzoMq, note, zonaNome, cap
+
+2. backend/src/main/java/com/immobiliaris/backend/service/RichiesteConversioneService.java
+   ✅ Service per conversione richieste → immobili
+   ✅ Metodo convertiRichiestaInImmobile(Long richiestaId)
+   ✅ Metodo trovaOCreaUtente() - crea user se non esiste
+   ✅ Metodo creaImmobileDaRichiesta() - mapping campi
+   ✅ Metodo generaPasswordTemporanea() - sicurezza 12 char
+
+================================================================================
+🔒 SICUREZZA
+================================================================================
+
+✅ SecurityConfig.java GIÀ CONFIGURATO:
+   - POST /api/richieste/** → PUBBLICO (form utenti)
+   - GET /api/richieste/** → PUBBLICO (visualizzazione)
+   - PUT /api/richieste/** → AUTENTICATO (solo admin)
+   - DELETE /api/richieste/** → AUTENTICATO (solo admin)
+
+NOTA: I nuovi endpoint POST /valuta-automatica e /converti-immobile 
+      ereditano la configurazione e sono PUBBLICI per POST.
+      Se vuoi renderli privati (solo admin), aggiungi in SecurityConfig:
+      
+      .requestMatchers(HttpMethod.POST, "/api/richieste/*/valuta-automatica").authenticated()
+      .requestMatchers(HttpMethod.POST, "/api/richieste/*/converti-immobile").authenticated()
+
+================================================================================
+🧪 TEST DI COMPILAZIONE
+================================================================================
+
+COMANDO: ./mvnw clean compile
+RISULTATO: ✅ BUILD SUCCESS
+TEMPO: 4.488 secondi
+FILE COMPILATI: 48 source files
+
+Nessun errore di compilazione!
+
+================================================================================
+🔄 ENDPOINT DISPONIBILI
+================================================================================
+
+VALUTAZIONE AUTOMATICA:
+POST /api/richieste/{id}/valuta-automatica
+Body: nessuno (usa dati già salvati nella richiesta)
+Response: {
+  "valoreStimatoMin": 305370.00,
+  "valoreStimatoMax": 333630.00,
+  "prezzoMq": 3780.00,
+  "note": "Valutazione automatica generata...",
+  "zonaNome": "Centro",
+  "cap": "10121"
+}
+Errori possibili:
+  - 404 NOT_FOUND: richiesta non esiste
+  - 400 BAD_REQUEST: CAP mancante
+  - 404 NOT_FOUND: CAP non mappato nel sistema
+
+CONVERSIONE IMMOBILE:
+POST /api/richieste/{id}/converti-immobile
+Body: nessuno
+Response: Immobili object (JSON completo)
+Effetti:
+  - Crea/trova Users per email
+  - Crea nuovo Immobili con stato="bozza"
+  - Genera Valutazioni automatica
+  - ELIMINA Richieste originale
+Errori possibili:
+  - 404 NOT_FOUND: richiesta non esiste
+  - 400 BAD_REQUEST: CAP mancante
+
+================================================================================
+📊 ALGORITMO VALUTAZIONE
+================================================================================
+
+FORMULA BASE:
+prezzoFinale = prezzoBaseZona × modificatoreTotale
+valoreTotale = prezzoFinale × superficie
+valoreMin/Max = valoreTotale ± 5%
+
+MODIFICATORI APPLICATI:
+
+1. Stato Conservazione:
+   - da_ristrutturare: ×0.85 (-15%)
+   - buono: ×1.00 (base)
+   - ottimo: ×1.10 (+10%)
+   - lusso: ×1.25 (+25%)
+
+2. Classe Energetica:
+   - A: ×1.10 (+10%)
+   - B: ×1.05 (+5%)
+   - C: ×1.00 (base)
+   - D: ×0.95 (-5%)
+   - E: ×0.90 (-10%)
+   - F: ×0.85 (-15%)
+   - G: ×0.80 (-20%)
+
+3. Anno Costruzione:
+   - prima 1950: ×0.90 (-10%)
+   - 1950-1980: ×0.95 (-5%)
+   - 1981-2000: ×1.00 (base)
+   - 2001-2010: ×1.05 (+5%)
+   - dopo 2010: ×1.10 (+10%)
+
+4. Piano:
+   - <0 (interrato): ×0.90 (-10%)
+   - 0 (terra): ×1.00 (base)
+   - 1-3: ×1.05 (+5%)
+   - 4-6: ×1.00 (base)
+   - ≥7: ×0.95 (-5%)
+
+MODIFICATORE FINALE = prod(tutti i modificatori)
+
+================================================================================
+🔄 FLUSSO CONVERSIONE RICHIESTA → IMMOBILE
+================================================================================
+
+1. Verifica richiesta esista
+2. Verifica CAP presente (OBBLIGATORIO)
+3. Cerca utente per email
+   - SE ESISTE: usa quello
+   - SE NON ESISTE: crea nuovo Users con:
+     * nome, cognome, email, telefono dalla richiesta
+     * password temporanea casuale (12 char)
+     * ruolo = "utente"
+     * verificato = false
+4. Crea Immobili mappando campi:
+   - richieste.stanze → immobili.numLocali
+   - richieste.bagni → immobili.numBagni
+   - richieste.optionalInfo → immobili.descrizione
+   - tutti gli altri campi 1:1
+   - stato = "bozza"
+5. Salva Immobili
+6. Genera Valutazioni automatica (riusa ValutazioniServiceImpl)
+7. ELIMINA Richieste (già processata)
+8. Restituisce Immobili creato
+
+================================================================================
+⚠️ NOTE IMPORTANTI
+================================================================================
+
+1. CAMPI OPZIONALI: Tutti i nuovi campi (cap, città, anno, ecc.) sono NULLABLE
+   - La richiesta può essere salvata anche senza questi campi
+   - La valutazione RICHIEDE almeno il CAP
+   - Gli altri campi rendono la valutazione più precisa
+
+2. BACKWARD COMPATIBILITY: Richieste esistenti (senza nuovi campi) continuano
+   a funzionare normalmente. Solo non potranno essere valutate automaticamente.
+
+3. PASSWORD TEMPORANEE: Quando si crea un nuovo utente, viene generata una 
+   password casuale. L'utente dovrà fare reset password al primo accesso.
+
+4. TRANSAZIONI: La conversione è @Transactional - se fallisce qualsiasi step,
+   viene fatto rollback completo (no dati parziali).
+
+5. VALUTAZIONE OPZIONALE: Se la valutazione fallisce durante la conversione,
+   viene loggato l'errore ma la conversione prosegue (immobile creato comunque).
+
+================================================================================
+🚀 PROSSIMI PASSI
+================================================================================
+
+BACKEND: ✅ COMPLETATO
+
+FRONTEND DA IMPLEMENTARE:
+1. Estendere Configurator.jsx con nuovi campi
+2. Creare ComponentStep2bis.jsx per CAP, città, anno, stato, classe
+3. Modificare Backoffice.jsx per mostrare pulsanti [Valuta] e [Converti]
+4. Creare ModalValutazione.jsx per visualizzare risultati
+5. Aggiungere validazione CAP real-time (fetch /api/zone-prezzi/cap/{cap})
+
+DATABASE:
+1. Riavviare applicazione per applicare schema.sql modificato
+2. OPZIONALE: Popolare dati di test con nuovi campi
+
+TESTING:
+1. Testare POST /api/richieste con nuovi campi
+2. Testare valutazione automatica
+3. Testare conversione immobile
+
+================================================================================
+Fine documento
+================================================================================
