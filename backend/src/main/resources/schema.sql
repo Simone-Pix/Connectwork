@@ -108,6 +108,23 @@ CREATE TABLE IF NOT EXISTS richieste (
     bagni INT NOT NULL,
     superficie DECIMAL(10,2) NOT NULL,
     optional_info VARCHAR(1000) NULL,
+    -- Campi aggiunti per valutazione automatica
+    cap VARCHAR(10),
+    citta VARCHAR(100),
+    provincia VARCHAR(50),
+    tipo_immobile VARCHAR(50),
+    anno_costruzione SMALLINT,
+    stato_conservazione VARCHAR(50) CHECK (stato_conservazione IN ('da_ristrutturare','buono','ottimo','lusso')),
+    classe_energetica VARCHAR(2) CHECK (classe_energetica IN ('A','B','C','D','E','F','G')),
     data_creazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabella zone_prezzi per la valutazione automatica
+CREATE TABLE IF NOT EXISTS zone_prezzi (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cap VARCHAR(10) NOT NULL UNIQUE,
+    citta VARCHAR(100) NOT NULL,
+    zona_nome VARCHAR(255),
+    prezzo_mq_medio DECIMAL(10,2) NOT NULL
 );
 
