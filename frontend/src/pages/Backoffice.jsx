@@ -7,6 +7,7 @@ function Backoffice() {
   const [openItem, setOpenItem] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [valuationInput, setValuationInput] = useState("");
+  const [immobili, setImmobili] = useState([]);
 
   // ----- state per "Add immobile" -----
   const [form, setForm] = useState({
@@ -23,7 +24,7 @@ function Backoffice() {
     piano: "",
     prezzoRichiesto: "",
     provincia: "",
-    stato: "", // es: "in_vendita", "bozza"
+    stato: "",
     statoConservazione: "",
     superficie: "",
     tipoImmobile: "",
@@ -31,7 +32,7 @@ function Backoffice() {
     // dataInserimento la creo all'invio
   });
 
-  const [imageFiles, setImageFiles] = useState([]); // File[] immagini
+  const [imageFiles, setImageFiles] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState(null);
 
@@ -143,7 +144,7 @@ function Backoffice() {
       if (!immobileId && !idFallback) {
         // Try to read created.id anyway
         if (created && created.id) {
-          // nothing
+
         } else {
           console.warn("Created immobile response did not include an id. Response:", created);
         }
@@ -151,13 +152,12 @@ function Backoffice() {
 
       const finalId = immobileId || idFallback || (created && created.id);
 
-      // 2) Upload images (if any)
+      // Upload immagini
       if (imageFiles.length > 0 && finalId) {
         const uploadResults = [];
         for (const file of imageFiles) {
           const formData = new FormData();
           formData.append("file", file);
-          // endpoint: POST /api/immagini/upload/{immobileId}
           const upRes = await fetch(`/api/immagini/upload/${finalId}`, {
             method: "POST",
             body: formData
@@ -180,7 +180,6 @@ function Backoffice() {
         setSubmitMessage({ success: true, immobile: created, uploads: [] });
       }
 
-      // Reset form (if desired)
       setForm({
         titolo: "",
         annoCostruzione: "",
@@ -208,6 +207,73 @@ function Backoffice() {
     } finally {
       setSubmitting(false);
     }
+  }
+
+  // Logica Parte di modifica immobili
+
+  useEffect(() => {
+    if (section !== "modifica") return;
+
+    async function loadImmobili() {
+      try {
+        setLoading(true);
+        const res = await fetch("/api/immobili");
+        const data = await res.json();
+        setImmobili(data);
+      } catch (err) {
+        console.error("Failed to fetch immobili", err);
+        setImmobili([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadImmobili();
+  }, [section]);
+
+  async function deleteImmobile(id) {
+    if (!confirm("Vuoi davvero eliminare questo immobile?")) return;  
+
+    try {
+      const res = await fetch(`/api/immobili/${id}`, { method: "DELETE" });
+
+      if (!res.ok) {
+
+        const text = await res.text();
+        throw new Error(`Eliminazione fallita: ${res.status} ${text}`);
+      }
+
+      alert("Immobile eliminato con successo.");
+      setImmobili((prev) => prev.filter((i) => i.id !== id));
+    } catch (err) {
+      console.error("Errore nell'eliminazione dell'immobile", err);
+      alert(err.message || "Errore sconosciuto durante l'eliminazione.");
+    }
+  }
+  async function updateImmobile(id) {
+    const formEl = document.querySelector(
+      `.backoffice-itemBody-backoffice form`
+    );
+
+    const formData = new FormData(formEl);
+    const rawObj = Object.fromEntries(formData.entries());
+    const payload = preparePayload(rawObj);
+    delete payload.dataInserimento;
+    const res = await fetch(`/api/immobili/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+
+    if (!res.ok) {
+      const text = await res.text();
+      alert(`Aggiornamento fallito: ${res.status} ${text}`);
+      return;
+    }
+
+
+    alert("Immobile aggiornato con successo.");
   }
 
 
@@ -238,10 +304,10 @@ function Backoffice() {
           </button>
 
           <button
-            className={`backoffice-sidebarItem-backoffice ${section === "visite" ? "active" : ""}`}
-            onClick={() => setSection("visite")}
+            className={`backoffice-sidebarItem-backoffice ${section === "modifica" ? "active" : ""}`}
+            onClick={() => setSection("modifica")}
           >
-            Richieste visite
+            Richieste modifica
           </button>
         </aside>
 
@@ -328,13 +394,13 @@ function Backoffice() {
             <div>
               <h2 className="backoffice-title-backoffice">Aggiungi immobile</h2>
 
-                <form
-                  className="backoffice-addForm-backoffice"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleSubmit();
-                  }}
-                >
+              <form
+                className="backoffice-addForm-backoffice"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit();
+                }}
+              >
 
                 <input
                   name="titolo"
@@ -589,13 +655,179 @@ function Backoffice() {
             </div>
           )}
 
-          {/* SEZIONE: Richieste Visite */}
-          {section === "visite" && (
+          {/* SEZIONE: Modifica Immobili */}
+          {section === "modifica" && (
             <div>
-              <h2 className="backoffice-title-backoffice">Richieste visite</h2>
-              <p className="text-gray-700">Placeholder...</p>
+              <h2 className="backoffice-title-backoffice">Modifica immobili</h2>
+
+              {loading ? (
+                <div className="backoffice-loading-backoffice">Loading...</div>
+              ) : (
+                <div className="space-y-4">
+                  {immobili.map((immobile) => {
+                    const isOpen = openItem === immobile.id;
+
+                    return (
+                      <div key={immobile.id} className="backoffice-item-backoffice">
+
+                        {/* HEADER */}
+                        <div
+                          className="backoffice-itemHeader-backoffice"
+                          onClick={() => toggleItem(immobile.id)}
+                        >
+                          <span>ID: {immobile.id}</span>
+                          <span>{immobile.titolo}</span>
+
+                          {/* PULSANTE ELIMINA */}
+                          <button
+                            className="backoffice-deleteButton-backoffice"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              deleteImmobile(immobile.id);
+                            }}
+                          >
+                            Elimina
+                          </button>
+                        </div>
+
+                        {/* BODY */}
+                        {isOpen && (
+                          <div className="backoffice-itemBody-backoffice">
+                            <form
+                              onSubmit={(e) => {
+                                e.preventDefault();
+                                updateImmobile(immobile.id);
+                              }}
+                              className="grid grid-cols-1 lg:grid-cols-2 gap-3"
+                            >
+
+                              <input
+                                name="annoCostruzione"
+                                defaultValue={immobile.annoCostruzione}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Anno costruzione"
+                                type="number"
+                              />
+
+                              <input
+                                name="cap"
+                                defaultValue={immobile.cap}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="CAP"
+                              />
+
+                              <input
+                                name="citta"
+                                defaultValue={immobile.citta}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Città"
+                              />
+
+                              <input
+                                name="provincia"
+                                defaultValue={immobile.provincia}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Provincia"
+                              />
+
+                              <input
+                                name="classeEnergetica"
+                                defaultValue={immobile.classeEnergetica}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Classe energetica"
+                              />
+
+                              <input
+                                name="tipoImmobile"
+                                defaultValue={immobile.tipoImmobile}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Tipo immobile"
+                              />
+
+                              <input
+                                name="indirizzo"
+                                defaultValue={immobile.indirizzo}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Indirizzo"
+                              />
+
+                              <input
+                                name="superficie"
+                                defaultValue={immobile.superficie}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Superficie"
+                                type="number"
+                              />
+
+                              <input
+                                name="numLocali"
+                                defaultValue={immobile.numLocali}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Locali"
+                                type="number"
+                              />
+
+                              <input
+                                name="numBagni"
+                                defaultValue={immobile.numBagni}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Bagni"
+                                type="number"
+                              />
+
+                              <input
+                                name="piano"
+                                defaultValue={immobile.piano}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Piano"
+                              />
+
+                              <input
+                                name="prezzoRichiesto"
+                                defaultValue={immobile.prezzoRichiesto}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Prezzo richiesto"
+                                type="number"
+                              />
+
+                              <input
+                                name="stato"
+                                defaultValue={immobile.stato}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Stato"
+                              />
+
+                              <input
+                                name="statoConservazione"
+                                defaultValue={immobile.statoConservazione}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Stato conservazione"
+                              />
+
+                              <textarea
+                                name="descrizione"
+                                defaultValue={immobile.descrizione}
+                                className="backoffice-formInput-backoffice col-span-full"
+                                rows={4}
+                              />
+
+                              <button
+                                type="submit"
+                                className="backoffice-formSubmit-backoffice col-span-full"
+                              >
+                                Update
+                              </button>
+                            </form>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
+
         </main>
       </div>
     </div>
