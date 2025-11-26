@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.*;
 
 @RestController
@@ -130,7 +131,6 @@ public class ImmaginiMVC {
             @RequestParam("file") MultipartFile file) {
 
         try {
-            // Verifica immobile
             Optional<Immobili> immOpt = immobiliRepository.findById(immobileId);
             if (immOpt.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -139,24 +139,21 @@ public class ImmaginiMVC {
 
             String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
 
-            // Percorso CARTELLA ESTERNA (quella che hai creato)
-            String uploadDir = "../immagini_caricate/";
-            java.nio.file.Path uploadPath = Paths.get(uploadDir);
+            // CARTELLA INTERNA AL BACKEND (RISCHI!)
+            String uploadDir = "src/main/resources/static/immagini/";
+            Path uploadPath = Paths.get(uploadDir);
 
-            // Se non esiste la creo
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
 
-            java.nio.file.Path filePath = uploadPath.resolve(filename);
-
-            // Salvo fisicamente il file
+            Path filePath = uploadPath.resolve(filename);
             Files.copy(file.getInputStream(), filePath);
 
-            // URL pubblica
-            String fullUrl = "http://localhost:8080/immagini_caricate/" + filename;
+            // URL servito da Spring Boot
+            String fullUrl = "http://localhost:8080/immagini/" + filename;
 
-            // Salvo nel DB
+
             Immagini img = new Immagini(
                     immOpt.get(),
                     fullUrl,
@@ -176,4 +173,5 @@ public class ImmaginiMVC {
                     .body("Errore durante l'upload dell'immagine");
         }
     }
+
 }
