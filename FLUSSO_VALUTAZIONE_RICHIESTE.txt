@@ -221,7 +221,8 @@ OPZIONE A: Resta come Richiesta
 - Salva valutazione in campo JSON/testo nella richiesta
 - Rimane in stato "valutata"
 - Admin invia email con stima al cliente
-
+    ---la valutazione dovrebbe farsi vedere nella personal area dell'utente
+    
 OPZIONE B: Converti in Immobile
 
 POST /api/richieste/{id}/converti-immobile
