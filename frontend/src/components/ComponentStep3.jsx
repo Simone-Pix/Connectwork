@@ -3,7 +3,7 @@ function ComponentStep3({ data, updateField, next, back }) {
     data.superficie === "" ||
     data.stanze === "" ||
     data.bagni === "" ||
-    (data.tipoOperazione === "appartamento" && data.piano === "") ||
+    (data.tipoImmobile === "appartamento" && data.piano === "") ||
     data.annoCostruzione === "" ||
     data.statoConservazione === "" ||
     data.classeEnergetica === "";
@@ -61,7 +61,7 @@ function ComponentStep3({ data, updateField, next, back }) {
         />
 
         {/* Piano solo se appartamento */}
-        {data.tipoOperazione === "appartamento" && (
+        {data.tipoImmobile === "appartamento" && (
           <input
             type="number"
             placeholder="Piano"

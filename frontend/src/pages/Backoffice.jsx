@@ -87,10 +87,8 @@ function Backoffice() {
     setImageFiles(files);
   }
 
-  // Convert numeric-like fields before sending
   function preparePayload(dataNotControlled) {
     return {
-      titolo: dataNotControlled.titolo || "",
       annoCostruzione: dataNotControlled.annoCostruzione ? parseInt(dataNotControlled.annoCostruzione, 10) : null,
       cap: dataNotControlled.cap || "",
       citta: dataNotControlled.citta || "",

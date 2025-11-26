@@ -101,6 +101,7 @@ CREATE TABLE IF NOT EXISTS richieste (
     email VARCHAR(255) NOT NULL,
     telefono VARCHAR(50) NOT NULL,
     indirizzo VARCHAR(255) NOT NULL,
+    -- tipo operazione si puo far esplodere
     tipo_operazione VARCHAR(100) NOT NULL,
     tempistica VARCHAR(100) NOT NULL,
     piano INT NOT NULL,
