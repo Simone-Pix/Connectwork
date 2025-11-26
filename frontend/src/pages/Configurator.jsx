@@ -11,7 +11,7 @@ import ComponentSummary from "../components/ComponentSummary";
 function Configurator() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    tipoOperazione: "",
+    tipoImmobile: "",
     indirizzo: "",
     superficie: "",
     stanze: "",
@@ -23,6 +23,7 @@ function Configurator() {
     cognome: "",
     email: "",
     telefono: "",
+    tipoOperazione: "vendita"
   });
 
   const [showSuccess, setShowSuccess] = useState(false);
