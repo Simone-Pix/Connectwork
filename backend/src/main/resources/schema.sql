@@ -69,14 +69,14 @@ CREATE TABLE IF NOT EXISTS valutazioni (
 -- Tabella contratti
 CREATE TABLE IF NOT EXISTS contratti (
     id_contract BIGINT AUTO_INCREMENT PRIMARY KEY,
-    immobile_id BIGINT NOT NULL,
+    immobile_id BIGINT NULL,
     proprietario_id BIGINT NOT NULL,
     tipo VARCHAR(20) DEFAULT 'esclusiva' CHECK (tipo IN ('esclusiva','mandato')),
     durata_mesi INT,
     commissione DECIMAL(5,2),
     stato VARCHAR(20) DEFAULT 'proposta' CHECK (stato IN ('proposta','accettato','rifiutato')),
     data_proposta TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FK_Contratti_Immobili FOREIGN KEY (immobile_id) REFERENCES immobili(id) ON DELETE CASCADE,
+    CONSTRAINT FK_Contratti_Immobili FOREIGN KEY (immobile_id) REFERENCES immobili(id) ON DELETE SET NULL,
     CONSTRAINT FK_Contratti_Users FOREIGN KEY (proprietario_id) REFERENCES users(id)
 );
 
