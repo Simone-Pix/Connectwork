@@ -328,7 +328,14 @@ function Backoffice() {
             <div>
               <h2 className="backoffice-title-backoffice">Aggiungi immobile</h2>
 
-              <form className="backoffice-addForm-backoffice" onSubmit={handleSubmit}>
+                <form
+                  className="backoffice-addForm-backoffice"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSubmit();
+                  }}
+                >
+
                 <input
                   name="titolo"
                   value={form.titolo}
