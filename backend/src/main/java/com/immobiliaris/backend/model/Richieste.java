@@ -76,6 +76,9 @@ public class Richieste {
     @Column(name = "classe_energetica", length = 2)
     private String classeEnergetica;
 
+    @Column(nullable = false)
+    private Boolean valutata = false;
+
     @CreationTimestamp
     @Column(name = "data_creazione", updatable = false)
     private LocalDateTime dataCreazione;
@@ -269,6 +272,14 @@ public class Richieste {
 
     public void setClasseEnergetica(String classeEnergetica) {
         this.classeEnergetica = classeEnergetica;
+    }
+
+    public Boolean getValutata() {
+        return valutata;
+    }
+
+    public void setValutata(Boolean valutata) {
+        this.valutata = valutata;
     }
 
     @Override
