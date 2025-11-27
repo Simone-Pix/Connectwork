@@ -1,33 +1,30 @@
+﻿import { useNavigate } from "react-router-dom";
+
 export default function SearchByCity() {
+  const navigate = useNavigate();
+  
   const cities = [
-    "Milano",
-    "Roma",
-    "Napoli",
     "Torino",
-    "Firenze",
-    "Bologna",
-    "Venezia",
-    "Genova",
-    "Palermo",
-    "Bari",
-    "Catania",
-    "Verona",
+    "Rivoli",
+    "Bra",
+    "Cuneo",
+    "Asti",
+    "Alessandria",
+    "Biella",
+    "Alba",
+    "Moncalieri",
+    "Pinerolo",
+    "Ivrea",
+    "Fossano",
   ];
+
+  const handleCityClick = (city) => {
+    navigate(`/cerca?citta=${encodeURIComponent(city)}`);
+  };
 
   return (
     <>
-   {/* Linea divisoria con Bordo Colorato */}
-<div 
-  style={{ backgroundColor: "#527597" }} // 1. Questo colore coprirà TUTTA la larghezza dello schermo (i "lati bianchi")
-  className="w-full h-1" 
->
-  {/* 2. Questo div è la linea centrale, limitata e centrata */}
-  <div 
-    style={{ backgroundColor: "#3a6ea5" }} 
-    className="max-w-7xl mx-auto h-1"
-  >
-  </div>
-</div>
+     
 
       {/* Search by City Section */}
       <section style={{ backgroundColor: "#527597" }} className="py-16 px-4">
@@ -40,6 +37,7 @@ export default function SearchByCity() {
             {cities.map((city, idx) => (
               <button
                 key={idx}
+                onClick={() => handleCityClick(city)}
                 style={{ backgroundColor: "#215E98" }}
                 className="text-white py-3 px-4 rounded-lg font-semibold transition flex items-center justify-center gap-2 group hover:opacity-90"
               >
