@@ -51,7 +51,9 @@ function Backoffice() {
       try {
         const res = await fetch("/api/richieste");
         const data = await res.json();
+
         setRichieste(data);
+
       } catch (err) {
         console.error("Failed to fetch valutazioni", err);
         setRichieste([]);
@@ -106,6 +108,16 @@ function Backoffice() {
       }
 
       const data = await res.json();
+
+    // aggiunta per settare valutata true lato frontend
+    setRichieste(prev =>
+      prev.map(r =>
+        r.id === id ? { ...r, valutata: true } : r
+      )
+    )
+    
+    setOpenItem(null);
+
       alert(`Valutazione stimata: ${data.valoreStimatoMin}€ - ${data.valoreStimatoMax}€`);
     } catch (err) {
       alert(err.message);
@@ -133,8 +145,7 @@ function Backoffice() {
   //funzione per il colore del pallino
 
   function getStatusColor(r) {
-    const valutata = valutate[r.id];
-    if (valutata) return "green";
+    if (r?.valutata) return "green";
 
     if (!r.cap || r.cap.trim() === "") return "yellow";
 
@@ -143,10 +154,21 @@ function Backoffice() {
 
   // blocca toggle se gia valutata
 
-  function toggleItem(id) {
-    if (valutate[id]) return; // NON aprire se già valutata
-    setOpenItem((prev) => (prev === id ? null : id));
+function toggleItem(id) {
+  const r = richieste.find(x => x.id === id);
+  if (!r) return;
+
+  // se l'item è già aperto, chiudilo sempre
+  if (openItem === id) {
+    setOpenItem(null);
+    return;
   }
+
+  // se è chiuso, aprilo solo se non è già valutato
+  if (r.valutata) return;
+
+  setOpenItem(id);
+}
 
 
   // Gestore per l'input del form di Aggiungi Immobile (controllato)
@@ -176,7 +198,7 @@ function Backoffice() {
       cap: data.cap || "",
       citta: data.citta || "",
       classeEnergetica: data.classeEnergetica || "",
-      dataInserimento: new Date().toISOString(), // Inserito solo per POST, eliminato in PUT
+      dataInserimento: new Date().toISOString(),
       descrizione: data.descrizione || "",
       disponibileEsclusiva: !!data.disponibileEsclusiva,
       indirizzo: data.indirizzo || "",
