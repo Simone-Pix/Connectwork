@@ -1,0 +1,3 @@
+2025-11-26 22:19:40.920525+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM CONTRATTI IMMAGINI [*]IMMOBILE_FEATURES"; SQL statement:
+SELECT * FROM CONTRATTI IMMAGINI IMMOBILE_FEATURES [42000-232]

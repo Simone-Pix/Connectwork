@@ -4,10 +4,14 @@ import com.immobiliaris.backend.dto.ImmobileCreateDTO;
 import com.immobiliaris.backend.dto.ImmobiliDTO;
 import com.immobiliaris.backend.model.Immobili;
 import com.immobiliaris.backend.model.ImmobiliFeatures;
+import com.immobiliaris.backend.model.Immagini;
 import com.immobiliaris.backend.model.Users;
+import com.immobiliaris.backend.model.Valutazioni;
 import com.immobiliaris.backend.repo.ImmobiliRepository;
 import com.immobiliaris.backend.repo.ImmobiliFeaturesRepository;
+import com.immobiliaris.backend.repo.ImmaginiRepository;
 import com.immobiliaris.backend.repo.UsersRepository;
+import com.immobiliaris.backend.repo.ValutazioniRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +32,12 @@ public class ImmobiliService {
 
     @Autowired
     private ImmobiliFeaturesRepository immobiliFeaturesRepository;
+
+    @Autowired
+    private ImmaginiRepository immaginiRepository;
+
+    @Autowired
+    private ValutazioniRepository valutazioniRepository;
 
     @Autowired
     private UsersRepository usersRepository;
@@ -173,10 +183,19 @@ public class ImmobiliService {
         Immobili immobile = immobiliRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Immobile non trovato con id: " + id));
 
-        // Elimina prima le features associate (per evitare problemi di foreign key)
+        // Elimina le valutazioni associate
+        List<Valutazioni> valutazioni = valutazioniRepository.findByImmobileId(id);
+        valutazioniRepository.deleteAll(valutazioni);
+
+        // Elimina le immagini associate
+        List<Immagini> immagini = immaginiRepository.findByImmobile_Id(id);
+        immaginiRepository.deleteAll(immagini);
+
+        // Elimina le features associate
         List<ImmobiliFeatures> features = immobiliFeaturesRepository.findByImmobileId(id);
         immobiliFeaturesRepository.deleteAll(features);
 
+        // I contratti avranno automaticamente immobile_id = NULL grazie a ON DELETE SET NULL
         // Elimina l'immobile
         immobiliRepository.delete(immobile);
     }

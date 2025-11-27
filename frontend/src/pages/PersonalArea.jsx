@@ -161,7 +161,7 @@ export default function PersonalArea() {
             <div className="lista-richieste-grid">
               {richieste.map((r) => (
                 <div key={r.id} className="richiesta-card">
-                  <p className="richiesta-title">{r.tipoOperazione}</p>
+                  <p className="richiesta-title">{r.tipoImmobile}</p>
                   <p><strong>Nome:</strong> {r.nome} {r.cognome}</p>
                   <p><strong>Indirizzo:</strong> {r.indirizzo}</p>
                   <p><strong>Stanze:</strong> {r.stanze}</p>

@@ -11,7 +11,7 @@ import ComponentSummary from "../components/ComponentSummary";
 function Configurator() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    tipoOperazione: "",
+    tipoImmobile: "",
     indirizzo: "",
     superficie: "",
     stanze: "",
@@ -23,6 +23,7 @@ function Configurator() {
     cognome: "",
     email: "",
     telefono: "",
+    tipoOperazione: "vendita"
   });
 
   const [showSuccess, setShowSuccess] = useState(false);
@@ -42,13 +43,20 @@ function Configurator() {
 
  const handleSubmit = async () => {
   try {
+    // Trasforma l'array optional in stringa per il backend
+    const dataToSend = {
+      ...formData,
+      optionalInfo: formData.optional.join(", "),
+      optional: undefined // Rimuovi il campo array
+    };
+
     const res = await fetch("/api/richieste", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(dataToSend),
     });
 
-    console.log("Dati inviati:", formData);
+    console.log("Dati inviati:", dataToSend);
 
     //toast di successo
     setShowSuccess(true);

@@ -8,9 +8,7 @@
   @apply grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-7 mt-4;
 }
 
-/************************************
-   MOBILE: NASCONDI SOLO LA SIDEBAR
-************************************/
+/* per nascondere sidebar */
 @media (max-width: 1023px) {
   .backoffice-sidebar-backoffice {
     display: none !important;
@@ -28,7 +26,7 @@
 
 /* Sidebar — visibile di default su desktop */
 .backoffice-sidebar-backoffice {
-  @apply bg-white rounded-xl p-5 shadow-sm border border-gray-100 flex flex-col gap-3;
+  @apply bg-white rounded-xl p-5 shadow-sm border border-gray-100 flex flex-col gap-3 h-[200px]; /*dimensione fissa per la sidebar se no prende altezza contenuto*/
 }
 
 

@@ -1,9 +1,9 @@
 function ComponentStep1({ data, updateField, next }) {
   const handleSelect = (value) => {
-    updateField("tipoOperazione", value);
+    updateField("tipoImmobile", value);
   };
 
-  const isDisabled = !data.tipoOperazione; 
+  const isDisabled = !data.tipoImmobile; 
 
 
   return (
@@ -20,7 +20,7 @@ function ComponentStep1({ data, updateField, next }) {
 
       <div className="card-container">
         <div
-          className={`card ${data.tipoOperazione === "appartamento" ? "active" : ""}`}
+          className={`card ${data.tipoImmobile === "appartamento" ? "active" : ""}`}
           onClick={() => handleSelect("appartamento")}
         >
           <div className="icon">🔑</div>
@@ -29,7 +29,7 @@ function ComponentStep1({ data, updateField, next }) {
         </div>
 
         <div
-          className={`card ${data.tipoOperazione === "villa" ? "active" : ""}`}
+          className={`card ${data.tipoImmobile === "villa" ? "active" : ""}`}
           onClick={() => handleSelect("villa")}
         >
           <div className="icon">🏠</div>
