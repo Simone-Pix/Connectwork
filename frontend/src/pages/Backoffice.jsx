@@ -106,7 +106,7 @@ function Backoffice() {
       }
 
       const data = await res.json();
-      alert(`Valutazione stimata: ${data.valoreMin}€ - ${data.valoreMax}€`);
+      alert(`Valutazione stimata: ${data.valoreStimatoMin}€ - ${data.valoreStimatoMax}€`);
     } catch (err) {
       alert(err.message);
     }
