@@ -115,3 +115,31 @@
 .backoffice-formSubmit-backoffice {
   @apply bg-orange-500 text-white py-3 rounded-lg font-semibold hover:bg-orange-600 transition shadow-sm;
 }
+
+/* PALLINI COLORI */
+.backoffice-statusDot-backoffice.red {
+  @apply bg-red-500;
+}
+
+.backoffice-statusDot-backoffice.green {
+  @apply bg-green-500;
+}
+
+.backoffice-statusDot-backoffice.yellow {
+  @apply bg-yellow-400;
+}
+
+/* Box dei bottoni */
+.backoffice-actions-backoffice {
+  @apply flex gap-4 mt-5;
+}
+
+/* Bottone elimina */
+.backoffice-deleteButton-backoffice {
+  @apply bg-red-600 text-white px-5 py-3 rounded-lg font-semibold shadow-sm hover:bg-red-700 transition;
+}
+
+/* Bottone invia */
+.backoffice-sendButton-backoffice {
+  @apply bg-orange-500 text-white px-5 py-3 rounded-lg font-semibold hover:bg-orange-600 transition shadow-sm;
+}
