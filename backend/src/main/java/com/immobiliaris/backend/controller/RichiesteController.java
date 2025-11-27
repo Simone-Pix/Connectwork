@@ -221,6 +221,10 @@ public class RichiesteController {
             // Calcola valutazione
             ValutazioneRichiestaDTO valutazione = calcolaValutazione(richiesta, zona);
 
+            // Segna la richiesta come valutata
+            richiesta.setValutata(true);
+            richiesteService.updateRichiesta(id, richiesta);
+
             return ResponseEntity.ok(valutazione);
 
         } catch (ResponseStatusException e) {
