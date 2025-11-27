@@ -64,38 +64,28 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-        http.csrf(csrf -> csrf.disable());
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
-
-        http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
-
-        // Aggiungiamo il filtro prima di UsernamePasswordAuthenticationFilter
-        http.addFilterBefore(new SessionAuthFilter(),
-                org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
-
-        http.authorizeHttpRequests(auth -> auth
+        
+        http.csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
+            .addFilterBefore(new SessionAuthFilter(),
+                org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
+            .authorizeHttpRequests(auth -> auth
                 // Pagine pubbliche
-                .requestMatchers("/", "/home", "/login", "/signin",
-                        "/css/**", "/js/**", "/images/**").permitAll()
-
+                .requestMatchers("/", "/home", "/login", "/signin", "/css/**", "/js/**", "/images/**").permitAll()
                 // API pubbliche
                 .requestMatchers(HttpMethod.GET, "/api/immobili/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/immagini/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/richieste/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/richieste/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/zone-prezzi/**").permitAll()
-
-                // Auth custom → lasciamo gestire al tuo AuthController
+                // Auth custom
                 .requestMatchers("/api/auth/**").permitAll()
-
                 // H2 console
                 .requestMatchers("/h2-console/**").permitAll()
-
                 // Rotte private
                 .requestMatchers("/personal-area/**").authenticated()
                 .requestMatchers("/auth/me").authenticated()
-
                 // Backoffice e operazioni sensibili
                 .requestMatchers("/api/users/backoffice/**").authenticated()
                 .requestMatchers(HttpMethod.POST, "/api/immobili/**").authenticated()
@@ -109,12 +99,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/zone-prezzi/**").authenticated()
                 .requestMatchers(HttpMethod.PUT, "/api/richieste/**").authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/api/richieste/**").authenticated()
-
                 .anyRequest().permitAll()
-        );
-
-        // Disabilitiamo login form di Spring
-        http.formLogin(form -> form.disable());
+            )
+            .formLogin(form -> form.disable());
 
         return http.build();
     }
