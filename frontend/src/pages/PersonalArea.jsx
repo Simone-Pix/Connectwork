@@ -71,7 +71,7 @@ export default function PersonalArea() {
 
   //Funzione che chiama la rotta e apre il summary
 
-  const apriScontrino = async (richiestaId) => {
+  const apriSummary = async (richiestaId) => {
     setLoadingValutazione(true);
     setShowValutazione(true);
 
@@ -186,7 +186,7 @@ export default function PersonalArea() {
                 <div
                   key={r.id}
                   className={`richiesta-card ${r.valutata ? "cursor-pointer hover:shadow-xl" : ""}`}
-                  onClick={() => r.valutata && apriScontrino(r.id)}
+                  onClick={() => r.valutata && apriSummary(r.id)}
                 >
                   <p className="richiesta-title">{r.tipoImmobile}</p>
                   <p><strong>Nome:</strong> {r.nome} {r.cognome}</p>
