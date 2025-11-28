@@ -54,17 +54,31 @@ CREATE TABLE IF NOT EXISTS immagini (
     CONSTRAINT FK_Immagini_Immobili FOREIGN KEY (immobile_id) REFERENCES immobili(id) ON DELETE CASCADE
 );
 
--- Tabella valutazioni
 CREATE TABLE IF NOT EXISTS valutazioni (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    immobile_id BIGINT NOT NULL,
+
+    -- può essere NULL perché ora esistono valutazioni senza immobile
+    immobile_id BIGINT,
+    
+    -- nuova colonna per collegare la valutazione alla richiesta
+    richiesta_id BIGINT,
+
     valore_stimato_min DECIMAL(12,2),
     valore_stimato_max DECIMAL(12,2),
     prezzo_mq DECIMAL(8,2),
     note CLOB,
+
     data_valutazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FK_Valutazioni_Immobili FOREIGN KEY (immobile_id) REFERENCES immobili(id) ON DELETE CASCADE
+
+    -- Foreign key verso immobili
+    CONSTRAINT FK_Valutazioni_Immobili 
+        FOREIGN KEY (immobile_id) REFERENCES immobili(id) ON DELETE CASCADE,
+
+    -- Foreign key verso richieste
+    CONSTRAINT FK_Valutazioni_Richieste 
+        FOREIGN KEY (richiesta_id) REFERENCES richieste(id) ON DELETE CASCADE
 );
+
 
 -- Tabella contratti
 CREATE TABLE IF NOT EXISTS contratti (

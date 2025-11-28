@@ -12,9 +12,9 @@ public class Valutazioni {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Relazione con l'immobile valutato
+    // Relazione opzionale con immobile (NULL quando la valutazione deriva da una richiesta)
     @ManyToOne
-    @JoinColumn(name = "immobile_id", nullable = false)
+    @JoinColumn(name = "immobile_id", nullable = true)
     private Immobili immobile;
 
     @Column(name = "valore_stimato_min", precision = 12, scale = 2)
@@ -32,8 +32,14 @@ public class Valutazioni {
     @Column(name = "data_valutazione")
     private LocalDateTime dataValutazione = LocalDateTime.now();
 
-    // === COSTRUTTORI ===
+    @Column(name = "richiesta_id")
+    private Long richiestaId;
+
     public Valutazioni() {}
+
+    public Valutazioni(Long richiestaId) {
+        this.richiestaId = richiestaId;
+    }
 
     public Valutazioni(Immobili immobile, BigDecimal valoreStimatoMin, BigDecimal valoreStimatoMax,
                        BigDecimal prezzoMq, String note) {
@@ -45,7 +51,7 @@ public class Valutazioni {
         this.dataValutazione = LocalDateTime.now();
     }
 
-    // === GETTER E SETTER ===
+    // Getters e setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -66,4 +72,7 @@ public class Valutazioni {
 
     public LocalDateTime getDataValutazione() { return dataValutazione; }
     public void setDataValutazione(LocalDateTime dataValutazione) { this.dataValutazione = dataValutazione; }
+
+    public Long getRichiestaId() { return richiestaId; }
+    public void setRichiestaId(Long richiestaId) { this.richiestaId = richiestaId; }
 }
