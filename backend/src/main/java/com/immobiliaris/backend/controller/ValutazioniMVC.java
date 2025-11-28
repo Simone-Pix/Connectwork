@@ -142,4 +142,20 @@ public class ValutazioniMVC {
         }
     }
 
+
+    /**
+     * Restituisce le valutazioni associate a una richiesta specifica.
+     */
+    @GetMapping("/richiesta/{richiestaId}")
+    public ResponseEntity<?> listByRichiesta(@PathVariable Long richiestaId) {
+
+        List<Valutazioni> list = valutazioniRepository.findAllByRichiestaId(richiestaId);
+
+        if (list == null || list.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Nessuna valutazione trovata per la richiesta " + richiestaId);
+        }
+
+        return ResponseEntity.ok(list);
+    }
 }
