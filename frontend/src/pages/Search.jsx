@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import FiltersSidebar from "../components/FiltersSidebar";
 import PropertyList from "../components/PropertyList";
 
 function Search() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [allProperties, setAllProperties] = useState([]);
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,12 +16,20 @@ function Search() {
     maxPrice: "",
     rooms: "all",
     baths: "all",
-    minSurface: ""
+    minSurface: "",
+    citta: "" // Aggiungi il filtro città
   };
 
   const [filters, setFilters] = useState(defaultFilters);
 
-  
+  // Leggi la città dall'URL all'avvio
+  useEffect(() => {
+    const cittaFromURL = searchParams.get("citta");
+    if (cittaFromURL) {
+      setFilters(prev => ({ ...prev, citta: cittaFromURL }));
+    }
+  }, [searchParams]);
+
   useEffect(() => {
     async function loadProperties() {
       try {
@@ -27,7 +37,15 @@ function Search() {
         const res = await fetch("/api/immobili");
         const data = await res.json();
         setAllProperties(data);
-        setFilteredProperties(data);
+        
+        // Applica il filtro città se presente
+        const cittaFromURL = searchParams.get("citta");
+        if (cittaFromURL) {
+          const filtered = data.filter(p => p.citta === cittaFromURL);
+          setFilteredProperties(filtered);
+        } else {
+          setFilteredProperties(data);
+        }
       } catch (err) {
         console.error("Failed to fetch properties", err);
         setAllProperties([]);
@@ -37,44 +55,69 @@ function Search() {
       }
     }
     loadProperties();
-
-    
-  }, []);
+  }, [searchParams]);
   
-useEffect(() => {
-  async function loadImages() {
-    try {
-      setLoading(true);
-      const res = await fetch("/api/immagini");
-      const data = await res.json();
-      setImages(data);
-    } catch (err) {
-      console.error("Failed to fetch images", err);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    async function loadImages() {
+      try {
+        const res = await fetch("/api/immagini");
+        const data = await res.json();
+        setImages(data);
+      } catch (err) {
+        console.error("Failed to fetch images", err);
+      }
     }
-  }
-  loadImages();
-}, []);
-  
+    loadImages();
+  }, []);
 
   function applyFilters(newFilters) {
     setFilters(newFilters);
     const result = allProperties.filter((p) => {
+      // Filtro città
+      if (newFilters.citta && p.citta !== newFilters.citta) return false;
+      
+      // Filtro tipo contratto
       if (newFilters.tipoContratto !== "all" && p.stato !== newFilters.tipoContratto) return false;
+      
+      // Filtro prezzo
       if (newFilters.minPrice && Number(p.prezzoRichiesto) < Number(newFilters.minPrice)) return false;
       if (newFilters.maxPrice && Number(p.prezzoRichiesto) > Number(newFilters.maxPrice)) return false;
+      
+      // Filtro camere
       if (newFilters.rooms !== "all" && Number(p.numLocali) < Number(newFilters.rooms)) return false;
+      
+      // Filtro bagni
       if (newFilters.baths !== "all" && Number(p.numBagni) < Number(newFilters.baths)) return false;
+      
+      // Filtro superficie
       if (newFilters.minSurface && Number(p.superficie) < Number(newFilters.minSurface)) return false;
+      
       return true;
     });
     setFilteredProperties(result);
+    
+    // Rimuovi il parametro città dall'URL quando l'utente cambia i filtri manualmente
+    if (searchParams.get("citta")) {
+      searchParams.delete("citta");
+      setSearchParams(searchParams);
+    }
   }
 
   function resetFilters() {
     setFilters(defaultFilters);
     setFilteredProperties(allProperties);
+    
+    // Rimuovi il parametro città dall'URL
+    if (searchParams.get("citta")) {
+      searchParams.delete("citta");
+      setSearchParams(searchParams);
+    }
+  }
+
+  function removeCityFilter() {
+    const newFilters = { ...filters, citta: "" };
+    setFilters(newFilters);
+    applyFilters(newFilters);
   }
 
   return (
@@ -83,6 +126,21 @@ useEffect(() => {
         <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-7">
           {/* Sidebar filtri */}
           <aside className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+            {/* Badge città selezionata */}
+            {filters.citta && (
+              <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-800 mb-1">
+                  📍 <strong>{filters.citta}</strong>
+                </p>
+                <button
+                  onClick={removeCityFilter}
+                  className="text-xs text-blue-600 hover:text-blue-800 underline"
+                >
+                  Rimuovi filtro città
+                </button>
+              </div>
+            )}
+            
             <FiltersSidebar
               filters={filters}
               onApply={applyFilters}
@@ -93,13 +151,22 @@ useEffect(() => {
           {/* Area risultati */}
           <main>
             <header className="mb-6">
-              <h2 className="text-gray-900 text-xl font-bold">Properties</h2>
-              <p className="text-gray-600 text-sm">Available homes matching your search</p>
+              <h2 className="text-gray-900 text-xl font-bold">
+                Immobili {filters.citta && `a ${filters.citta}`}
+              </h2>
+              <p className="text-gray-600 text-sm">
+                {filteredProperties.length} {filteredProperties.length === 1 ? 'risultato trovato' : 'risultati trovati'}
+              </p>
             </header>
 
             {loading ? (
               <div className="bg-white rounded-xl p-10 text-center text-gray-600 shadow-sm">
-                Loading properties...
+                Caricamento immobili...
+              </div>
+            ) : filteredProperties.length === 0 ? (
+              <div className="bg-white rounded-xl p-10 text-center shadow-sm">
+                <p className="text-gray-600 mb-2">Nessun immobile trovato</p>
+                <p className="text-gray-500 text-sm">Prova a modificare i filtri di ricerca</p>
               </div>
             ) : (
               <PropertyList properties={filteredProperties} images={images} />

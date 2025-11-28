@@ -3,9 +3,11 @@ package com.immobiliaris.backend.service;
 import com.immobiliaris.backend.model.Immobili;
 import com.immobiliaris.backend.model.Richieste;
 import com.immobiliaris.backend.model.Users;
+import com.immobiliaris.backend.model.Valutazioni;
 import com.immobiliaris.backend.repo.ImmobiliRepository;
 import com.immobiliaris.backend.repo.RichiesteRepository;
 import com.immobiliaris.backend.repo.UsersRepository;
+import com.immobiliaris.backend.repo.ValutazioniRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +33,9 @@ public class RichiesteConversioneService {
 
     @Autowired
     private UsersRepository usersRepository;
+
+    @Autowired
+    private ValutazioniRepository valutazioniRepository;
 
     @Autowired
     private ValutazioniServiceImpl valutazioniService;
@@ -70,21 +75,33 @@ public class RichiesteConversioneService {
         Immobili immobile = creaImmobileDaRichiesta(richiesta, proprietario);
         Immobili saved = immobiliRepository.save(immobile);
 
-        // Genera valutazione automatica
+        // Recupera e aggiorna valutazione esistente (se presente)
         try {
-            valutazioniService.generaValutazioneAutomatica(saved.getId());
+            Optional<Valutazioni> valutazioneEsistente = valutazioniRepository.findByRichiestaId(richiestaId);
+            
+            if (valutazioneEsistente.isPresent()) {
+                // Aggiorna valutazione esistente associandola all'immobile
+                Valutazioni valutazione = valutazioneEsistente.get();
+                valutazione.setImmobile(saved);
+                valutazione.setRichiestaId(null); // Rimuovi riferimento alla richiesta
+                valutazioniRepository.save(valutazione);
+                
+                // Aggiorna stato immobile a "valutato"
+                saved.setStato("valutato");
+                immobiliRepository.save(saved);
+            } else {
+                // Se non esiste valutazione, creane una nuova
+                valutazioniService.generaValutazioneAutomatica(saved.getId());
+            }
         } catch (Exception e) {
             // Valutazione opzionale, non blocca la conversione
-            System.err.println("Errore nella generazione valutazione: " + e.getMessage());
+                System.err.println("Errore nell'aggiornamento valutazione: " + e.getMessage());
         }
 
-        // Elimina richiesta (ormai processata)
-        richiesteRepository.delete(richiesta);
+        // NON elimina la richiesta - deve rimanere visibile nella PersonalArea dell'utente
 
         return saved;
-    }
-
-    /**
+    }    /**
      * Trova utente esistente per email o ne crea uno nuovo con password temporanea.
      */
     private Users trovaOCreaUtente(Richieste richiesta) {
