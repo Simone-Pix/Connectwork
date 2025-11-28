@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { useAuthContext } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+
+const navigate = useNavigate();
 
 export default function PersonalArea() {
   const { user, isAuthenticated, loading } = useAuthContext();
@@ -62,6 +65,11 @@ export default function PersonalArea() {
       console.error("Errore salvataggio email:", e);
     }
   };
+ 
+  const showRichiesta = () => {
+    if (!r.valutata)
+      navigate("");
+  }
 
   return (
     <main className="hero-personal">
@@ -169,6 +177,7 @@ export default function PersonalArea() {
                   <p><strong>Superfice:</strong> {r.superficie} m²</p>
                   <p><strong>Telefono:</strong> {r.telefono}</p>
                   <p><strong>Tempistiche:</strong> {r.tempistica}</p>
+                  <p><strong>Stato:</strong>{r.valutata ? " Valutata" : " Non valutata"}</p>
                   <p className="text-xs mt-2 text-gray-500">
                     {new Date(r.dataCreazione).toLocaleString()}
                   </p>

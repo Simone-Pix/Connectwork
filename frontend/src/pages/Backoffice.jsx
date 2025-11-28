@@ -116,7 +116,7 @@ function Backoffice() {
       )
     )
     
-    setOpenItem(null);
+    // setOpenItem(null);
 
       alert(`Valutazione stimata: ${data.valoreStimatoMin}€ - ${data.valoreStimatoMax}€`);
     } catch (err) {
@@ -154,21 +154,21 @@ function Backoffice() {
 
   // blocca toggle se gia valutata
 
-function toggleItem(id) {
-  const r = richieste.find(x => x.id === id);
-  if (!r) return;
+// function toggleItem(id) {
+//   const r = richieste.find(x => x.id === id);
+//   if (!r) return;
 
-  // se l'item è già aperto, chiudilo sempre
-  if (openItem === id) {
-    setOpenItem(null);
-    return;
-  }
+//   // se l'item è già aperto, chiudilo sempre
+//   if (openItem === id) {
+//     setOpenItem(null);
+//     return;
+//   }
 
-  // se è chiuso, aprilo solo se non è già valutato
-  if (r.valutata) return;
+//   // se è chiuso, aprilo solo se non è già valutato
+//   if (r.valutata) return;
 
-  setOpenItem(id);
-}
+//   setOpenItem(id);
+// }
 
 
   // Gestore per l'input del form di Aggiungi Immobile (controllato)
@@ -423,9 +423,9 @@ function toggleItem(id) {
                               <p><strong>Superficie:</strong> {r.superficie}</p>
                               <p><strong>Piano:</strong> {r.piano}</p>
                               <p><strong>Tempi:</strong> {r.tempistica}</p>
-                              <p><strong>Tipo:</strong> {r.tipo_operazione}</p>
-                              <p><strong>Data:</strong> {r.data_creazione}</p>
-                              <p><strong>Note:</strong> {r.optional_info}</p>
+                              <p><strong>Tipo:</strong> {r.tipoImmobile}</p>
+                              <p><strong>Data:</strong> {r.dataCreazione}</p>
+                              <p><strong>Note:</strong> {r.optionalInfo}</p>
                             </div>
 
                             {/* BOTTONI AZIONI */}
@@ -465,14 +465,6 @@ function toggleItem(id) {
                 onSubmit={handleAddSubmit}
               >
                 {/* Il form di aggiunta è controllato */}
-                <input
-                  name="titolo"
-                  value={addForm.titolo}
-                  onChange={handleAddFormChange}
-                  className="backoffice-formInput-backoffice"
-                  placeholder="Titolo immobile"
-                />
-
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                   <input
                     name="annoCostruzione"
