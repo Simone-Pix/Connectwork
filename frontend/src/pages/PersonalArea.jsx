@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuthContext } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 
-const navigate = useNavigate();
 
 export default function PersonalArea() {
   const { user, isAuthenticated, loading } = useAuthContext();
@@ -12,6 +10,11 @@ export default function PersonalArea() {
   //per la parte di fetch delle richieste
   const [richieste, setRichieste] = useState([]);
   const [loadingRichieste, setLoadingRichieste] = useState(true);
+
+  //stato per aprire i summary
+  const [selectedValutazione, setSelectedValutazione] = useState(null);
+  const [loadingValutazione, setLoadingValutazione] = useState(false);
+  const [showValutazione, setShowValutazione] = useState(false);
 
   // Fetch richieste dell’utente loggato
   useEffect(() => {
@@ -65,11 +68,23 @@ export default function PersonalArea() {
       console.error("Errore salvataggio email:", e);
     }
   };
- 
-  const showRichiesta = () => {
-    if (!r.valutata)
-      navigate("");
-  }
+
+  //Funzione che chiama la rotta e apre il summary
+
+  const apriScontrino = async (richiestaId) => {
+    setLoadingValutazione(true);
+    setShowValutazione(true);
+
+    try {
+      const res = await fetch(`/api/valutazioni/richiesta/${richiestaId}`);
+      const data = await res.json();
+      setSelectedValutazione(data);
+    } catch (e) {
+      console.error("Errore caricamento valutazione:", e);
+    } finally {
+      setLoadingValutazione(false);
+    }
+  };
 
   return (
     <main className="hero-personal">
@@ -168,7 +183,11 @@ export default function PersonalArea() {
           ) : (
             <div className="lista-richieste-grid">
               {richieste.map((r) => (
-                <div key={r.id} className="richiesta-card">
+                <div
+                  key={r.id}
+                  className={`richiesta-card ${r.valutata ? "cursor-pointer hover:shadow-xl" : ""}`}
+                  onClick={() => r.valutata && apriScontrino(r.id)}
+                >
                   <p className="richiesta-title">{r.tipoImmobile}</p>
                   <p><strong>Nome:</strong> {r.nome} {r.cognome}</p>
                   <p><strong>Indirizzo:</strong> {r.indirizzo}</p>
@@ -187,6 +206,52 @@ export default function PersonalArea() {
           )}
         </div>
       </div>
+      {showValutazione && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-xl shadow-2xl w-[90%] sm:w-[450px] relative">
+
+            {/* Loading */}
+            {loadingValutazione ? (
+              <p className="text-center text-gray-600">Caricamento valutazione...</p>
+            ) : selectedValutazione ? (
+              <div>
+                <h2 className="text-2xl font-bold text-primary mb-4 text-center">
+                  Dettaglio valutazione
+                </h2>
+
+                <div className="space-y-2 text-sm">
+                  <p><strong>ID:</strong> {selectedValutazione.id}</p>
+                  <p><strong>Data valutazione:</strong> {new Date(selectedValutazione.dataValutazione).toLocaleString()}</p>
+                  <p><strong>Note:</strong> {selectedValutazione.note || "Nessuna"}</p>
+                  <p><strong>Prezzo al m²:</strong> € {selectedValutazione.prezzoMq}</p>
+                  <p><strong>Valore stimato min:</strong> € {selectedValutazione.valoreStimatoMin}</p>
+                  <p><strong>Valore stimato max:</strong> € {selectedValutazione.valoreStimatoMax}</p>
+                  <p><strong>Immobile ID:</strong> {selectedValutazione.immobileId}</p>
+                  <p><strong>Richiesta ID:</strong> {selectedValutazione.richiestaId}</p>
+                </div>
+
+                <button
+                  onClick={() => setShowValutazione(false)}
+                  className="mt-6 w-full py-2 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition"
+                >
+                  Chiudi
+                </button>
+              </div>
+            ) : (
+              <p className="text-center text-gray-600">Nessun dato disponibile.</p>
+            )}
+
+            {/* Bottone X */}
+            <button
+              onClick={() => setShowValutazione(false)}
+              className="absolute top-2 right-2 text-gray-600 hover:text-black"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+
     </main>
   );
 }
