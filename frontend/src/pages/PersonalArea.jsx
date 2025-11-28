@@ -78,7 +78,7 @@ export default function PersonalArea() {
     try {
       const res = await fetch(`/api/valutazioni/richiesta/${richiestaId}`);
       const data = await res.json();
-      setSelectedValutazione(data);
+      setSelectedValutazione(data[0] || null);
     } catch (e) {
       console.error("Errore caricamento valutazione:", e);
     } finally {
