@@ -3,7 +3,9 @@ package com.immobiliaris.backend.controller;
 import com.immobiliaris.backend.dto.ValutazioneRichiestaDTO;
 import com.immobiliaris.backend.model.Immobili;
 import com.immobiliaris.backend.model.Richieste;
+import com.immobiliaris.backend.model.Valutazioni;
 import com.immobiliaris.backend.model.ZonePrezzi;
+import com.immobiliaris.backend.repo.ValutazioniRepository;
 import com.immobiliaris.backend.repo.ZonePrezziRepository;
 import com.immobiliaris.backend.service.RichiesteConversioneService;
 import com.immobiliaris.backend.service.RichiesteService;
@@ -29,6 +31,9 @@ public class RichiesteController {
 
     @Autowired
     private RichiesteService richiesteService;
+
+    @Autowired
+    private ValutazioniRepository valutazioniRepository;
 
     @Autowired
     private ZonePrezziRepository zonePrezziRepository;
@@ -220,6 +225,15 @@ public class RichiesteController {
 
             // Calcola valutazione
             ValutazioneRichiestaDTO valutazione = calcolaValutazione(richiesta, zona);
+
+            // Salva la valutazione nel database
+            Valutazioni valutazioneEntity = new Valutazioni();
+            valutazioneEntity.setRichiestaId(richiesta.getId());
+            valutazioneEntity.setValoreStimatoMin(valutazione.getValoreStimatoMin());
+            valutazioneEntity.setValoreStimatoMax(valutazione.getValoreStimatoMax());
+            valutazioneEntity.setPrezzoMq(valutazione.getPrezzoMq());
+            valutazioneEntity.setNote(valutazione.getNote());
+            valutazioniRepository.save(valutazioneEntity);
 
             // Segna la richiesta come valutata
             richiesta.setValutata(true);

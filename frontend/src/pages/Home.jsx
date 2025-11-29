@@ -36,9 +36,6 @@ function Home() {
       {/*Sezione proprietà in evidenza*/}
       <FeaturedProperties />
 
-      {/* Sezione ricerca da zona */}
-      <SearchByZone />
-
       {/* Sezione ricerca da città */}
       <SearchByCity />
 
