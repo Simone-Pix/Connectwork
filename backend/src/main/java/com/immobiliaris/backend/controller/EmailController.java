@@ -24,6 +24,18 @@ public class EmailController {
         try {
             @SuppressWarnings("unchecked")
             Map<String,Object> params = req.params() == null ? null : (Map<String,Object>) req.params();
+            // If listIds provided, upsert the contact first so it exists in the target lists
+            if (req.listIds() != null && !req.listIds().isEmpty()) {
+                try {
+                    Map<String,Object> attrs = Map.of("NAME", req.name() == null ? "" : req.name());
+                    String upsertResp = brevoEmailService.upsertContact(req.to(), attrs, req.listIds());
+                    // log or ignore the upsertResp if needed
+                } catch (Exception e) {
+                    // non-fatal: continue but report the upsert problem
+                    return ResponseEntity.status(502).body(Map.of("error", "Failed to upsert contact in Brevo", "detail", e.getMessage()));
+                }
+            }
+
             String response = brevoEmailService.sendEmail(
                     req.to(), req.name(), req.subject(), req.text(), req.templateId(), params
             );

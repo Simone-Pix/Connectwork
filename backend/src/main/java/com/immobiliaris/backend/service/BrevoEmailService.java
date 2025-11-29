@@ -93,4 +93,35 @@ public class BrevoEmailService {
                 .bodyToMono(String.class)
                 .block();
     }
+
+    /**
+     * Upsert a contact in Brevo and optionally add to lists.
+     * This calls POST /v3/contacts with updateEnabled=true.
+     */
+    public String upsertContact(String email, Map<String,Object> attributes, List<Integer> listIds) {
+        if (!enabled) {
+            throw new IllegalStateException("Brevo API key not configured for this application instance");
+        }
+
+        java.util.Map<String,Object> payload = new java.util.HashMap<>();
+        payload.put("email", email);
+        payload.put("attributes", attributes == null ? Map.of() : attributes);
+        if (listIds != null && !listIds.isEmpty()) {
+            payload.put("listIds", listIds);
+        }
+        payload.put("updateEnabled", true);
+
+        return webClient.post()
+                .uri("/contacts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(payload)
+                .retrieve()
+                .onStatus(status -> status.isError(), resp ->
+                        resp.bodyToMono(String.class)
+                                .defaultIfEmpty("")
+                                .flatMap(body -> Mono.error(new RuntimeException("Brevo API returned " + resp.statusCode() + " - " + body)))
+                )
+                .bodyToMono(String.class)
+                .block();
+    }
 }

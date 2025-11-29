@@ -26,7 +26,9 @@ public record EmailRequest(
 	/** ID numerico del template configurato su Brevo (opzionale) */
 	Integer templateId,
 	/** Parametri per il template (map di variabili); può essere null */
-	Object params
+	Object params,
+	/** Lista di ID Brevo a cui iscrivere il contatto (opzionale) */
+	java.util.List<Integer> listIds
 )
 {
 }
