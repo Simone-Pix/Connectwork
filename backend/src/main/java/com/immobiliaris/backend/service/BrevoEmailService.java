@@ -26,6 +26,18 @@ public class BrevoEmailService {
     private final String senderName;
     private final boolean enabled;
 
+    public String getSenderEmail() {
+        return senderEmail;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
     public BrevoEmailService(@Value("${brevo.api.key:}") String apiKey,
                              @Value("${brevo.sender.email:noreply@example.com}") String senderEmail,
                              @Value("${brevo.sender.name:Immobiliaris}") String senderName,
@@ -80,18 +92,18 @@ public class BrevoEmailService {
             );
         }
 
-        return webClient.post()
-                .uri("/smtp/email")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(payload)
-                .retrieve()
-                .onStatus(status -> status.isError(), resp ->
-                    resp.bodyToMono(String.class)
-                        .defaultIfEmpty("")
-                        .flatMap(body -> Mono.error(new RuntimeException("Brevo API returned " + resp.statusCode() + " - " + body)))
-                )
-                .bodyToMono(String.class)
-                .block();
+            return webClient.post()
+                    .uri("/smtp/email")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(payload)
+                    .retrieve()
+                    .onStatus(status -> status.isError(), resp ->
+                        resp.bodyToMono(String.class)
+                            .defaultIfEmpty("")
+                            .flatMap(body -> Mono.error(new BrevoException(resp.rawStatusCode(), body)))
+                    )
+                    .bodyToMono(String.class)
+                    .block();
     }
 
     /**
@@ -119,9 +131,54 @@ public class BrevoEmailService {
                 .onStatus(status -> status.isError(), resp ->
                         resp.bodyToMono(String.class)
                                 .defaultIfEmpty("")
-                                .flatMap(body -> Mono.error(new RuntimeException("Brevo API returned " + resp.statusCode() + " - " + body)))
+                                .flatMap(body -> Mono.error(new BrevoException(resp.rawStatusCode(), body)))
                 )
                 .bodyToMono(String.class)
                 .block();
+    }
+
+    /**
+     * Create or schedule a Brevo email campaign (marketing).
+     * Returns Brevo response JSON as string.
+     */
+    public String createCampaign(Map<String,Object> campaignPayload) {
+        if (!enabled) {
+            throw new IllegalStateException("Brevo API key not configured for this application instance");
+        }
+
+        return webClient.post()
+                .uri("/emailCampaigns")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(campaignPayload)
+                .retrieve()
+                .onStatus(status -> status.isError(), resp ->
+                        resp.bodyToMono(String.class)
+                                .defaultIfEmpty("")
+                                .flatMap(body -> Mono.error(new BrevoException(resp.rawStatusCode(), body)))
+                )
+                .bodyToMono(String.class)
+                .block();
+    }
+
+    /**
+     * Lightweight ping to Brevo contacts API to check API accessibility.
+     */
+    public boolean pingContacts() {
+        if (!enabled) return false;
+        try {
+            String r = webClient.get()
+                    .uri(uriBuilder -> uriBuilder.path("/contacts").queryParam("limit", 1).build())
+                    .retrieve()
+                    .onStatus(status -> status.isError(), resp ->
+                            resp.bodyToMono(String.class)
+                                    .defaultIfEmpty("")
+                                    .flatMap(body -> Mono.error(new BrevoException(resp.rawStatusCode(), body)))
+                    )
+                    .bodyToMono(String.class)
+                    .block();
+            return r != null;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

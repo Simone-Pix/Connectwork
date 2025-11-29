@@ -29,9 +29,10 @@ public class EmailController {
                 try {
                     Map<String,Object> attrs = Map.of("NAME", req.name() == null ? "" : req.name());
                     String upsertResp = brevoEmailService.upsertContact(req.to(), attrs, req.listIds());
-                    // log or ignore the upsertResp if needed
                 } catch (Exception e) {
-                    // non-fatal: continue but report the upsert problem
+                    if (e instanceof com.immobiliaris.backend.service.BrevoException be) {
+                        return ResponseEntity.status(502).body(Map.of("error", "Brevo contacts upsert failed", "brevoStatus", be.getStatus(), "brevoBody", be.getBody()));
+                    }
                     return ResponseEntity.status(502).body(Map.of("error", "Failed to upsert contact in Brevo", "detail", e.getMessage()));
                 }
             }
@@ -41,6 +42,9 @@ public class EmailController {
             );
             return ResponseEntity.ok(Map.of("status", "sent", "brevoResponse", response));
         } catch (Exception e) {
+            if (e instanceof com.immobiliaris.backend.service.BrevoException be) {
+                return ResponseEntity.status(502).body(Map.of("error", "Brevo API error", "brevoStatus", be.getStatus(), "brevoBody", be.getBody()));
+            }
             return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
         }
     }
