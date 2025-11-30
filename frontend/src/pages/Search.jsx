@@ -74,7 +74,7 @@ function Search() {
       }
     }
     loadProperties();
-  }, []); // Esegui solo al mount
+  }, []);
 
   // Caricamento immagini
   useEffect(() => {
@@ -134,7 +134,7 @@ function Search() {
         <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-7">
           
           {/* Sidebar filtri */}
-          <aside className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 h-fit sticky top-28">
+          <aside className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 h-fit top-28">
             <FiltersSidebar
               filters={filters}
               cities={cities} // Passiamo la lista statica
