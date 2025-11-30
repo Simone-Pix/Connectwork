@@ -38,6 +38,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+        <!-- WebFlux for WebClient per Brevo API) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
 		<!-- Spring Security: authentication/authorization framework -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

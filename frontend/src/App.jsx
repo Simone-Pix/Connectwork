@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import { useAuthContext } from "./Contexts/AuthContext.jsx";
 import Layout from "./Layout/Layout";
+import AboutUs from "./pages/AboutUs.jsx";
 
 import "./App.css";
 
@@ -34,6 +35,8 @@ function App() {
             <Route path="/signin" element={<Signin />} />
             <Route path="/personal-area" element={isAuthenticated ? (<PersonalArea />) : (<Navigate to="/login" />)} />
             <Route path="/backoffice" element={!isAuthenticated ? <Navigate to="/login" /> : user?.role !== "admin" ? <Navigate to="/" /> : <Backoffice />} />
+
+            <Route path="/chi-siamo" element={<AboutUs />} />
             
             {/* 404 */}
 
