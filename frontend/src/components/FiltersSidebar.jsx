@@ -1,9 +1,9 @@
-// src/components/FiltersSidebar.jsx
 import { useState, useEffect } from "react";
 
-function FiltersSidebar({ filters, onApply, onReset }) {
+function FiltersSidebar({ filters, cities, onApply, onReset }) {
   const [local, setLocal] = useState(filters);
 
+  // Sincronizza lo stato locale quando i filtri cambiano (es. cliccando dalla Home)
   useEffect(() => {
     setLocal(filters);
   }, [filters]);
@@ -21,7 +21,7 @@ function FiltersSidebar({ filters, onApply, onReset }) {
   function handleReset(e) {
     e.preventDefault();
     setLocal({
-      tipoContratto: "all",
+      citta: "",
       minPrice: "",
       maxPrice: "",
       rooms: "all",
@@ -33,22 +33,29 @@ function FiltersSidebar({ filters, onApply, onReset }) {
 
   return (
     <form onSubmit={handleApply} className="space-y-4">
-      <h3 className="text-gray-900 text-lg font-bold">Filtra risultati</h3>
+      <div className="flex items-center justify-between mb-2">
+         <h3 className="text-gray-900 text-lg font-bold">Filtra risultati</h3>
+      </div>
 
-      {/* Tipo di contratto */}
+      {/* NUOVO: Filtro Città (Sostituisce Tipo Contratto) */}
       <div>
-        <label className="block text-gray-600 text-sm mb-1">Tipo di contratto</label>
+        <label className="block text-gray-600 text-sm mb-1 font-medium">Città</label>
         <select
-          name="tipoContratto"
-          value={local.tipoContratto}
+          name="citta"
+          value={local.citta}
           onChange={handleChange}
-          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition bg-white"
         >
-          <option value="all">Seleziona</option>
-          <option value="in_vendita">Sale</option>
-          <option value="in_affitto">Rent</option>
+          <option value="">Tutte le città</option>
+          {cities && cities.map((city, idx) => (
+            <option key={idx} value={city}>
+              {city}
+            </option>
+          ))}
         </select>
       </div>
+
+      <hr className="border-gray-100" />
 
       {/* Prezzo */}
       <div>
@@ -59,16 +66,16 @@ function FiltersSidebar({ filters, onApply, onReset }) {
             name="minPrice"
             value={local.minPrice}
             onChange={handleChange}
-            placeholder="€ 10000"
-            className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            placeholder="Min"
+            className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
           />
           <input
             type="number"
             name="maxPrice"
             value={local.maxPrice}
             onChange={handleChange}
-            placeholder="€ 1.000.000"
-            className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            placeholder="Max"
+            className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
           />
         </div>
       </div>
@@ -80,12 +87,12 @@ function FiltersSidebar({ filters, onApply, onReset }) {
           name="rooms"
           value={local.rooms}
           onChange={handleChange}
-          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white"
         >
-          <option value="all">Any</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
+          <option value="all">Qualsiasi</option>
+          <option value="1">1+</option>
+          <option value="2">2+</option>
+          <option value="3">3+</option>
           <option value="4">4+</option>
         </select>
       </div>
@@ -97,11 +104,11 @@ function FiltersSidebar({ filters, onApply, onReset }) {
           name="baths"
           value={local.baths}
           onChange={handleChange}
-          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white"
         >
-          <option value="all">Any</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
+          <option value="all">Qualsiasi</option>
+          <option value="1">1+</option>
+          <option value="2">2+</option>
           <option value="3">3+</option>
         </select>
       </div>
@@ -114,25 +121,25 @@ function FiltersSidebar({ filters, onApply, onReset }) {
           name="minSurface"
           value={local.minSurface}
           onChange={handleChange}
-          placeholder="es. 80"
-          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          placeholder="Es. 80"
+          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
         />
       </div>
 
       {/* Pulsanti */}
-      <div className="flex gap-2 pt-2">
+      <div className="flex gap-2 pt-4">
         <button
           type="button"
           onClick={handleReset}
-          className="flex-1 py-2.5 px-4 border border-gray-300 text-gray-800 rounded-lg font-medium hover:bg-gray-50 transition"
+          className="flex-1 py-2.5 px-4 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition"
         >
           Reset
         </button>
         <button
           type="submit"
-          className="flex-1 py-2.5 px-4 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition shadow-sm"
+          className="flex-1 py-2.5 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition shadow-sm"
         >
-          Applica filtri
+          Cerca
         </button>
       </div>
     </form>

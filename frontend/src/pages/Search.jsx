@@ -10,26 +10,45 @@ function Search() {
   const [loading, setLoading] = useState(true);
   const [images, setImages] = useState([]);
 
+
+  const cities = [
+    "Torino",
+    "Rivoli",
+    "Bra",
+    "Cuneo",
+    "Asti",
+    "Alessandria",
+    "Biella",
+    "Alba",
+    "Moncalieri",
+    "Pinerolo",
+    "Ivrea",
+    "Fossano",
+  ];
+
   const defaultFilters = {
-    tipoContratto: "all",
+    citta: "", 
     minPrice: "",
     maxPrice: "",
     rooms: "all",
     baths: "all",
     minSurface: "",
-    citta: "" // Aggiungi il filtro città
   };
 
   const [filters, setFilters] = useState(defaultFilters);
 
-  // Leggi la città dall'URL all'avvio
+  // 1. Leggi la città dall'URL all'avvio o quando cambia
   useEffect(() => {
     const cittaFromURL = searchParams.get("citta");
     if (cittaFromURL) {
-      setFilters(prev => ({ ...prev, citta: cittaFromURL }));
+      setFilters((prev) => ({ ...prev, citta: cittaFromURL }));
+    } else {
+      // Se non c'è città nell'URL, resetta il filtro città
+      setFilters((prev) => ({ ...prev, citta: "" }));
     }
   }, [searchParams]);
 
+  // 2. Carica dati
   useEffect(() => {
     async function loadProperties() {
       try {
@@ -38,7 +57,7 @@ function Search() {
         const data = await res.json();
         setAllProperties(data);
         
-        // Applica il filtro città se presente
+        // Applica subito il filtro se c'è una città nell'URL
         const cittaFromURL = searchParams.get("citta");
         if (cittaFromURL) {
           const filtered = data.filter(p => p.citta === cittaFromURL);
@@ -55,8 +74,9 @@ function Search() {
       }
     }
     loadProperties();
-  }, [searchParams]);
-  
+  }, []); // Esegui solo al mount
+
+  // Caricamento immagini
   useEffect(() => {
     async function loadImages() {
       try {
@@ -72,12 +92,17 @@ function Search() {
 
   function applyFilters(newFilters) {
     setFilters(newFilters);
+    
+    // Aggiorna l'URL in base alla selezione della città nel filtro
+    if (newFilters.citta) {
+      setSearchParams({ citta: newFilters.citta });
+    } else {
+      setSearchParams({});
+    }
+
     const result = allProperties.filter((p) => {
       // Filtro città
       if (newFilters.citta && p.citta !== newFilters.citta) return false;
-      
-      // Filtro tipo contratto
-      if (newFilters.tipoContratto !== "all" && p.stato !== newFilters.tipoContratto) return false;
       
       // Filtro prezzo
       if (newFilters.minPrice && Number(p.prezzoRichiesto) < Number(newFilters.minPrice)) return false;
@@ -95,54 +120,24 @@ function Search() {
       return true;
     });
     setFilteredProperties(result);
-    
-    // Rimuovi il parametro città dall'URL quando l'utente cambia i filtri manualmente
-    if (searchParams.get("citta")) {
-      searchParams.delete("citta");
-      setSearchParams(searchParams);
-    }
   }
 
   function resetFilters() {
     setFilters(defaultFilters);
     setFilteredProperties(allProperties);
-    
-    // Rimuovi il parametro città dall'URL
-    if (searchParams.get("citta")) {
-      searchParams.delete("citta");
-      setSearchParams(searchParams);
-    }
-  }
-
-  function removeCityFilter() {
-    const newFilters = { ...filters, citta: "" };
-    setFilters(newFilters);
-    applyFilters(newFilters);
+    setSearchParams({}); // Pulisce l'URL
   }
 
   return (
     <div className="pt-28 pb-10 min-h-screen"> 
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-7">
+          
           {/* Sidebar filtri */}
-          <aside className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-            {/* Badge città selezionata */}
-            {filters.citta && (
-              <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                <p className="text-sm text-blue-800 mb-1">
-                  📍 <strong>{filters.citta}</strong>
-                </p>
-                <button
-                  onClick={removeCityFilter}
-                  className="text-xs text-blue-600 hover:text-blue-800 underline"
-                >
-                  Rimuovi filtro città
-                </button>
-              </div>
-            )}
-            
+          <aside className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 h-fit sticky top-28">
             <FiltersSidebar
               filters={filters}
+              cities={cities} // Passiamo la lista statica
               onApply={applyFilters}
               onReset={resetFilters}
             />
@@ -152,7 +147,7 @@ function Search() {
           <main>
             <header className="mb-6">
               <h2 className="text-gray-900 text-xl font-bold">
-                Immobili {filters.citta && `a ${filters.citta}`}
+                Immobili {filters.citta ? `a ${filters.citta}` : "in vendita"}
               </h2>
               <p className="text-gray-600 text-sm">
                 {filteredProperties.length} {filteredProperties.length === 1 ? 'risultato trovato' : 'risultati trovati'}
