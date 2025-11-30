@@ -11,7 +11,6 @@
     @apply w-full h-full object-cover;
   }
 
-
   .prop-badge-container {
     @apply absolute top-3 left-3 flex gap-2 flex-wrap;
   }
