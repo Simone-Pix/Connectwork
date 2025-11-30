@@ -133,3 +133,40 @@ INSERT INTO zone_prezzi (cap, citta, zona_nome, prezzo_mq_medio) VALUES
 -- ASTI - CAP unico per tutta la città
 INSERT INTO zone_prezzi (cap, citta, zona_nome, prezzo_mq_medio) VALUES
 ('14100', 'Asti', 'Centro e periferia', 1900.00);
+
+-- BIELLA - CAP unico per tutta la città
+INSERT INTO zone_prezzi (cap, citta, zona_nome, prezzo_mq_medio) VALUES
+('13900', 'Biella', 'Centro e periferia', 1700.00);
+
+-- ALBA (CN) - CAP unico per tutta la città
+INSERT INTO zone_prezzi (cap, citta, zona_nome, prezzo_mq_medio) VALUES
+('12051', 'Alba', 'Centro e periferia', 2300.00);
+
+-- MONCALIERI (TO) - CAP principali
+INSERT INTO zone_prezzi (cap, citta, zona_nome, prezzo_mq_medio) VALUES
+('10024', 'Moncalieri', 'Centro storico', 2400.00),
+('10025', 'Moncalieri', 'Zona residenziale', 2200.00);
+
+-- PINEROLO (TO) - CAP unico per tutta la città
+INSERT INTO zone_prezzi (cap, citta, zona_nome, prezzo_mq_medio) VALUES
+('10064', 'Pinerolo', 'Centro e periferia', 1800.00);
+
+-- IVREA (TO) - CAP unico per tutta la città
+INSERT INTO zone_prezzi (cap, citta, zona_nome, prezzo_mq_medio) VALUES
+('10015', 'Ivrea', 'Centro e periferia', 1600.00);
+
+-- FOSSANO (CN) - CAP unico per tutta la città
+INSERT INTO zone_prezzi (cap, citta, zona_nome, prezzo_mq_medio) VALUES
+('12045', 'Fossano', 'Centro e periferia', 1700.00);
+
+-- RIVOLI (TO) - CAP unico per tutta la città
+INSERT INTO zone_prezzi (cap, citta, zona_nome, prezzo_mq_medio) VALUES
+('10098', 'Rivoli', 'Centro e periferia', 2100.00);
+
+-- BRA (CN) - CAP unico per tutta la città
+INSERT INTO zone_prezzi (cap, citta, zona_nome, prezzo_mq_medio) VALUES
+('12042', 'Bra', 'Centro e periferia', 1800.00);
+
+-- ALMESE (TO) - CAP unico per tutta la città
+INSERT INTO zone_prezzi (cap, citta, zona_nome, prezzo_mq_medio) VALUES
+('10040', 'Almese', 'Centro e periferia', 1500.00);
