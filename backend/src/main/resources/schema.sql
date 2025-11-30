@@ -54,29 +54,43 @@ CREATE TABLE IF NOT EXISTS immagini (
     CONSTRAINT FK_Immagini_Immobili FOREIGN KEY (immobile_id) REFERENCES immobili(id) ON DELETE CASCADE
 );
 
--- Tabella valutazioni
 CREATE TABLE IF NOT EXISTS valutazioni (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    immobile_id BIGINT NOT NULL,
+
+    -- può essere NULL perché ora esistono valutazioni senza immobile
+    immobile_id BIGINT,
+    
+    -- nuova colonna per collegare la valutazione alla richiesta
+    richiesta_id BIGINT,
+
     valore_stimato_min DECIMAL(12,2),
     valore_stimato_max DECIMAL(12,2),
     prezzo_mq DECIMAL(8,2),
     note CLOB,
+
     data_valutazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FK_Valutazioni_Immobili FOREIGN KEY (immobile_id) REFERENCES immobili(id) ON DELETE CASCADE
+
+    -- Foreign key verso immobili
+    CONSTRAINT FK_Valutazioni_Immobili 
+        FOREIGN KEY (immobile_id) REFERENCES immobili(id) ON DELETE CASCADE,
+
+    -- Foreign key verso richieste
+    CONSTRAINT FK_Valutazioni_Richieste 
+        FOREIGN KEY (richiesta_id) REFERENCES richieste(id) ON DELETE CASCADE
 );
+
 
 -- Tabella contratti
 CREATE TABLE IF NOT EXISTS contratti (
     id_contract BIGINT AUTO_INCREMENT PRIMARY KEY,
-    immobile_id BIGINT NOT NULL,
+    immobile_id BIGINT NULL,
     proprietario_id BIGINT NOT NULL,
     tipo VARCHAR(20) DEFAULT 'esclusiva' CHECK (tipo IN ('esclusiva','mandato')),
     durata_mesi INT,
     commissione DECIMAL(5,2),
     stato VARCHAR(20) DEFAULT 'proposta' CHECK (stato IN ('proposta','accettato','rifiutato')),
     data_proposta TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FK_Contratti_Immobili FOREIGN KEY (immobile_id) REFERENCES immobili(id) ON DELETE CASCADE,
+    CONSTRAINT FK_Contratti_Immobili FOREIGN KEY (immobile_id) REFERENCES immobili(id) ON DELETE SET NULL,
     CONSTRAINT FK_Contratti_Users FOREIGN KEY (proprietario_id) REFERENCES users(id)
 );
 
@@ -101,6 +115,7 @@ CREATE TABLE IF NOT EXISTS richieste (
     email VARCHAR(255) NOT NULL,
     telefono VARCHAR(50) NOT NULL,
     indirizzo VARCHAR(255) NOT NULL,
+    -- tipo operazione si puo far esplodere
     tipo_operazione VARCHAR(100) NOT NULL,
     tempistica VARCHAR(100) NOT NULL,
     piano INT NOT NULL,
@@ -108,6 +123,24 @@ CREATE TABLE IF NOT EXISTS richieste (
     bagni INT NOT NULL,
     superficie DECIMAL(10,2) NOT NULL,
     optional_info VARCHAR(1000) NULL,
+    -- Campi aggiunti per valutazione automatica
+    cap VARCHAR(10),
+    citta VARCHAR(100),
+    provincia VARCHAR(50),
+    tipo_immobile VARCHAR(50),
+    anno_costruzione SMALLINT,
+    stato_conservazione VARCHAR(50) CHECK (stato_conservazione IN ('da_ristrutturare','buono','ottimo','lusso')),
+    classe_energetica VARCHAR(2) CHECK (classe_energetica IN ('A','B','C','D','E','F','G')),
+    valutata BOOLEAN DEFAULT FALSE,
     data_creazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabella zone_prezzi per la valutazione automatica
+CREATE TABLE IF NOT EXISTS zone_prezzi (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cap VARCHAR(10) NOT NULL UNIQUE,
+    citta VARCHAR(100) NOT NULL,
+    zona_nome VARCHAR(255),
+    prezzo_mq_medio DECIMAL(10,2) NOT NULL
 );
 

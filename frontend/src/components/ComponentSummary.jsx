@@ -3,7 +3,7 @@ import SuccessToast from "./SuccessToast";
 function ComponentSummary({ data, back, submit, showSuccess }) {
 
   const requiredFields = [
-    "tipoOperazione",
+    "tipoImmobile",
     "indirizzo",
     "superficie",
     "stanze",
@@ -28,7 +28,7 @@ function ComponentSummary({ data, back, submit, showSuccess }) {
 
         <div className="grid grid-cols-2 gap-4">
           <span className="text-gray-600">Tipo operazione</span>
-          <span className="font-medium">{data.tipoOperazione}</span>
+          <span className="font-medium">{data.tipoImmobile}</span>
 
           <span className="text-gray-600">Indirizzo</span>
           <span className="font-medium">{data.indirizzo}</span>

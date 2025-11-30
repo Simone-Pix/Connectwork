@@ -1,0 +1,74 @@
+### Test Endpoint Valutazione Richieste
+### Usa REST Client extension di VS Code
+### Clicca su "Send Request" sopra ogni richiesta
+
+@baseUrl = http://localhost:8080
+
+### 1. Crea una nuova richiesta CON campi valutazione
+POST {{baseUrl}}/api/richieste
+Content-Type: application/json
+
+{
+  "nome": "Mario",
+  "cognome": "Rossi",
+  "email": "mario.rossi@example.com",
+  "telefono": "3331234567",
+  "indirizzo": "Via Roma 15",
+  "tipoOperazione": "vendita",
+  "tempistica": "1-3 mesi",
+  "piano": 2,
+  "stanze": 3,
+  "bagni": 2,
+  "superficie": 85,
+  "optionalInfo": "garage, terrazzo",
+  "cap": "10121",
+  "citta": "Torino",
+  "provincia": "TO",
+  "tipoImmobile": "appartamento",
+  "annoCostruzione": 2005,
+  "statoConservazione": "buono",
+  "classeEnergetica": "C"
+}
+
+### 2. Visualizza tutte le richieste
+GET {{baseUrl}}/api/richieste
+
+### 3. Valuta richiesta automaticamente (CAMBIA ID se necessario)
+POST {{baseUrl}}/api/richieste/130/valuta-automatica
+
+### 4. Converti richiesta in immobile (USA L'ID DALLA RISPOSTA DEL TEST #1 o #2!)
+POST {{baseUrl}}/api/richieste/130/converti-immobile
+
+### 5. Visualizza immobili creati
+GET {{baseUrl}}/api/immobili
+
+### 6. Visualizza valutazioni create
+GET {{baseUrl}}/api/valutazioni
+
+### 7. Test con CAP non mappato (deve dare errore 404)
+POST {{baseUrl}}/api/richieste
+Content-Type: application/json
+
+{
+  "nome": "Test",
+  "cognome": "Errore",
+  "email": "test@example.com",
+  "telefono": "1234567890",
+  "indirizzo": "Via Test",
+  "tipoOperazione": "vendita",
+  "tempistica": "subito",
+  "piano": 0,
+  "stanze": 2,
+  "bagni": 1,
+  "superficie": 50,
+  "cap": "99999"
+}
+
+### 8. Prova valutazione con CAP errato (usa ID dalla richiesta #7)
+POST {{baseUrl}}/api/richieste/2/valuta-automatica
+
+### 9. Verifica zone prezzi disponibili
+GET {{baseUrl}}/api/zone-prezzi
+
+### 10. Cerca zona per CAP specifico
+GET {{baseUrl}}/api/zone-prezzi/cap/10121

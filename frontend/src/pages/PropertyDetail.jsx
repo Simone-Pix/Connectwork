@@ -81,7 +81,7 @@ export default function PropertyDetail() {
                 </div>
 
                 <div className="text-right">
-                  <h1 className="text-xl font-bold text-gray-900">{property.titolo || "Appartamento"}</h1>
+                  <h1 className="text-xl font-bold text-gray-900">{property.tipoImmobile || ""}</h1>
                   <div className="text-sm text-gray-600 mt-1">{property.indirizzo ? `${property.indirizzo}, ${property.citta}` : `${property.citta || ""}`}</div>
                 </div>
               </div>

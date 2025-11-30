@@ -1,48 +1,59 @@
 import { useEffect, useState } from "react";
 
+// Stato iniziale del form per Aggiungi Immobile
+const initialFormState = {
+  titolo: "",
+  annoCostruzione: "",
+  cap: "",
+  citta: "",
+  classeEnergetica: "",
+  descrizione: "",
+  disponibileEsclusiva: false,
+  indirizzo: "",
+  numBagni: "",
+  numLocali: "",
+  piano: "",
+  prezzoRichiesto: "",
+  provincia: "",
+  stato: "",
+  statoConservazione: "",
+  superficie: "",
+  tipoImmobile: "",
+  proprietarioId: "",
+};
+
 function Backoffice() {
-  const [section, setSection] = useState("valutazioni");
-  const [richieste, setRichieste] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Stati di controllo UI e dati principali
+  const [section, setSection] = useState("aggiungi");
   const [openItem, setOpenItem] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // Dati delle sezioni
+  const [richieste, setRichieste] = useState([]);
+  const [immobili, setImmobili] = useState([]);
+
+  // Stato per la valutazione
   const [valuationInput, setValuationInput] = useState("");
+  const [valutate, setValutate] = useState({});
 
-  // ----- state per "Add immobile" -----
-  const [form, setForm] = useState({
-    titolo: "",
-    annoCostruzione: "",
-    cap: "",
-    citta: "",
-    classeEnergetica: "",
-    descrizione: "",
-    disponibileEsclusiva: false,
-    indirizzo: "",
-    numBagni: "",
-    numLocali: "",
-    piano: "",
-    prezzoRichiesto: "",
-    provincia: "",
-    stato: "", // es: "in_vendita", "bozza"
-    statoConservazione: "",
-    superficie: "",
-    tipoImmobile: "",
-    proprietarioId: ""
-    // dataInserimento la creo all'invio
-  });
-
-  const [imageFiles, setImageFiles] = useState([]); // File[] immagini
+  // Stato per "aggiungi immobile"
+  const [addForm, setAddForm] = useState(initialFormState);
+  const [imageFiles, setImageFiles] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState(null);
 
+  // Effetto per caricare richieste/valutazioni
   useEffect(() => {
     async function loadRichieste() {
       if (section !== "valutazioni") return;
+      setLoading(true);
       try {
-        setLoading(true);
         const res = await fetch("/api/richieste");
         const data = await res.json();
+
         setRichieste(data);
+
       } catch (err) {
         console.error("Failed to fetch valutazioni", err);
         setRichieste([]);
@@ -53,115 +64,197 @@ function Backoffice() {
     loadRichieste();
   }, [section]);
 
+  // Effetto per caricare immobili per la modifica
+  useEffect(() => {
+    async function loadImmobili() {
+      if (section !== "modifica") return;
+      setLoading(true);
+      try {
+        const res = await fetch("/api/immobili");
+        const data = await res.json();
+        setImmobili(data);
+      } catch (err) {
+        console.error("Failed to fetch immobili", err);
+        setImmobili([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadImmobili();
+  }, [section]);
+
+  // Funzione generica per il cambio di sezione
+  function handleSectionChange(newSection) {
+    setSection(newSection);
+    setOpenItem(null); // Chiude l'elemento aperto al cambio di sezione
+    setMobileOpen(false); // Chiude il menu mobile
+  }
+
+  // Toggle dell'elemento aperto (richiesta o immobile)
   function toggleItem(id) {
     setOpenItem((prev) => (prev === id ? null : id));
   }
 
-  async function sendValutazione(id, email) {
+  // Funzione per far partire la valutazione automatica di una richiesta
+  async function sendAutomaticValutazione(id) {
     try {
-      await fetch(`/api/valutazione-placeholder/${id}`, {
+      const res = await fetch(`/api/richieste/${id}/valuta-automatica`, {
         method: "POST",
-        body: JSON.stringify({
-          email: email,
-          valutazione: valuationInput,
-        }),
       });
-      setOpenItem(null);
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || "Errore valutazione automatica");
+      }
+
+      const data = await res.json();
+
+    // aggiunta per settare valutata true lato frontend
+    setRichieste(prev =>
+      prev.map(r =>
+        r.id === id ? { ...r, valutata: true } : r
+      )
+    )
+    
+    // setOpenItem(null);
+
+      alert(`Valutazione stimata: ${data.valoreStimatoMin}€ - ${data.valoreStimatoMax}€`);
     } catch (err) {
-      console.error("Failed to send", err);
+      alert(err.message);
     }
   }
 
-  // Generic form change handler
-  function handleChange(e) {
+  // funzione per eliminare una richiesta
+
+  async function deleteRichiesta(id) {
+    if (!window.confirm("Vuoi davvero eliminare questa richiesta?")) return;
+
+    try {
+      const res = await fetch(`/api/richieste/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Errore eliminazione richiesta");
+
+      setRichieste((prev) => prev.filter((r) => r.id !== id));
+    } catch (err) {
+      alert(err.message || "Errore durante l'eliminazione.");
+    }
+  }
+
+  //funzione per il colore del pallino
+
+  function getStatusColor(r) {
+    if (r?.valutata) return "green";
+
+    if (!r.cap || r.cap.trim() === "") return "yellow";
+
+    return "red";
+  }
+
+  // blocca toggle se gia valutata
+
+// function toggleItem(id) {
+//   const r = richieste.find(x => x.id === id);
+//   if (!r) return;
+
+//   // se l'item è già aperto, chiudilo sempre
+//   if (openItem === id) {
+//     setOpenItem(null);
+//     return;
+//   }
+
+//   // se è chiuso, aprilo solo se non è già valutato
+//   if (r.valutata) return;
+
+//   setOpenItem(id);
+// }
+
+
+  // Gestore per l'input del form di Aggiungi Immobile (controllato)
+  function handleAddFormChange(e) {
     const { name, type, value, checked } = e.target;
-    setForm((prev) => ({
+    setAddForm((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   }
 
+  // Gestore per i file immagine
   function handleFilesChange(e) {
     const files = Array.from(e.target.files || []);
     setImageFiles(files);
   }
 
-  // Convert numeric-like fields before sending
-  function preparePayload(dataNotControlled) {
+  /**
+   * Prepara il payload dati convertendo le stringhe in tipi numerici/booleani
+   * @param {Object} data - I dati grezzi, tipicamente da stato controllato o FormData
+   * @returns {Object} Il payload pulito per la richiesta API
+   */
+  function preparePayload(data) {
     return {
-      titolo: dataNotControlled.titolo || "",
-      annoCostruzione: dataNotControlled.annoCostruzione ? parseInt(dataNotControlled.annoCostruzione, 10) : null,
-      cap: dataNotControlled.cap || "",
-      citta: dataNotControlled.citta || "",
-      classeEnergetica: dataNotControlled.classeEnergetica || "",
-      dataInserimento: new Date().toISOString(), // server may override
-      descrizione: dataNotControlled.descrizione || "",
-      disponibileEsclusiva: !!dataNotControlled.disponibileEsclusiva,
-      indirizzo: dataNotControlled.indirizzo || "",
-      numBagni: dataNotControlled.numBagni ? parseInt(dataNotControlled.numBagni, 10) : null,
-      numLocali: dataNotControlled.numLocali ? parseInt(dataNotControlled.numLocali, 10) : null,
-      piano: dataNotControlled.piano || "",
-      prezzoRichiesto: dataNotControlled.prezzoRichiesto ? parseFloat(dataNotControlled.prezzoRichiesto) : null,
-      provincia: dataNotControlled.provincia || "",
-      stato: dataNotControlled.stato || "",
-      statoConservazione: dataNotControlled.statoConservazione || "",
-      superficie: dataNotControlled.superficie ? parseFloat(dataNotControlled.superficie) : null,
-      tipoImmobile: dataNotControlled.tipoImmobile || "",
-      proprietarioId: dataNotControlled.proprietarioId ? parseInt(dataNotControlled.proprietarioId, 10) : null
+      titolo: data.titolo || "", // Incluso qui se proviene dal form di Aggiungi
+      annoCostruzione: data.annoCostruzione ? parseInt(data.annoCostruzione, 10) : null,
+      cap: data.cap || "",
+      citta: data.citta || "",
+      classeEnergetica: data.classeEnergetica || "",
+      dataInserimento: new Date().toISOString(),
+      descrizione: data.descrizione || "",
+      disponibileEsclusiva: !!data.disponibileEsclusiva,
+      indirizzo: data.indirizzo || "",
+      numBagni: data.numBagni ? parseInt(data.numBagni, 10) : null,
+      numLocali: data.numLocali ? parseInt(data.numLocali, 10) : null,
+      piano: data.piano || "",
+      prezzoRichiesto: data.prezzoRichiesto ? parseFloat(data.prezzoRichiesto) : null,
+      provincia: data.provincia || "",
+      stato: data.stato || "",
+      statoConservazione: data.statoConservazione || "",
+      superficie: data.superficie ? parseFloat(data.superficie) : null,
+      tipoImmobile: data.tipoImmobile || "",
+      proprietarioId: data.proprietarioId ? parseInt(data.proprietarioId, 10) : null,
     };
   }
 
-  // Submit form: create immobile, then upload images
-  async function handleSubmit() {
+  // Submit form: crea immobile, poi carica immagini
+  async function handleAddSubmit(e) {
+    e.preventDefault();
     setSubmitting(true);
     setSubmitMessage(null);
 
     try {
-      const payload = preparePayload(form);
+      const payload = preparePayload(addForm);
 
-      // 1) Create immobile
+      // 1) Creazione immobile
       const res = await fetch("/api/immobili", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
         const text = await res.text();
-        throw new Error(`Failed to create immobile: ${res.status} ${text}`);
+        throw new Error(`Creazione immobile fallita: ${res.status} ${text}`);
       }
 
       const created = await res.json();
-      // Expect created to contain the new immobile and its id
-      const immobileId = created && (created.id || created.immoId || created.immobileId || created.ID) ? (
-        created.id || created.immoId || created.immobileId || created.ID
-      ) : null;
+      // Tentativo di estrarre l'ID, cercando tra i nomi più comuni
+      const finalId = created?.id || created?.immoId || created?.immobileId || created?.ID || null;
 
-      // If backend returns the entity without id in those fields, try common fallbacks:
-      const idFallback = created && created.id ? created.id : immobileId;
-
-      if (!immobileId && !idFallback) {
-        // Try to read created.id anyway
-        if (created && created.id) {
-          // nothing
-        } else {
-          console.warn("Created immobile response did not include an id. Response:", created);
-        }
+      if (!finalId) {
+        console.warn("L'immobile creato non ha restituito un ID riconosciuto. Risposta:", created);
       }
 
-      const finalId = immobileId || idFallback || (created && created.id);
-
-      // 2) Upload images (if any)
+      // 2) Upload immagini (se ci sono file e abbiamo un ID)
+      let uploadResults = [];
       if (imageFiles.length > 0 && finalId) {
-        const uploadResults = [];
         for (const file of imageFiles) {
           const formData = new FormData();
           formData.append("file", file);
-          // endpoint: POST /api/immagini/upload/{immobileId}
           const upRes = await fetch(`/api/immagini/upload/${finalId}`, {
             method: "POST",
-            body: formData
+            body: formData,
           });
+
           if (!upRes.ok) {
             const txt = await upRes.text();
             console.error("Image upload failed for", file.name, txt);
@@ -171,115 +264,154 @@ function Backoffice() {
             uploadResults.push({ file: file.name, ok: true, response: upJson });
           }
         }
-        setSubmitMessage({
-          success: true,
-          immobile: created,
-          uploads: uploadResults
-        });
-      } else {
-        setSubmitMessage({ success: true, immobile: created, uploads: [] });
       }
 
-      // Reset form (if desired)
-      setForm({
-        titolo: "",
-        annoCostruzione: "",
-        cap: "",
-        citta: "",
-        classeEnergetica: "",
-        descrizione: "",
-        disponibileEsclusiva: false,
-        indirizzo: "",
-        numBagni: "",
-        numLocali: "",
-        piano: "",
-        prezzoRichiesto: "",
-        provincia: "",
-        stato: "",
-        statoConservazione: "",
-        superficie: "",
-        tipoImmobile: "",
-        proprietarioId: ""
-      });
+      setSubmitMessage({ success: true, immobile: created, uploads: uploadResults });
+
+      // Reset form
+      setAddForm(initialFormState);
       setImageFiles([]);
     } catch (err) {
-      console.error(err);
-      setSubmitMessage({ success: false, message: err.message || "Unknown error" });
+      console.error("Errore nel submit:", err);
+      setSubmitMessage({ success: false, message: err.message || "Errore sconosciuto" });
     } finally {
       setSubmitting(false);
     }
   }
 
+  // Reset del form di aggiunta
+  function resetAddForm() {
+    setAddForm(initialFormState);
+    setImageFiles([]);
+    setSubmitMessage(null);
+  }
+
+  // Elimina un immobile
+  async function deleteImmobile(id) {
+    if (!window.confirm("Vuoi davvero eliminare questo immobile?")) return;
+
+    try {
+      const res = await fetch(`/api/immobili/${id}`, { method: "DELETE" });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Eliminazione fallita: ${res.status} ${text}`);
+      }
+
+      window.alert("Immobile eliminato con successo.");
+      setImmobili((prev) => prev.filter((i) => i.id !== id));
+      setOpenItem(null); // Chiudi l'elemento eliminato
+    } catch (err) {
+      console.error("Errore nell'eliminazione dell'immobile", err);
+      window.alert(err.message || "Errore sconosciuto durante l'eliminazione.");
+    }
+  }
+
+  // Aggiorna un immobile (usa FormData per leggere i valori non controllati)
+  async function updateImmobile(e, id) {
+    e.preventDefault();
+    const formEl = e.target;
+    const formData = new FormData(formEl);
+    const rawObj = Object.fromEntries(formData.entries());
+    const payload = preparePayload(rawObj);
+
+    // dataInserimento non deve essere aggiornato perche viene creata in automatico alla creazione
+    delete payload.dataInserimento;
+
+    try {
+      const res = await fetch(`/api/immobili/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Aggiornamento fallito: ${res.status} ${text}`);
+      }
+
+      // Aggiorna lo stato locale dell'immobile per riflettere le modifiche
+      const updatedImmobile = await res.json();
+      setImmobili((prev) =>
+        prev.map((i) => (i.id === id ? { ...i, ...updatedImmobile } : i))
+      );
+      window.alert("Immobile aggiornato con successo.");
+    } catch (err) {
+      console.error("Errore nell'aggiornamento dell'immobile", err);
+      window.alert(err.message || "Errore sconosciuto durante l'aggiornamento.");
+    }
+  }
 
   return (
     <div className="backoffice-wrapper-backoffice pt-28 pb-10 min-h-screen">
-
       {/* Mobile header */}
-      <div className="backoffice-mobileToggle-backoffice lg:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
+      <div
+        className="backoffice-mobileToggle-backoffice lg:hidden"
+        onClick={() => setMobileOpen(!mobileOpen)}
+      >
         Backoffice pages
       </div>
 
       <div className={`backoffice-layout-backoffice ${mobileOpen ? "open" : ""}`}>
-
         {/* Sidebar */}
         <aside className="backoffice-sidebar-backoffice">
           <button
-            className={`backoffice-sidebarItem-backoffice ${section === "add" ? "active" : ""}`}
-            onClick={() => setSection("add")}
+            className={`backoffice-sidebarItem-backoffice ${section === "aggiungi" ? "active" : ""
+              }`}
+            onClick={() => handleSectionChange("aggiungi")}
           >
             Aggiungi immobile
           </button>
 
           <button
-            className={`backoffice-sidebarItem-backoffice ${section === "valutazioni" ? "active" : ""}`}
-            onClick={() => setSection("valutazioni")}
+            className={`backoffice-sidebarItem-backoffice ${section === "valutazioni" ? "active" : ""
+              }`}
+            onClick={() => handleSectionChange("valutazioni")}
           >
             Richieste valutazioni
           </button>
 
           <button
-            className={`backoffice-sidebarItem-backoffice ${section === "visite" ? "active" : ""}`}
-            onClick={() => setSection("visite")}
+            className={`backoffice-sidebarItem-backoffice ${section === "modifica" ? "active" : ""
+              }`}
+            onClick={() => handleSectionChange("modifica")}
           >
-            Richieste visite
+            Modifica immobili
           </button>
         </aside>
 
         {/* Main content */}
         <main className="backoffice-main-backoffice">
-
           {/* SEZIONE: Richieste Valutazioni */}
           {section === "valutazioni" && (
             <div>
               <h2 className="backoffice-title-backoffice">Richieste di valutazione</h2>
 
               {loading ? (
-                <div className="backoffice-loading-backoffice">
-                  Loading...
-                </div>
+                <div className="backoffice-loading-backoffice">Loading...</div>
               ) : (
                 <div className="space-y-4">
                   {richieste.map((r) => {
                     const isOpen = openItem === r.id;
-                    const isEvaluated = false; // Placeholder, aggiornerai tu
+                    const statusClass = getStatusColor(r);
+                    const isValutata = valutate[r.id];
 
                     return (
-                      <div
-                        key={r.id}
-                        className="backoffice-item-backoffice"
-                      >
-                        {/* RIGA COMPATTA */}
+                      <div key={r.id} className="backoffice-item-backoffice">
+                        {/* HEADER COMPATTO */}
                         <div
-                          className="backoffice-itemHeader-backoffice"
+                          className={`backoffice-itemHeader-backoffice ${isValutata ? "cursor-not-allowed opacity-60" : "cursor-pointer"
+                            }`}
                           onClick={() => toggleItem(r.id)}
                         >
                           <span>ID: {r.id}</span>
                           <span>{r.email}</span>
-                          <span className={`backoffice-statusDot-backoffice ${isEvaluated ? "green" : "red"}`}></span>
+
+                          <span className={`backoffice-statusDot-backoffice ${statusClass}`}></span>
                         </div>
 
-                        {/* CONTENUTO ESTESO */}
-                        {isOpen && (
+                        {/* CONTENUTO ESPANSO */}
+                        {isOpen && !isValutata && (
                           <div className="backoffice-itemBody-backoffice">
                             <div className="backoffice-grid-backoffice">
                               <p><strong>Nome:</strong> {r.nome}</p>
@@ -291,24 +423,23 @@ function Backoffice() {
                               <p><strong>Superficie:</strong> {r.superficie}</p>
                               <p><strong>Piano:</strong> {r.piano}</p>
                               <p><strong>Tempi:</strong> {r.tempistica}</p>
-                              <p><strong>Tipo:</strong> {r.tipo_operazione}</p>
-                              <p><strong>Data:</strong> {r.data_creazione}</p>
-                              <p><strong>Note:</strong> {r.optional_info}</p>
+                              <p><strong>Tipo:</strong> {r.tipoImmobile}</p>
+                              <p><strong>Data:</strong> {r.dataCreazione}</p>
+                              <p><strong>Note:</strong> {r.optionalInfo}</p>
                             </div>
 
-                            {/* Input valutazione */}
-                            <div className="backoffice-valutazioneBox-backoffice">
-                              <input
-                                type="number"
-                                value={valuationInput}
-                                onChange={(e) => setValuationInput(e.target.value)}
-                                placeholder="Inserisci valutazione (€)"
-                                className="backoffice-inputValutazione-backoffice"
-                              />
+                            {/* BOTTONI AZIONI */}
+                            <div className="backoffice-actions-backoffice">
+                              <button
+                                className="backoffice-deleteButton-backoffice"
+                                onClick={() => deleteRichiesta(r.id)}
+                              >
+                                Elimina
+                              </button>
 
                               <button
                                 className="backoffice-sendButton-backoffice"
-                                onClick={() => sendValutazione(r.id, r.email)}
+                                onClick={() => sendAutomaticValutazione(r.id)}
                               >
                                 Invia
                               </button>
@@ -323,25 +454,22 @@ function Backoffice() {
             </div>
           )}
 
+
           {/* SEZIONE: Aggiungi immobile */}
-          {section === "add" && (
+          {section === "aggiungi" && (
             <div>
               <h2 className="backoffice-title-backoffice">Aggiungi immobile</h2>
 
-              <form className="backoffice-addForm-backoffice" onSubmit={handleSubmit}>
-                <input
-                  name="titolo"
-                  value={form.titolo}
-                  onChange={handleChange}
-                  className="backoffice-formInput-backoffice"
-                  placeholder="Titolo immobile"
-                />
-
+              <form
+                className="backoffice-addForm-backoffice"
+                onSubmit={handleAddSubmit}
+              >
+                {/* Il form di aggiunta è controllato */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                   <input
                     name="annoCostruzione"
-                    value={form.annoCostruzione}
-                    onChange={handleChange}
+                    value={addForm.annoCostruzione}
+                    onChange={handleAddFormChange}
                     className="backoffice-formInput-backoffice"
                     placeholder="Anno costruzione (YYYY)"
                     type="number"
@@ -349,56 +477,56 @@ function Backoffice() {
 
                   <input
                     name="cap"
-                    value={form.cap}
-                    onChange={handleChange}
+                    value={addForm.cap}
+                    onChange={handleAddFormChange}
                     className="backoffice-formInput-backoffice"
                     placeholder="CAP"
                   />
 
                   <input
                     name="citta"
-                    value={form.citta}
-                    onChange={handleChange}
+                    value={addForm.citta}
+                    onChange={handleAddFormChange}
                     className="backoffice-formInput-backoffice"
                     placeholder="Città"
                   />
 
                   <input
                     name="provincia"
-                    value={form.provincia}
-                    onChange={handleChange}
+                    value={addForm.provincia}
+                    onChange={handleAddFormChange}
                     className="backoffice-formInput-backoffice"
                     placeholder="Provincia"
                   />
 
                   <input
                     name="classeEnergetica"
-                    value={form.classeEnergetica}
-                    onChange={handleChange}
+                    value={addForm.classeEnergetica}
+                    onChange={handleAddFormChange}
                     className="backoffice-formInput-backoffice"
                     placeholder="Classe energetica"
                   />
 
                   <input
                     name="tipoImmobile"
-                    value={form.tipoImmobile}
-                    onChange={handleChange}
+                    value={addForm.tipoImmobile}
+                    onChange={handleAddFormChange}
                     className="backoffice-formInput-backoffice"
                     placeholder="Tipo immobile (es. appartamento, casa)"
                   />
 
                   <input
                     name="indirizzo"
-                    value={form.indirizzo}
-                    onChange={handleChange}
+                    value={addForm.indirizzo}
+                    onChange={handleAddFormChange}
                     className="backoffice-formInput-backoffice"
                     placeholder="Indirizzo"
                   />
 
                   <input
                     name="superficie"
-                    value={form.superficie}
-                    onChange={handleChange}
+                    value={addForm.superficie}
+                    onChange={handleAddFormChange}
                     className="backoffice-formInput-backoffice"
                     placeholder="Superficie (m²)"
                     type="number"
@@ -407,8 +535,8 @@ function Backoffice() {
 
                   <input
                     name="numLocali"
-                    value={form.numLocali}
-                    onChange={handleChange}
+                    value={addForm.numLocali}
+                    onChange={handleAddFormChange}
                     className="backoffice-formInput-backoffice"
                     placeholder="Numero locali"
                     type="number"
@@ -416,8 +544,8 @@ function Backoffice() {
 
                   <input
                     name="numBagni"
-                    value={form.numBagni}
-                    onChange={handleChange}
+                    value={addForm.numBagni}
+                    onChange={handleAddFormChange}
                     className="backoffice-formInput-backoffice"
                     placeholder="Numero bagni"
                     type="number"
@@ -425,16 +553,16 @@ function Backoffice() {
 
                   <input
                     name="piano"
-                    value={form.piano}
-                    onChange={handleChange}
+                    value={addForm.piano}
+                    onChange={handleAddFormChange}
                     className="backoffice-formInput-backoffice"
                     placeholder="Piano"
                   />
 
                   <input
                     name="prezzoRichiesto"
-                    value={form.prezzoRichiesto}
-                    onChange={handleChange}
+                    value={addForm.prezzoRichiesto}
+                    onChange={handleAddFormChange}
                     className="backoffice-formInput-backoffice"
                     placeholder="Prezzo richiesto (€)"
                     type="number"
@@ -443,24 +571,24 @@ function Backoffice() {
 
                   <input
                     name="stato"
-                    value={form.stato}
-                    onChange={handleChange}
+                    value={addForm.stato}
+                    onChange={handleAddFormChange}
                     className="backoffice-formInput-backoffice"
                     placeholder="Stato (es. bozza, pubblicato)"
                   />
 
                   <input
                     name="statoConservazione"
-                    value={form.statoConservazione}
-                    onChange={handleChange}
+                    value={addForm.statoConservazione}
+                    onChange={handleAddFormChange}
                     className="backoffice-formInput-backoffice"
                     placeholder="Stato di conservazione"
                   />
 
                   <input
                     name="proprietarioId"
-                    value={form.proprietarioId}
-                    onChange={handleChange}
+                    value={addForm.proprietarioId}
+                    onChange={handleAddFormChange}
                     className="backoffice-formInput-backoffice"
                     placeholder="Proprietario ID"
                     type="number"
@@ -471,17 +599,19 @@ function Backoffice() {
                       id="disponibileEsclusiva"
                       name="disponibileEsclusiva"
                       type="checkbox"
-                      checked={form.disponibileEsclusiva}
-                      onChange={handleChange}
+                      checked={addForm.disponibileEsclusiva}
+                      onChange={handleAddFormChange}
                       className="backoffice-checkbox-backoffice"
                     />
-                    <label htmlFor="disponibileEsclusiva">Disponibile in esclusiva</label>
+                    <label htmlFor="disponibileEsclusiva">
+                      Disponibile in esclusiva
+                    </label>
                   </div>
 
                   <textarea
                     name="descrizione"
-                    value={form.descrizione}
-                    onChange={handleChange}
+                    value={addForm.descrizione}
+                    onChange={handleAddFormChange}
                     className="backoffice-formInput-backoffice col-span-full"
                     placeholder="Descrizione"
                     rows={4}
@@ -490,7 +620,9 @@ function Backoffice() {
 
                 {/* Images upload */}
                 <div className="mt-3">
-                  <label className="block mb-1">Upload immagini (puoi selezionare più file)</label>
+                  <label className="block mb-1">
+                    Upload immagini (puoi selezionare più file)
+                  </label>
                   <input
                     type="file"
                     accept="image/*"
@@ -503,7 +635,9 @@ function Backoffice() {
                       <strong>Files selezionati:</strong>
                       <ul className="list-disc ml-5">
                         {imageFiles.map((f, idx) => (
-                          <li key={idx}>{f.name} ({Math.round(f.size / 1024)} KB)</li>
+                          <li key={idx}>
+                            {f.name} ({Math.round(f.size / 1024)} KB)
+                          </li>
                         ))}
                       </ul>
                     </div>
@@ -522,28 +656,7 @@ function Backoffice() {
                   <button
                     type="button"
                     className="backoffice-formSubmit-backoffice bg-gray-200"
-                    onClick={() =>
-                      setForm({
-                        titolo: "",
-                        annoCostruzione: "",
-                        cap: "",
-                        citta: "",
-                        classeEnergetica: "",
-                        descrizione: "",
-                        disponibileEsclusiva: false,
-                        indirizzo: "",
-                        numBagni: "",
-                        numLocali: "",
-                        piano: "",
-                        prezzoRichiesto: "",
-                        provincia: "",
-                        stato: "",
-                        statoConservazione: "",
-                        superficie: "",
-                        tipoImmobile: "",
-                        proprietarioId: ""
-                      })
-                    }
+                    onClick={resetAddForm}
                   >
                     Reset
                   </button>
@@ -558,18 +671,22 @@ function Backoffice() {
                         <pre className="mt-2 text-sm overflow-auto">
                           {JSON.stringify(submitMessage.immobile, null, 2)}
                         </pre>
-                        {submitMessage.uploads && submitMessage.uploads.length > 0 && (
-                          <div className="mt-2">
-                            <strong>Upload results:</strong>
-                            <ul className="list-disc ml-5">
-                              {submitMessage.uploads.map((u, i) => (
-                                <li key={i}>
-                                  {u.file} - {u.ok ? "OK" : `FAILED (${u.status})`}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
+                        {submitMessage.uploads &&
+                          submitMessage.uploads.length > 0 && (
+                            <div className="mt-2">
+                              <strong>Risultati Upload:</strong>
+                              <ul className="list-disc ml-5">
+                                {submitMessage.uploads.map((u, i) => (
+                                  <li key={i}>
+                                    {u.file} -{" "}
+                                    {u.ok
+                                      ? "OK"
+                                      : `FALLITO (${u.status})`}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
                       </div>
                     ) : (
                       <div>
@@ -582,11 +699,197 @@ function Backoffice() {
             </div>
           )}
 
-          {/* SEZIONE: Richieste Visite */}
-          {section === "visite" && (
+          {/* SEZIONE: Modifica Immobili */}
+          {section === "modifica" && (
             <div>
-              <h2 className="backoffice-title-backoffice">Richieste visite</h2>
-              <p className="text-gray-700">Placeholder...</p>
+              <h2 className="backoffice-title-backoffice">Modifica immobili</h2>
+
+              {loading ? (
+                <div className="backoffice-loading-backoffice">Loading...</div>
+              ) : (
+                <div className="space-y-4">
+                  {immobili.map((immobile) => {
+                    const isOpen = openItem === immobile.id;
+
+                    return (
+                      <div key={immobile.id} className="backoffice-item-backoffice">
+                        {/* HEADER */}
+                        <div
+                          className="backoffice-itemHeader-backoffice"
+                          onClick={() => toggleItem(immobile.id)}
+                        >
+                          <span>ID: {immobile.id}</span>
+                          <span>{immobile.tipoImmobile}</span>
+
+                          {/* PULSANTE ELIMINA */}
+                          <button
+                            className="backoffice-deleteButton-backoffice"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              deleteImmobile(immobile.id);
+                            }}
+                          >
+                            Elimina
+                          </button>
+                        </div>
+
+                        {/* BODY */}
+                        {isOpen && (
+                          <div className="backoffice-itemBody-backoffice">
+                            {/* Form non controllato, usa defaultValue e legge da FormData in updateImmobile */}
+                            <form
+                              onSubmit={(e) => updateImmobile(e, immobile.id)}
+                              className="grid grid-cols-1 lg:grid-cols-2 gap-3"
+                            >
+
+                              <input
+                                name="annoCostruzione"
+                                defaultValue={immobile.annoCostruzione}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Anno costruzione"
+                                type="number"
+                              />
+
+                              <input
+                                name="cap"
+                                defaultValue={immobile.cap}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="CAP"
+                              />
+
+                              <input
+                                name="citta"
+                                defaultValue={immobile.citta}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Città"
+                              />
+
+                              <input
+                                name="provincia"
+                                defaultValue={immobile.provincia}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Provincia"
+                              />
+
+                              <input
+                                name="classeEnergetica"
+                                defaultValue={immobile.classeEnergetica}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Classe energetica"
+                              />
+
+                              <input
+                                name="tipoImmobile"
+                                defaultValue={immobile.tipoImmobile}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Tipo immobile"
+                              />
+
+                              <input
+                                name="indirizzo"
+                                defaultValue={immobile.indirizzo}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Indirizzo"
+                              />
+
+                              <input
+                                name="superficie"
+                                defaultValue={immobile.superficie}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Superficie"
+                                type="number"
+                                step="0.01"
+                              />
+
+                              <input
+                                name="numLocali"
+                                defaultValue={immobile.numLocali}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Locali"
+                                type="number"
+                              />
+
+                              <input
+                                name="numBagni"
+                                defaultValue={immobile.numBagni}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Bagni"
+                                type="number"
+                              />
+
+                              <input
+                                name="piano"
+                                defaultValue={immobile.piano}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Piano"
+                              />
+
+                              <input
+                                name="prezzoRichiesto"
+                                defaultValue={immobile.prezzoRichiesto}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Prezzo richiesto"
+                                type="number"
+                                step="0.01"
+                              />
+
+                              <input
+                                name="stato"
+                                defaultValue={immobile.stato}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Stato"
+                              />
+
+                              <input
+                                name="statoConservazione"
+                                defaultValue={immobile.statoConservazione}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Stato conservazione"
+                              />
+                              <input
+                                name="proprietarioId"
+                                defaultValue={immobile.proprietarioId}
+                                className="backoffice-formInput-backoffice"
+                                placeholder="Proprietario ID"
+                                type="number"
+                              />
+
+                              <div className="flex items-center gap-2">
+                                <input
+                                  id={`disponibileEsclusiva-${immobile.id}`}
+                                  name="disponibileEsclusiva"
+                                  type="checkbox"
+                                  defaultChecked={immobile.disponibileEsclusiva}
+                                  className="backoffice-checkbox-backoffice"
+                                />
+                                <label htmlFor={`disponibileEsclusiva-${immobile.id}`}>
+                                  Disponibile in esclusiva
+                                </label>
+                              </div>
+
+
+                              <textarea
+                                name="descrizione"
+                                defaultValue={immobile.descrizione}
+                                className="backoffice-formInput-backoffice col-span-full"
+                                placeholder="Descrizione"
+                                rows={4}
+                              />
+
+                              <button
+                                type="submit"
+                                className="backoffice-formSubmit-backoffice col-span-full"
+                              >
+                                Aggiorna
+                              </button>
+                            </form>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
         </main>

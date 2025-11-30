@@ -14,7 +14,7 @@ public class Contratti {
     private Long idContract;
 
     @ManyToOne
-    @JoinColumn(name = "immobile_id", nullable = false)
+    @JoinColumn(name = "immobile_id", nullable = true)
     private Immobili immobile;
 
     @ManyToOne
