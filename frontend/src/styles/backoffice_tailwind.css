@@ -21,17 +21,17 @@
 
 /* Mobile toggle */
 .backoffice-mobileToggle-backoffice {
-  @apply bg-orange-500 text-white px-4 py-3 rounded-lg shadow-lg cursor-pointer font-semibold;
+  @apply bg-orange-500 text-white px-4 py-3 rounded-lg shadow-lg cursor-pointer font-semibold flex justify-between items-center;
 }
 
 /* Sidebar — visibile di default su desktop */
 .backoffice-sidebar-backoffice {
-  @apply bg-white rounded-xl p-5 shadow-sm border border-gray-100 flex flex-col gap-3 h-[200px]; /*dimensione fissa per la sidebar se no prende altezza contenuto*/
+ @apply bg-white rounded-xl p-5 shadow-sm border border-gray-100 flex flex-col gap-3 h-fit;
 }
 
 
 .backoffice-sidebarItem-backoffice {
-  @apply w-full text-left px-4 py-2.5 bg-gray-100 text-gray-900 rounded-lg font-medium cursor-pointer hover:bg-gray-200 transition;
+  @apply w-full text-left px-4 py-2.5 bg-gray-100 text-gray-900 rounded-lg font-medium cursor-pointer hover:bg-gray-200 transition mb-3;
 }
 
 .backoffice-sidebarItem-backoffice.active {

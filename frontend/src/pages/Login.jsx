@@ -1,32 +1,30 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
-    const email = document.querySelector('input[type="email"]').value;
-    const password = document.querySelector('input[type="password"]').value;
-
     try {
-      // Usa il nuovo endpoint auth e FormData come si aspetta il backend
       const formData = new FormData();
-      formData.append('email', email);
-      formData.append('password', password);
+      formData.append("email", email);
+      formData.append("password", password);
 
       const res = await fetch("/api/auth/session-login", {
         method: "POST",
-        credentials: "include", 
+        credentials: "include",
         body: formData,
       });
 
       const result = await res.json();
-      
+
       if (!result.success) {
         alert(result.message || "Credenziali errate");
         return;
       }
 
       console.log("Login OK:", result);
-      alert("Login effettuato con successo!");
       window.location.href = "/";
     } catch (err) {
       console.error("Errore login", err);
@@ -38,24 +36,37 @@ function Login() {
     <div className="hero">
       <div className="heroContent">
         <div className="configurator">
-
           <div className="wrapper-1-step">
             <h2 className="section-title">Accedi</h2>
-            <p className="section-subtitle">
-              Inserisci le credenziali per accedere al tuo account
-            </p>
-            <div className="flex flex-col gap-4 mt-6">
-              <input
-                type="email"
-                placeholder="Email"
-                className="input-step2"
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                className="input-step2"
-              />
+
+            {/* RIMOSSO "max-w-md mx-auto" per permettere larghezza piena */}
+            <div className="flex flex-col gap-5 mt-6 w-full">
+              
+              {/* Email */}
+              <div className="input-group">
+                <label className="input-label">Email</label>
+                <input
+                  type="email"
+                  placeholder="name@example.com"
+                  className="input-step2"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+
+              {/* Password */}
+              <div className="input-group">
+                <label className="input-label">Password</label>
+                <input
+                  type="password"
+                  placeholder="Inserisci la password"
+                  className="input-step2"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
             </div>
+
             <div className="button-group">
               <Link to="/signin">
                 <button className="back-btn">Registrati</button>
@@ -65,7 +76,6 @@ function Login() {
               </button>
             </div>
           </div>
-
         </div>
       </div>
     </div>

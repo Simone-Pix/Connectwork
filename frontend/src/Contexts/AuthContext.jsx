@@ -2,95 +2,82 @@ import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // chekauth non controlla solo la sessione ma recupera anche i dati dell'utente
   const checkAuth = async () => {
     try {
-      const response = await fetch("/api/auth/check", { // qui la rotta del backend per il check della sessione da implementare
-        method: "POST",
-        credentials: "include"
+      const res = await fetch("/api/auth/me", {
+        method: "GET",
+        credentials: "include",
       });
-      const data = await response.json();
 
-      if (data.authenticated) {
-        setIsAuthenticated(true);
-        setUser({
-          id: data.userId,
-          email: data.email,
-          role: data.role
-        });
-      } else {
-        setIsAuthenticated(false);
+      if (!res.ok) {
         setUser(null);
+        return;
       }
-    } catch (error) {
-      console.error("Auth check failed:", error);
-      setIsAuthenticated(false);
+
+      const data = await res.json();
+
+      setUser({
+        id: data.id,
+        email: data.email,
+        role: data.ruolo,
+        nome: data.nome,
+        cognome: data.cognome,
+        telefono: data.telefono,
+      });
+    } catch (err) {
+      console.error("Errore checkAuth:", err);
       setUser(null);
     } finally {
       setLoading(false);
     }
   };
 
-  // --- Login ---
+  // --- LOGIN ---
   const login = async (email, password) => {
     try {
       const formData = new FormData();
       formData.append("email", email);
       formData.append("password", password);
 
-      const response = await fetch("/api/auth/session-login", {
+      const res = await fetch("/api/auth/session-login", {
         method: "POST",
+        credentials: "include",
         body: formData,
-        credentials: "include"
       });
 
-      const data = await response.json();
+      const result = await res.json();
 
-      if (data.success) {
-        setIsAuthenticated(true);
-        setUser({
-          id: data.userId,
-          email: data.email,
-          role: data.ruolo
-        });
-        return { success: true, message: data.message };
+      if (!result.success) {
+        return { success: false, message: result.message };
       }
 
-      return { success: false, message: data.message || "Login failed" };
-    } catch (error) {
-      return { success: false, message: "Connection error" };
+      await checkAuth();
+
+      return { success: true };
+    } catch (err) {
+      console.error("Errore login:", err);
+      return { success: false, message: "Errore durante il login" };
     }
   };
 
-  // --- Logout ---
+  // --- LOGOUT ---
   const logout = async () => {
     try {
-      const response = await fetch("/api/auth/logout", {
+      await fetch("/api/auth/logout", {
         method: "POST",
-        credentials: "include"
+        credentials: "include",
       });
-      const data = await response.json();
-
-      if (data.success) {
-        setIsAuthenticated(false);
-        setUser(null);
-        return { success: true };
-      }
-    } catch (error) {
-      console.error("Logout error:", error);
+      setUser(null);
+    } catch (err) {
+      console.error("Errore logout:", err);
     }
-
-    // fallback
-    setIsAuthenticated(false);
-    setUser(null);
-    return { success: true };
   };
 
-  // --- Check session ---
   useEffect(() => {
     checkAuth();
   }, []);
@@ -98,20 +85,16 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        isAuthenticated,
         user,
+        isAuthenticated: !!user,
         loading,
         login,
         logout,
-        checkAuth
       }}
     >
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-// Hook comodo per usare il context
 export const useAuthContext = () => useContext(AuthContext);
-
-export default AuthContext;

@@ -1,15 +1,21 @@
+import React from "react";
+
 function ComponentStep3({ data, updateField, next, back }) {
+  // Logica di validazione rivista per essere più robusta
   const isDisabled =
-    data.superficie === "" ||
-    data.stanze === "" ||
-    data.bagni === "" ||
-    (data.tipoImmobile === "appartamento" && data.piano === "") ||
-    data.annoCostruzione === "" ||
-    data.statoConservazione === "" ||
-    data.classeEnergetica === "";
+    !data.superficie || Number(data.superficie) <= 0 ||
+    !data.stanze || Number(data.stanze) <= 0 ||
+    !data.bagni || Number(data.bagni) <= 0 ||
+    // Per il piano: controlliamo che non sia stringa vuota (lo 0 è un piano valido)
+    (data.tipoImmobile === "appartamento" && (data.piano === "" || data.piano === null)) ||
+    !data.annoCostruzione ||
+    // Controllo specifico per i menu a tendina
+    !data.statoConservazione || data.statoConservazione === "" ||
+    !data.classeEnergetica || data.classeEnergetica === "";
 
   return (
     <div className="wrapper-1-step">
+      {/* Progress Bar */}
       <div className="progress-container">
         <span>Passo 3 di 6</span>
         <div className="progress-bar">
@@ -22,96 +28,119 @@ function ComponentStep3({ data, updateField, next, back }) {
       <div className="form-grid-step3 grid gap-4">
 
         {/* Superficie */}
-        <input
-          type="number"
-          placeholder="Superficie in m²"
-          value={data.superficie}
-          min={0}
-          onChange={(e) => {
-            const val = Math.max(0, Number(e.target.value));
-            updateField("superficie", val);
-          }}
-          className="input-step3"
-        />
-
-        {/* Stanze */}
-        <input
-          type="number"
-          placeholder="Numero stanze"
-          value={data.stanze}
-          min={0}
-          onChange={(e) => {
-            const val = Math.max(0, Number(e.target.value));
-            updateField("stanze", val);
-          }}
-          className="input-step3"
-        />
-
-        {/* Bagni */}
-        <input
-          type="number"
-          placeholder="Numero bagni"
-          value={data.bagni}
-          min={0}
-          onChange={(e) => {
-            const val = Math.max(0, Number(e.target.value));
-            updateField("bagni", val);
-          }}
-          className="input-step3"
-        />
-
-        {/* Piano solo se appartamento */}
-        {data.tipoImmobile === "appartamento" && (
+        <div className="input-group">
+          <label className="input-label">Superficie (m²)</label>
           <input
             type="number"
-            placeholder="Piano"
-            value={data.piano}
+            placeholder="Es. 100"
+            value={data.superficie}
             min={0}
             onChange={(e) => {
               const val = Math.max(0, Number(e.target.value));
-              updateField("piano", val);
+              updateField("superficie", val);
             }}
             className="input-step3"
           />
+        </div>
+
+        {/* Stanze */}
+        <div className="input-group">
+          <label className="input-label">Numero Stanze</label>
+          <input
+            type="number"
+            placeholder="Es. 4"
+            value={data.stanze}
+            min={0}
+            onChange={(e) => {
+              const val = Math.max(0, Number(e.target.value));
+              updateField("stanze", val);
+            }}
+            className="input-step3"
+          />
+        </div>
+
+        {/* Bagni */}
+        <div className="input-group">
+          <label className="input-label">Numero Bagni</label>
+          <input
+            type="number"
+            placeholder="Es. 2"
+            value={data.bagni}
+            min={0}
+            onChange={(e) => {
+              const val = Math.max(0, Number(e.target.value));
+              updateField("bagni", val);
+            }}
+            className="input-step3"
+          />
+        </div>
+
+        {/* Piano solo se appartamento */}
+        {data.tipoImmobile === "appartamento" && (
+          <div className="input-group">
+            <label className="input-label">Piano</label>
+            <input
+              type="number"
+              placeholder="Es. 1"
+              value={data.piano}
+              min={0}
+              onChange={(e) => {
+                const val = Math.max(0, Number(e.target.value));
+                updateField("piano", val);
+              }}
+              className="input-step3"
+            />
+          </div>
         )}
 
         {/* Anno costruzione */}
-        <input
-          type="number"
-          placeholder="Anno di costruzione"
-          min={1800}
-          max={new Date().getFullYear()}
-          value={data.annoCostruzione}
-          onChange={(e) =>
-            updateField("annoCostruzione", Number(e.target.value))
-          }
-          className="input-step3"
-        />
+        <div className="input-group">
+          <label className="input-label">Anno di costruzione</label>
+          <input
+            type="number"
+            placeholder="Es. 1990"
+            min={1800}
+            max={new Date().getFullYear()}
+            value={data.annoCostruzione}
+            onChange={(e) =>
+              updateField("annoCostruzione", Number(e.target.value))
+            }
+            className="input-step3"
+          />
+        </div>
 
         {/* Stato conservazione */}
-        <select
-          value={data.statoConservazione}
-          onChange={(e) => updateField("statoConservazione", e.target.value)}
-          className="input-step3"
-        >
-          <option value="">Stato conservazione</option>
-          <option value="da ristrutturare">Da ristrutturare</option>
-          <option value="buono">Buono</option>
-          <option value="ottimo">Ottimo</option>
-          <option value="lusso">Lusso</option>
-        </select>
+        <div className="input-group">
+          <label className="input-label">Stato conservazione</label>
+          <select
+            value={data.statoConservazione}
+            onChange={(e) => updateField("statoConservazione", e.target.value)}
+            className="input-step3"
+          >
+            <option value="">Seleziona...</option>
+            <option value="da ristrutturare">Da ristrutturare</option>
+            <option value="buono">Buono</option>
+            <option value="ottimo">Ottimo</option>
+            <option value="lusso">Lusso</option>
+          </select>
+        </div>
 
         {/* Classe energetica */}
-        <select
-          value={data.classeEnergetica}
-          onChange={(e) => updateField("classeEnergetica", e.target.value)}
-          className="input-step3"
-        >
-          <option value="">Classe energetica</option>
-          {["A","B","C","D","E","F","G"].map((c) => (
-            <option key={c} value={c}>{c}</option>
-          ))}
-        </select>
+        <div className="input-group">
+          <label className="input-label">Classe energetica</label>
+          <select
+            value={data.classeEnergetica}
+            onChange={(e) => updateField("classeEnergetica", e.target.value)}
+            className="input-step3"
+          >
+            <option value="">Seleziona...</option>
+            {["A", "B", "C", "D", "E", "F", "G"].map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+        </div>
 
       </div>
 
