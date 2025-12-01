@@ -1,47 +1,50 @@
-.pc-card {
-  @apply bg-white rounded-xl overflow-hidden border border-blue-900/10 shadow-sm hover:shadow-md transition-shadow duration-200;
-}
+@layer components {
+  .prop-card {
+    @apply rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow bg-[#3A6EA5] cursor-pointer block h-full flex flex-col;
+  }
 
-.pc-image-wrapper {
-  @apply relative h-40;
-}
+  .prop-image-wrapper {
+    @apply relative h-64 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center shrink-0;
+  }
 
-.pc-image {
-  @apply w-full h-full object-cover;
-}
+  .prop-image {
+    @apply w-full h-full object-cover;
+  }
 
-.pc-badge-container {
-  @apply absolute top-2.5 right-2.5 flex flex-wrap gap-1.5;
-}
+  .prop-badge-container {
+    @apply absolute top-3 left-3 flex gap-2 flex-wrap;
+  }
 
-.pc-badge {
-  @apply bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md;
-}
+  .prop-badge {
+    @apply px-3 py-1 rounded-full text-white text-sm font-semibold shadow-sm;
+  }
 
-.pc-body {
-  @apply p-4;
-}
+  .prop-content {
+    @apply p-5 text-white flex flex-col flex-grow;
+  }
 
-.pc-title {
-  @apply text-gray-900 font-bold text-base leading-tight mb-2;
-}
 
-.pc-location-price {
-  @apply flex justify-between items-center text-sm mb-2;
-}
+  .prop-price {
+    @apply text-xl font-bold text-orange-500 mb-2;
+  }
 
-.pc-location {
-  @apply flex items-center text-gray-600;
-}
+  .prop-title {
+    @apply font-semibold mb-2 text-sm line-clamp-2 min-h-[2.5rem];
+  }
 
-.pc-location-icon {
-  @apply mr-1;
-}
+  .prop-location {
+    @apply flex items-center text-sm mb-3 text-blue-100;
+  }
 
-.pc-price {
-  @apply text-blue-600 font-bold;
-}
+  .prop-features {
+    @apply flex gap-4 border-t border-blue-400/30 pt-3 mt-auto;
+  }
 
-.pc-features {
-  @apply flex gap-3 text-gray-600 text-sm;
+  .prop-feature-item {
+    @apply flex items-center text-sm text-blue-50;
+  }
+
+  .prop-icon {
+    @apply w-4 h-4 mr-1;
+  }
 }
