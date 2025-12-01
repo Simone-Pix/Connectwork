@@ -10,24 +10,16 @@ function Search() {
   const [loading, setLoading] = useState(true);
   const [images, setImages] = useState([]);
 
+  // STATO PER GESTIRE L'APERTURA DEI FILTRI SU MOBILE
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const cities = [
-    "Torino",
-    "Rivoli",
-    "Bra",
-    "Cuneo",
-    "Asti",
-    "Alessandria",
-    "Biella",
-    "Alba",
-    "Moncalieri",
-    "Pinerolo",
-    "Ivrea",
-    "Fossano",
+    "Torino", "Rivoli", "Bra", "Cuneo", "Asti", "Alessandria",
+    "Biella", "Alba", "Moncalieri", "Pinerolo", "Ivrea", "Fossano",
   ];
 
   const defaultFilters = {
-    citta: "", 
+    citta: "",
     minPrice: "",
     maxPrice: "",
     rooms: "all",
@@ -43,7 +35,6 @@ function Search() {
     if (cittaFromURL) {
       setFilters((prev) => ({ ...prev, citta: cittaFromURL }));
     } else {
-      // Se non c'è città nell'URL, resetta il filtro città
       setFilters((prev) => ({ ...prev, citta: "" }));
     }
   }, [searchParams]);
@@ -56,8 +47,7 @@ function Search() {
         const res = await fetch("/api/immobili");
         const data = await res.json();
         setAllProperties(data);
-        
-        // Applica subito il filtro se c'è una città nell'URL
+
         const cittaFromURL = searchParams.get("citta");
         if (cittaFromURL) {
           const filtered = data.filter(p => p.citta === cittaFromURL);
@@ -92,8 +82,7 @@ function Search() {
 
   function applyFilters(newFilters) {
     setFilters(newFilters);
-    
-    // Aggiorna l'URL in base alla selezione della città nel filtro
+
     if (newFilters.citta) {
       setSearchParams({ citta: newFilters.citta });
     } else {
@@ -101,43 +90,52 @@ function Search() {
     }
 
     const result = allProperties.filter((p) => {
-      // Filtro città
       if (newFilters.citta && p.citta !== newFilters.citta) return false;
-      
-      // Filtro prezzo
       if (newFilters.minPrice && Number(p.prezzoRichiesto) < Number(newFilters.minPrice)) return false;
       if (newFilters.maxPrice && Number(p.prezzoRichiesto) > Number(newFilters.maxPrice)) return false;
-      
-      // Filtro camere
       if (newFilters.rooms !== "all" && Number(p.numLocali) < Number(newFilters.rooms)) return false;
-      
-      // Filtro bagni
       if (newFilters.baths !== "all" && Number(p.numBagni) < Number(newFilters.baths)) return false;
-      
-      // Filtro superficie
       if (newFilters.minSurface && Number(p.superficie) < Number(newFilters.minSurface)) return false;
-      
       return true;
     });
     setFilteredProperties(result);
+    
+    // Opzionale: chiude i filtri su mobile dopo aver applicato
+    setMobileFiltersOpen(false);
   }
 
   function resetFilters() {
     setFilters(defaultFilters);
     setFilteredProperties(allProperties);
-    setSearchParams({}); // Pulisce l'URL
+    setSearchParams({});
   }
 
   return (
-    <div className="pt-28 pb-10 min-h-screen"> 
+    <div className="pt-28 pb-10 min-h-screen">
       <div className="max-w-7xl mx-auto px-4">
+        
+        {/* PULSANTE MOBILE (Stile copiato da .backoffice-mobileToggle-backoffice) */}
+        <div 
+          className="lg:hidden bg-orange-500 text-white px-4 py-3 rounded-lg shadow-lg cursor-pointer font-semibold mb-6 flex justify-between items-center"
+          onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
+        >
+          <span>{mobileFiltersOpen ? "Chiudi Filtri" : "Apri Filtri"}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className={`w-5 h-5 transition-transform ${mobileFiltersOpen ? 'rotate-180' : ''}`}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-7">
           
           {/* Sidebar filtri */}
-          <aside className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 h-fit top-28">
+          {/* Logica visibilità: nascosto su mobile (hidden) a meno che mobileFiltersOpen non sia true. Su Desktop (lg) sempre visibile (block) */}
+          <aside className={`
+            bg-white rounded-xl p-5 shadow-sm border border-gray-100 h-fit top-28
+            ${mobileFiltersOpen ? "block" : "hidden"} lg:block
+          `}>
             <FiltersSidebar
               filters={filters}
-              cities={cities} // Passiamo la lista statica
+              cities={cities}
               onApply={applyFilters}
               onReset={resetFilters}
             />

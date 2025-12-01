@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// Assicurati che il percorso di importazione sia corretto
 import PropertyCard from "./PropertyCard"; 
 
 export default function FeaturedProperties() {
@@ -19,7 +18,6 @@ export default function FeaturedProperties() {
         if (propertiesRes.ok && imagesRes.ok) {
           const allProperties = await propertiesRes.json();
           const allImages = await imagesRes.json();
-          // Salviamo tutto, filtreremo nel render
           setProperties(allProperties); 
           setImages(allImages);
         }
@@ -63,7 +61,6 @@ export default function FeaturedProperties() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {properties && properties.length > 0 ? (
-            // QUI STA LA DIFFERENZA: slice(0, 3) per prenderne solo 3
             properties.slice(0, 3).map((property) => (
               <PropertyCard 
                 key={property.id} 

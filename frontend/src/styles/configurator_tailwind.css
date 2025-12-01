@@ -11,29 +11,46 @@
   .configurator {
     @apply relative rounded-2xl p-8 shadow-2xl;
     background: rgba(255, 255, 255);
-    box-shadow: 0 6px 28px rgba(2,6,23,0.6);
+    box-shadow: 0 6px 28px rgba(2, 6, 23, 0.6);
   }
 
   /* WRAPPER */
-.wrapper-1-step {
-  @apply flex-1 flex flex-col;
-  min-height: 420px;
-}
+  .wrapper-1-step {
+    @apply flex-1 flex flex-col;
+    min-height: 420px;
+  }
 
-.step-wrapper {
-  @apply w-full min-h-[420px] flex; 
-}
+  .step-wrapper {
+    @apply w-full min-h-[420px] flex;
+  }
 
-.second-wrapper {
-  @apply flex-1 flex flex-col;
-  min-height: 420px;
-}
+  .second-wrapper {
+    @apply flex-1 flex flex-col;
+    min-height: 420px;
+  }
+
+  /* --- NUOVO WRAPPER STEP 2 --- */
+  .wrapper-step-2 {
+    @apply flex flex-col w-full px-2;
+    min-height: 420px;
+    gap: 1.25rem;
+  }
+
+  .input-group {
+    @apply flex flex-col w-full;
+  }
+
+  /* --- GRIGLIA PER CAP E PROVINCIA --- */
+  .row-split {
+    @apply grid grid-cols-2 gap-4 w-full;
+  }
+
   /* Progress row */
   .progress-container {
     @apply flex items-center gap-4 mb-4;
   }
 
-  .progress-container > span {
+  .progress-container>span {
     @apply text-xs text-gray-400 w-28;
   }
 
@@ -43,21 +60,26 @@
 
   .progress {
     @apply h-2 rounded-full transition-all duration-300 ease-in-out;
-    background: linear-gradient(90deg,#ff7a18,#ff9124);
+    background: linear-gradient(90deg, #ff7a18, #ff9124);
   }
 
   /* Titles */
   .section-title {
-     @apply text-2xl font-semibold text-center mt-4 mb-3;
-    color: #ff8a3d; 
+    @apply text-2xl font-semibold text-center mt-4 mb-3;
+    color: #ff8a3d;
   }
 
   .section-subtitle {
-    @apply text-sm text-center mb-8 text-gray-400;
+    @apply text-sm text-center text-gray-400;
+  }
+
+    /* --- STILE PER I LABEL --- */
+  .input-label {
+    @apply block text-sm font-bold text-black mb-2 ml-1 tracking-wide;
   }
 
 
-/* Card container */
+  /* Card container */
   .card-container {
     @apply flex flex-wrap justify-center gap-6 mb-6;
   }
@@ -65,7 +87,7 @@
   .card {
     @apply w-full sm:w-[280px] md:w-[300px] rounded-xl p-6 cursor-pointer flex flex-col items-center justify-center gap-3 text-orange-500 transition-transform transform hover:-translate-y-0.5;
     background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 4px 18px rgba(2,6,23,0.45);
+    box-shadow: 0 4px 18px rgba(2, 6, 23, 0.45);
   }
 
   .card .icon {
@@ -83,15 +105,15 @@
   /* Active / selected card */
   .card.active {
     @apply ring-2 ring-orange-500 border-orange-500;
-    background: linear-gradient(180deg, rgb(30,58,138,0.6), rgb(30,58,138,0.6));
-    box-shadow: 0 8px 30px rgba(255,122,24,0.12);
+    background: linear-gradient(180deg, rgb(30, 58, 138, 0.6), rgb(30, 58, 138, 0.6));
+    box-shadow: 0 8px 30px rgba(255, 122, 24, 0.12);
     transform: translateY(-4px);
   }
 
   /* Button group row */
-.button-group {
-  @apply mt-auto flex items-center justify-center gap-6; 
-}
+  .button-group {
+    @apply mt-auto flex items-center justify-center gap-6;
+  }
 
   .back-btn {
     @apply px-5 py-2 rounded-full text-sm font-medium bg-gray-800 border border-gray-700 text-white hover:bg-gray-700 transition-colors;
@@ -99,7 +121,7 @@
 
   .next-btn {
     @apply ml-auto px-6 py-2 rounded-full text-sm font-semibold text-white shadow-lg;
-    background: linear-gradient(90deg,#ff7a18,#ff6126);
+    background: linear-gradient(90deg, #ff7a18, #ff6126);
   }
 
   /* Inputs */
@@ -107,9 +129,9 @@
   .input-step3,
   .form-grid-step3 input,
   .form-grid-step6 input {
-    @apply w-full bg-transparent border border-gray-700 rounded-lg px-4 py-3 placeholder-gray-400/70 text-black focus:outline-none focus:ring-2;
+    @apply w-full bg-transparent border border-gray-300 rounded-lg px-4 py-3 placeholder-gray-400/70 text-black focus:outline-none focus:ring-2;
     --tw-ring-color: rgb(255, 138, 61);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
   }
 
   select.input-step3 {

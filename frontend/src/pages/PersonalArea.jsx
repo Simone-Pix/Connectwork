@@ -90,19 +90,18 @@ export default function PersonalArea() {
     <main className="hero-personal">
       <div className="heroContent-personal">
         <div className="configurator-personal text-black">
-          <h2 className="section-title-personal">Personal Area</h2>
-          <p className="section-subtitle-personal">Manage your profile information</p>
+          <h2 className="section-title-personal">Area Personale</h2>
 
           <div className="wrapper-1-step-personal">
 
             {/* --- ID --- */}
             <div className="mb-6">
               <label className="block text-orange-500 mb-2 font-semibold">
-                User ID
+                Nome
               </label>
               <input
                 type="text"
-                value={user.id}
+                value={user.nome}
                 disabled
                 className="input-step2-personal bg-gray-200 cursor-not-allowed"
               />
@@ -111,11 +110,23 @@ export default function PersonalArea() {
             {/* --- ROLE --- */}
             <div className="mb-6">
               <label className="block text-orange-500 mb-2 font-semibold">
-                Role
+                Cognome
               </label>
               <input
                 type="text"
-                value={user.role}
+                value={user.cognome}
+                disabled
+                className="input-step2-personal bg-gray-200 cursor-not-allowed"
+              />
+            </div>
+            {/* --- TEL --- */}
+            <div className="mb-6">
+              <label className="block text-orange-500 mb-2 font-semibold">
+                Telefono
+              </label>
+              <input
+                type="text"
+                value={user.telefono}
                 disabled
                 className="input-step2-personal bg-gray-200 cursor-not-allowed"
               />
@@ -207,7 +218,11 @@ export default function PersonalArea() {
         </div>
       </div>
       {showValutazione && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowValutazione(false);
+          }}>
           <div className="bg-white p-6 rounded-xl shadow-2xl w-[90%] sm:w-[450px] relative">
 
             {/* Loading */}
@@ -220,14 +235,11 @@ export default function PersonalArea() {
                 </h2>
 
                 <div className="space-y-2 text-sm">
-                  <p><strong>ID:</strong> {selectedValutazione.id}</p>
                   <p><strong>Data valutazione:</strong> {new Date(selectedValutazione.dataValutazione).toLocaleString()}</p>
                   <p><strong>Note:</strong> {selectedValutazione.note || "Nessuna"}</p>
                   <p><strong>Prezzo al m²:</strong> € {selectedValutazione.prezzoMq}</p>
                   <p><strong>Valore stimato min:</strong> € {selectedValutazione.valoreStimatoMin}</p>
                   <p><strong>Valore stimato max:</strong> € {selectedValutazione.valoreStimatoMax}</p>
-                  <p><strong>Immobile ID:</strong> {selectedValutazione.immobileId}</p>
-                  <p><strong>Richiesta ID:</strong> {selectedValutazione.richiestaId}</p>
                 </div>
 
                 <button

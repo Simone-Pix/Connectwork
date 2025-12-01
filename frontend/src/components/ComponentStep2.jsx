@@ -18,7 +18,8 @@ function ComponentStep2({ data, updateField, next, back }) {
   };
 
   return (
-    <div className="wrapper-1-step">
+    <div className="wrapper-step-2">
+      {/* Progress Bar */}
       <div className="progress-container">
         <span>Passo 2 di 6</span>
         <div className="progress-bar">
@@ -28,46 +29,62 @@ function ComponentStep2({ data, updateField, next, back }) {
 
       <h3 className="section-title">Inserisci i dati dell’immobile</h3>
 
-      <input
-        type="text"
-        placeholder="Es: Via Roma 12"
-        className={`input-step2 border p-3 rounded-lg ${
-          trimmedAddress && !isAddressValid
-            ? "border-red-500"
-            : "border-gray-300"
-        }`}
-        value={data.indirizzo || ""}
-        onChange={(e) => updateField("indirizzo", e.target.value)}
-      />
+      {/* Indirizzo */}
+      <div className="input-group">
+        <label className="input-label">Indirizzo completo</label>
+        <input
+          type="text"
+          placeholder="Es: Via Roma 12"
+          className={`input-step2 ${
+            trimmedAddress && !isAddressValid ? "border-red-500" : "border-gray-300"
+          }`}
+          value={data.indirizzo || ""}
+          onChange={(e) => updateField("indirizzo", e.target.value)}
+        />
+      </div>
 
-      <input
-        type="text"
-        placeholder="Città"
-        value={data.citta || ""}
-        onChange={(e) => updateField("citta", e.target.value)}
-        className="border p-3 rounded-lg border-gray-300"
-      />
+      {/* Città */}
+      <div className="input-group">
+        <label className="input-label">Città</label>
+        <input
+          type="text"
+          placeholder="Inserisci il comune"
+          className="input-step2 border-gray-300"
+          value={data.citta || ""}
+          onChange={(e) => updateField("citta", e.target.value)}
+        />
+      </div>
 
-      <input
-        type="text"
-        placeholder="CAP"
-        value={data.cap || ""}
-        onChange={(e) => handleCapChange(e.target.value)}
-        className={`border p-3 rounded-lg ${
-          data.cap && !isCapValid ? "border-red-500" : "border-gray-300"
-        }`}
-      />
+      {/* Riga divisa per CAP e Provincia */}
+      <div className="row-split">
+        <div className="input-group">
+          <label className="input-label">CAP</label>
+          <input
+            type="text"
+            placeholder="00000"
+            maxLength={5}
+            className={`input-step2 ${
+              data.cap && !isCapValid ? "border-red-500" : "border-gray-300"
+            }`}
+            value={data.cap || ""}
+            onChange={(e) => handleCapChange(e.target.value)}
+          />
+        </div>
 
-      <input
-        type="text"
-        placeholder="Provincia"
-        maxLength={2}
-        value={data.provincia || ""}
-        onChange={(e) =>
-          updateField("provincia", e.target.value.toUpperCase())
-        }
-        className="border p-3 rounded-lg border-gray-300"
-      />
+        <div className="input-group">
+          <label className="input-label">Provincia</label>
+          <input
+            type="text"
+            placeholder="RM"
+            maxLength={2}
+            className="input-step2 border-gray-300 uppercase"
+            value={data.provincia || ""}
+            onChange={(e) =>
+              updateField("provincia", e.target.value.toUpperCase())
+            }
+          />
+        </div>
+      </div>
 
       <div className="button-group">
         <button className="back-btn" onClick={back}>
@@ -76,7 +93,7 @@ function ComponentStep2({ data, updateField, next, back }) {
         <button
           onClick={next}
           disabled={!isStepValid}
-          className={`next-btn py-2 px-4 rounded-lg text-white bg-primary hover:bg-primary-dark transition ${
+          className={`next-btn ${
             !isStepValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
           }`}
         >
