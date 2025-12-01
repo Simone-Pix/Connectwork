@@ -1,5 +1,11 @@
 // WhyChooseAndCTA.jsx
+import { useNavigate } from "react-router-dom";
 export default function WhyChooseAndCTA() {
+  const navigate = useNavigate();
+  const handleVendi = () => {
+    navigate("/valuta");
+  };
+
   const features = [
     {
       id: 1,
@@ -68,7 +74,9 @@ export default function WhyChooseAndCTA() {
           <p className="text-white text-lg mb-8">
             Pubblica il tuo annuncio e raggiungi migliaia di potenziali acquirenti
           </p>
-          <button className="px-10 py-4 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition duration-300 text-lg shadow-lg hover:shadow-xl">
+          <button 
+          onClick={handleVendi}
+          className="px-10 py-4 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition duration-300 text-lg shadow-lg hover:shadow-xl">
             Pubblica annuncio gratuito
           </button>
         </div>

@@ -16,10 +16,13 @@ function Navbar() {
   return (
     <nav className="navbar">
       {/* LEFT */}
-      <div className="navbar-left">
-        <img src={logo} alt="Logo Immobiliaris" className="navbar-logo" />
-        <p className="navbar-title">Immobilaris</p>
-      </div>
+     <div className="navbar-left">
+  <Link to="/" className="flex items-center gap-2">
+    <img src={logo} alt="Logo Immobiliaris" className="navbar-logo cursor-pointer" />
+    <p className="navbar-title cursor-pointer">Immobiliaris</p>
+  </Link>
+</div>
+
 
       {/* DESKTOP LINKS */}
       <div className="navbar-links hidden md:flex">
