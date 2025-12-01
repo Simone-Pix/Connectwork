@@ -28,7 +28,7 @@ function Navbar() {
       <div className="navbar-links hidden md:flex">
         <Link to="/" className="nav-link">Home</Link>
         <Link to="/cerca" className="nav-link">Acquista</Link>
-        <Link to="/" className="nav-link">Affitta</Link>
+        
         <Link to="/valuta" className="nav-link">Vendi</Link>
         <Link to="/chi-siamo" className="nav-link">Chi siamo</Link>
         {isAuthenticated && user?.role === "admin" && (

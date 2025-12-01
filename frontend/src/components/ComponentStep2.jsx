@@ -21,7 +21,12 @@ function ComponentStep2({ data, updateField, next, back }) {
     <div className="wrapper-step-2">
       {/* Progress Bar */}
       <div className="progress-container">
-        <span>Passo 2 di 6</span>
+         <span 
+            className="text-sm font-semibold" 
+            style={{ color: '#3A6EA5' }}
+          >
+            Passo 2 di 6
+          </span>
         <div className="progress-bar">
           <div className="progress" style={{ width: "34%" }}></div>
         </div>
@@ -75,7 +80,7 @@ function ComponentStep2({ data, updateField, next, back }) {
           <label className="input-label">Provincia</label>
           <input
             type="text"
-            placeholder="RM"
+            placeholder="TO"
             maxLength={2}
             className="input-step2 border-gray-300 uppercase"
             value={data.provincia || ""}

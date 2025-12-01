@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import ComponentStep1 from "../components/ComponentStep1";
 import ComponentStep2 from "../components/ComponentStep2";
 import ComponentStep3 from "../components/ComponentStep3";
@@ -34,84 +33,155 @@ function Configurator() {
 
   const handleNext = () => {
     if (step < 6) setStep(step + 1);
-    else if (step === 6) setStep(7); 
+    else if (step === 6) setStep(7);
   };
 
   const handleBack = () => {
     if (step > 1) setStep(step - 1);
   };
 
- const handleSubmit = async () => {
-  try {
-    // Trasforma l'array optional in stringa per il backend
-    const dataToSend = {
-      ...formData,
-      optionalInfo: formData.optional.join(", "),
-      optional: undefined // Rimuovi il campo array
-    };
+  const handleSubmit = async () => {
+    try {
+      const dataToSend = {
+        ...formData,
+        optionalInfo: formData.optional.join(", "),
+        optional: undefined
+      };
 
-    const res = await fetch("/api/richieste", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(dataToSend),
-    });
+      const res = await fetch("/api/richieste", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dataToSend),
+      });
 
-    console.log("Dati inviati:", dataToSend);
+      console.log("Dati inviati:", dataToSend);
 
-    //toast di successo
-    setShowSuccess(true);
+      setShowSuccess(true);
 
-    //dopo 3 secondi, nascondi toast e torna alla homepage
-    setTimeout(() => {
-      setShowSuccess(false);
-      window.location.href = "/"; 
-    }, 3000);
+      setTimeout(() => {
+        setShowSuccess(false);
+        window.location.href = "/";
+      }, 3000);
 
-  } catch (error) {
-    console.error("Errore durante l'invio:", error);
-  }
-};
-
+    } catch (error) {
+      console.error("Errore durante l'invio:", error);
+    }
+  };
 
   const renderStep = () => {
     switch (step) {
       case 1:
-        return <ComponentStep1 data={formData} updateField={updateField} next={handleNext} />;
+        return (
+          <ComponentStep1
+            data={formData}
+            updateField={updateField}
+            next={handleNext}
+          />
+        );
       case 2:
-        return <ComponentStep2 data={formData} updateField={updateField} next={handleNext} back={handleBack} />;
+        return (
+          <ComponentStep2
+            data={formData}
+            updateField={updateField}
+            next={handleNext}
+            back={handleBack}
+          />
+        );
       case 3:
-        return <ComponentStep3 data={formData} updateField={updateField} next={handleNext} back={handleBack} />;
+        return (
+          <ComponentStep3
+            data={formData}
+            updateField={updateField}
+            next={handleNext}
+            back={handleBack}
+          />
+        );
       case 4:
-        return <ComponentStep4 data={formData} updateField={updateField} next={handleNext} back={handleBack} />;
+        return (
+          <ComponentStep4
+            data={formData}
+            updateField={updateField}
+            next={handleNext}
+            back={handleBack}
+          />
+        );
       case 5:
-        return <ComponentStep5 data={formData} updateField={updateField} next={handleNext} back={handleBack} />;
+        return (
+          <ComponentStep5
+            data={formData}
+            updateField={updateField}
+            next={handleNext}
+            back={handleBack}
+          />
+        );
       case 6:
-        return <ComponentStep6 data={formData} updateField={updateField} back={handleBack} next={handleNext} />;
+        return (
+          <ComponentStep6
+            data={formData}
+            updateField={updateField}
+            next={handleNext}
+            back={handleBack}
+          />
+        );
       case 7:
-  return (
-    <ComponentSummary
-      data={formData}
-      back={handleBack}
-      submit={handleSubmit}
-      showSuccess={showSuccess}
-    />
-  );
+        return (
+          <ComponentSummary
+            data={formData}
+            back={handleBack}
+            submit={handleSubmit}
+          />
+        );
       default:
         return null;
     }
   };
 
   return (
-    <section className="hero">
-      <div className="heroContent">
-        <div className="configurator">
-          <div className="step-wrapper">{renderStep()}</div>
-        </div>
+    <div 
+      className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
+      style={{ 
+        background: 'linear-gradient(135deg, #004E98 0%, #3A6EA5 50%, #5B8DB8 100%)'
+      }}
+    >
+      {/* Pattern decorativo di sfondo */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div 
+          className="absolute top-10 left-10 w-64 h-64 rounded-full blur-3xl" 
+          style={{ backgroundColor: '#FF6700' }}
+        ></div>
+        <div 
+          className="absolute bottom-20 right-20 w-96 h-96 rounded-full blur-3xl" 
+          style={{ backgroundColor: '#EBEBEB' }}
+        ></div>
+        <div 
+          className="absolute top-1/2 left-1/3 w-48 h-48 rounded-full blur-3xl" 
+          style={{ backgroundColor: '#FF6700' }}
+        ></div>
       </div>
-    </section>
+      
+      {/* Modale configuratore */}
+      <div 
+        className="relative w-full max-w-3xl rounded-2xl shadow-2xl p-8 md:p-10 z-10 flex flex-col"
+        style={{ 
+          backgroundColor: '#F8F9FA',
+          minHeight: '550px',
+          maxHeight: '85vh'
+        }}
+      >
+        {renderStep()}
+      </div>
+
+      {/* Toast di successo */}
+      {showSuccess && (
+        <div 
+          className="fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 animate-slide-in"
+          style={{ backgroundColor: '#004E98', color: 'white' }}
+        >
+          <p className="font-semibold">✓ Richiesta inviata con successo!</p>
+        </div>
+      )}
+    </div>
   );
 }
 
 export default Configurator;
-
-

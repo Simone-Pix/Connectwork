@@ -1,23 +1,39 @@
 import React from "react";
 
 function ComponentStep3({ data, updateField, next, back }) {
-  // Logica di validazione rivista per essere più robusta
+
+  const currentYear = new Date().getFullYear();
+
+  // Calcolo errore anno di costruzione in base al valore presente in data
+  let annoError = "";
+  if (data.annoCostruzione !== "" && data.annoCostruzione !== null && data.annoCostruzione !== undefined) {
+    const year = Number(data.annoCostruzione);
+    if (Number.isNaN(year) || year < 1800 || year > currentYear) {
+      annoError = `Inserisci un anno tra 1800 e ${currentYear}`;
+    }
+  }
+
   const isDisabled =
     !data.superficie || Number(data.superficie) <= 0 ||
     !data.stanze || Number(data.stanze) <= 0 ||
     !data.bagni || Number(data.bagni) <= 0 ||
-    // Per il piano: controlliamo che non sia stringa vuota (lo 0 è un piano valido)
     (data.tipoImmobile === "appartamento" && (data.piano === "" || data.piano === null)) ||
     !data.annoCostruzione ||
-    // Controllo specifico per i menu a tendina
-    !data.statoConservazione || data.statoConservazione === "" ||
-    !data.classeEnergetica || data.classeEnergetica === "";
+    annoError || // <-- disabilita se l'anno è fuori range
+    !data.statoConservazione ||
+    !data.classeEnergetica;
 
   return (
     <div className="wrapper-1-step">
+
       {/* Progress Bar */}
       <div className="progress-container">
-        <span>Passo 3 di 6</span>
+        <span 
+          className="text-sm font-semibold" 
+          style={{ color: '#3A6EA5' }}
+        >
+          Passo 3 di 6
+        </span>
         <div className="progress-bar">
           <div className="progress" style={{ width: "51%" }}></div>
         </div>
@@ -35,10 +51,7 @@ function ComponentStep3({ data, updateField, next, back }) {
             placeholder="Es. 100"
             value={data.superficie}
             min={0}
-            onChange={(e) => {
-              const val = Math.max(0, Number(e.target.value));
-              updateField("superficie", val);
-            }}
+            onChange={(e) => updateField("superficie", Math.max(0, Number(e.target.value)))}
             className="input-step3"
           />
         </div>
@@ -51,10 +64,7 @@ function ComponentStep3({ data, updateField, next, back }) {
             placeholder="Es. 4"
             value={data.stanze}
             min={0}
-            onChange={(e) => {
-              const val = Math.max(0, Number(e.target.value));
-              updateField("stanze", val);
-            }}
+            onChange={(e) => updateField("stanze", Math.max(0, Number(e.target.value)))}
             className="input-step3"
           />
         </div>
@@ -67,15 +77,12 @@ function ComponentStep3({ data, updateField, next, back }) {
             placeholder="Es. 2"
             value={data.bagni}
             min={0}
-            onChange={(e) => {
-              const val = Math.max(0, Number(e.target.value));
-              updateField("bagni", val);
-            }}
+            onChange={(e) => updateField("bagni", Math.max(0, Number(e.target.value)))}
             className="input-step3"
           />
         </div>
 
-        {/* Piano solo se appartamento */}
+        {/* Piano */}
         {data.tipoImmobile === "appartamento" && (
           <div className="input-group">
             <label className="input-label">Piano</label>
@@ -84,10 +91,7 @@ function ComponentStep3({ data, updateField, next, back }) {
               placeholder="Es. 1"
               value={data.piano}
               min={0}
-              onChange={(e) => {
-                const val = Math.max(0, Number(e.target.value));
-                updateField("piano", val);
-              }}
+              onChange={(e) => updateField("piano", Math.max(0, Number(e.target.value)))}
               className="input-step3"
             />
           </div>
@@ -100,13 +104,17 @@ function ComponentStep3({ data, updateField, next, back }) {
             type="number"
             placeholder="Es. 1990"
             min={1800}
-            max={new Date().getFullYear()}
+            max={currentYear}
             value={data.annoCostruzione}
-            onChange={(e) =>
-              updateField("annoCostruzione", Number(e.target.value))
-            }
-            className="input-step3"
+            onChange={(e) => {
+              // qui lasciamo inserire il valore, la validazione la fa annoError
+              updateField("annoCostruzione", e.target.value);
+            }}
+            className={`input-step3 ${annoError ? "border-red-500" : ""}`}
           />
+          {annoError && (
+            <p className="text-red-500 text-sm mt-1">{annoError}</p>
+          )}
         </div>
 
         {/* Stato conservazione */}
@@ -135,29 +143,27 @@ function ComponentStep3({ data, updateField, next, back }) {
           >
             <option value="">Seleziona...</option>
             {["A", "B", "C", "D", "E", "F", "G"].map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
+              <option key={c} value={c}>{c}</option>
             ))}
           </select>
         </div>
 
       </div>
 
+      {/* BUTTONS (FIXED + UNIFORM) */}
       <div className="button-group">
         <button className="back-btn" onClick={back}>
           Indietro
         </button>
 
         <button
-          className={`next-btn py-2 px-4 rounded-lg text-white bg-primary hover:bg-primary-dark transition ${
-            isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-          }`}
+          className={`next-btn ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
           onClick={isDisabled ? undefined : next}
           disabled={isDisabled}
         >
           Avanti
         </button>
+
       </div>
     </div>
   );

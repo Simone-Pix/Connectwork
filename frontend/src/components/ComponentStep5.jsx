@@ -7,7 +7,12 @@ function ComponentStep5({ data, updateField, next, back }) {
   return (
     <div className="wrapper-1-step">
       <div className="progress-container">
-        <span>Passo 5 di 6</span>
+         <span 
+            className="text-sm font-semibold" 
+            style={{ color: '#3A6EA5' }}
+          >
+            Passo 5 di 6
+          </span>
         <div className="progress-bar">
           <div className="progress" style={{ width: "85%" }}></div>
         </div>
