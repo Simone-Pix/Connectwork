@@ -19,20 +19,10 @@ function ComponentStep2({ data, updateField, next, back }) {
 
   return (
     <div className="wrapper-step-2">
-      {/* Progress Bar */}
-      <div className="progress-container">
-         <span 
-            className="text-sm font-semibold" 
-            style={{ color: '#3A6EA5' }}
-          >
-            Passo 2 di 6
-          </span>
-        <div className="progress-bar">
-          <div className="progress" style={{ width: "34%" }}></div>
-        </div>
-      </div>
+      {/* Progress Label */}
+      <span className="progress-label">Passo 2 di 6</span>
 
-      <h3 className="section-title">Inserisci i dati dell’immobile</h3>
+      <h3 className="section-title">Inserisci i dati dell'immobile</h3>
 
       {/* Indirizzo */}
       <div className="input-group">
@@ -91,16 +81,19 @@ function ComponentStep2({ data, updateField, next, back }) {
         </div>
       </div>
 
-      <div className="button-group">
+      {/* Progress Bar */}
+      <div className="progress-bar">
+        <div className="progress progress-step-2"></div>
+      </div>
+
+      <div className="button-group absolute left-1/2 transform -translate-x-1/2 bottom-6 w-full max-w-3xl flex justify-between px-4">
         <button className="back-btn" onClick={back}>
           Indietro
         </button>
         <button
           onClick={next}
           disabled={!isStepValid}
-          className={`next-btn ${
-            !isStepValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-          }`}
+          className={`next-btn ${!isStepValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
         >
           Avanti
         </button>

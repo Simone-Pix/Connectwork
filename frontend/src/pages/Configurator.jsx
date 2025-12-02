@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ComponentStep1 from "../components/ComponentStep1";
 import ComponentStep2 from "../components/ComponentStep2";
 import ComponentStep3 from "../components/ComponentStep3";
@@ -8,6 +9,7 @@ import ComponentStep6 from "../components/ComponentStep6";
 import ComponentSummary from "../components/ComponentSummary";
 
 function Configurator() {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     tipoImmobile: "",
@@ -160,16 +162,40 @@ function Configurator() {
       </div>
       
       {/* Modale configuratore */}
-      <div 
-        className="relative w-full max-w-3xl rounded-2xl shadow-2xl p-8 md:p-10 z-10 flex flex-col"
-        style={{ 
-          backgroundColor: '#F8F9FA',
-          minHeight: '550px',
-          maxHeight: '85vh'
-        }}
+      <div className="configurator-scale-wrapper">
+  <div 
+    className="configurator configurator-scale relative w-full max-w-3xl rounded-2xl shadow-2xl p-8 md:p-10 z-10 flex flex-col"
+    style={{ 
+      backgroundColor: '#F8F9FA',
+      minHeight: '550px',
+      maxHeight: '85vh'
+    }}
+  >
+    {/* Bottone di chiusura X */}
+    <button
+      onClick={() => navigate("/")}
+      className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full hover:opacity-80 transition-opacity z-20"
+      title="Chiudi"
+    >
+      <svg
+        width="32"
+        height="32"
+        viewBox="0 0 32 32"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
       >
-        {renderStep()}
-      </div>
+        {/* Cerchio esterno */}
+        <circle cx="16" cy="16" r="15" stroke="#004E98" strokeWidth="2" />
+        {/* X interna */}
+        <line x1="10" y1="10" x2="22" y2="22" stroke="#004E98" strokeWidth="2" strokeLinecap="round" />
+        <line x1="22" y1="10" x2="10" y2="22" stroke="#004E98" strokeWidth="2" strokeLinecap="round" />
+      </svg>
+    </button>
+
+    {renderStep()}
+  </div>
+</div>
+
 
       {/* Toast di successo */}
       {showSuccess && (

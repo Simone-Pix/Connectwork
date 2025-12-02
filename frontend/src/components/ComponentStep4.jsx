@@ -11,19 +11,9 @@ function ComponentStep4({ data, updateField, next, back }) {
 
   return (
     <div className="wrapper-1-step">
+      {/* Progress Label */}
+      <span className="progress-label">Passo 4 di 6</span>
       
-      <div className="progress-container">
-         <span 
-            className="text-sm font-semibold" 
-            style={{ color: '#3A6EA5' }}
-          >
-            Passo 4 di 6
-          </span>
-        <div className="progress-bar">
-          <div className="progress" style={{ width: "68%" }}></div>
-        </div>
-      </div>
-
       <h3 className="section-title">Optional dell'immobile</h3>
 
       <div className="card-container">
@@ -38,8 +28,12 @@ function ComponentStep4({ data, updateField, next, back }) {
         ))}
       </div>
 
-      {/* --- BOTTONI (AGGIUSTATI) --- */}
-      <div className="button-group">
+      <div className="progress-bar">
+        <div className="progress progress-step-4"></div>
+      </div>
+
+      {/* --- BOTTONI (posizionati come gli altri step) --- */}
+      <div className="button-group absolute left-1/2 transform -translate-x-1/2 bottom-6 w-full max-w-3xl flex justify-between px-4">
         <button className="back-btn" onClick={back}>
           Indietro
         </button>

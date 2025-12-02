@@ -25,19 +25,8 @@ function ComponentStep3({ data, updateField, next, back }) {
 
   return (
     <div className="wrapper-1-step">
-
-      {/* Progress Bar */}
-      <div className="progress-container">
-        <span 
-          className="text-sm font-semibold" 
-          style={{ color: '#3A6EA5' }}
-        >
-          Passo 3 di 6
-        </span>
-        <div className="progress-bar">
-          <div className="progress" style={{ width: "51%" }}></div>
-        </div>
-      </div>
+      {/* Progress Label */}
+      <span className="progress-label text-sm font-semibold">Passo 3 di 6</span>
 
       <h3 className="section-title">Dati dell'immobile</h3>
 
@@ -150,8 +139,13 @@ function ComponentStep3({ data, updateField, next, back }) {
 
       </div>
 
-      {/* BUTTONS (FIXED + UNIFORM) */}
-      <div className="button-group">
+      {/* Progress Bar */}
+      <div className="progress-bar">
+        <div className="progress progress-step-3"></div>
+      </div>
+
+      {/* BUTTONS (positioned relative to configurator container) */}
+      <div className="button-group absolute left-1/2 transform -translate-x-1/2 bottom-6 w-full max-w-3xl flex justify-between px-4">
         <button className="back-btn" onClick={back}>
           Indietro
         </button>

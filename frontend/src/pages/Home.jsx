@@ -1,11 +1,11 @@
 import backgroundImg from "../assets/img_background.png";
 import StepHome from "../components/ComponentStepHome";
 import FeaturedProperties from "../components/FeaturedProperties";
-import SearchByZone from "../components/SearchByZone";
 import SearchByCity from "../components/SearchByCity";
 import WhyChoose from "../components/WhyChoose";
 import AgentsSection from "../components/AgentsSection";
 import MissionSection from "../components/MissionSection";
+import NewsLetter from "../components/NewsLetter";
 
 function Home() {
   return (
@@ -45,6 +45,7 @@ function Home() {
       <MissionSection />
        <AgentsSection />
       <WhyChoose />
+      <NewsLetter />
     </>
   );
 }

@@ -49,27 +49,38 @@
     @apply grid grid-cols-2 gap-4 w-full;
   }
 
-  /* Progress row */
-  .progress-container {
-    @apply flex items-center gap-4 mb-4;
-  }
-
-  .progress-container>span {
-    @apply text-xs text-gray-400 w-28;
+  /* Progress Label and Bar */
+  .progress-label {
+    @apply text-sm font-semibold;
+    color: #004E98;
   }
 
   .progress-bar {
-    @apply h-2 rounded-full flex-1 bg-gray-700/60 overflow-hidden;
+    @apply h-2 rounded-full w-full overflow-hidden absolute;
+    background-color: #EBEBEB;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 340px;
+    z-index: 10;
   }
 
   .progress {
     @apply h-2 rounded-full transition-all duration-300 ease-in-out;
-    background: linear-gradient(90deg, #ff7a18, #ff9124);
+    background-color: #FF6700;
   }
+
+  /* Step-specific progress widths */
+  .progress-step-1 { width: 16.66%; }
+  .progress-step-2 { width: 34%; }
+  .progress-step-3 { width: 51%; }
+  .progress-step-4 { width: 68%; }
+  .progress-step-5 { width: 85%; }
+  .progress-step-6 { width: 100%; }
 
   /* Titles */
   .section-title {
-    @apply text-2xl font-semibold text-center mt-4 mb-3;
+    @apply text-2xl font-semibold text-center;
     color: #ff8a3d;
   }
 
@@ -198,4 +209,47 @@
   /* bottone avanti */
 
 
+}
+/* Wrapper esterno che centra e permette lo scale */
+.configurator-scale-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  overflow: visible !important;
+}
+
+/* Scala proporzionale dell'intero configuratore */
+.configurator-scale {
+  transform: scale(1.18); /* ← regola QUI la grandezza (1 = normale) */
+  transform-origin: top center; /* mantiene posizione */
+}
+.configurator-step-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 20px;
+  padding-bottom: 70px; /* evita che il contenuto tocchi i bottoni assoluti */
+}
+
+.step-header {
+  margin-bottom: 20px;
+}
+
+.step-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.step-footer {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
 }
