@@ -13,29 +13,67 @@ function Navbar() {
     if (res.success) navigate("/");
   };
 
+
+  const scrollToMission = () => {
+    if (window.location.pathname === "/") {
+      const element = document.getElementById("la-nostra-missione");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      navigate("/", { replace: true });
+      setTimeout(() => {
+        const element = document.getElementById("la-nostra-missione");
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
+  };
+
+  
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <nav className="navbar">
       {/* LEFT */}
-     <div className="navbar-left">
-  <Link to="/" className="flex items-center gap-2">
-    <img src={logo} alt="Logo Immobiliaris" className="navbar-logo cursor-pointer" />
-    <p className="navbar-title cursor-pointer">Immobiliaris</p>
-  </Link>
-</div>
-
+      <div className="navbar-left">
+        <Link to="/" className="flex items-center gap-2" onClick={scrollToTop}>
+          <img
+            src={logo}
+            alt="Logo Immobiliaris"
+            className="navbar-logo cursor-pointer"
+          />
+          <p className="navbar-title cursor-pointer">Immobiliaris</p>
+        </Link>
+      </div>
 
       {/* DESKTOP LINKS */}
       <div className="navbar-links hidden md:flex">
-        <Link to="/" className="nav-link">Home</Link>
-        <Link to="/cerca" className="nav-link">Acquista</Link>
-        
-        <Link to="/valuta" className="nav-link">Vendi</Link>
-        <Link to="/chi-siamo" className="nav-link">Chi siamo</Link>
+        <Link to="/" className="nav-link" onClick={scrollToTop}>
+          Home
+        </Link>
+        <Link to="/cerca" className="nav-link">
+          Acquista
+        </Link>
+        <Link to="/valuta" className="nav-link">
+          Vendi
+        </Link>
+        <button onClick={scrollToMission} className="nav-link">
+          Chi siamo
+        </button>
+
         {isAuthenticated && user?.role === "admin" && (
-          <Link to="/backoffice" className="nav-link">Backoffice</Link>
+          <Link to="/backoffice" className="nav-link">
+            Backoffice
+          </Link>
         )}
         {isAuthenticated && user?.role !== "admin" && (
-          <Link to="/personal-area" className="nav-link">Area personale</Link>
+          <Link to="/personal-area" className="nav-link">
+            Area personale
+          </Link>
         )}
       </div>
 
@@ -74,18 +112,62 @@ function Navbar() {
       {/* MOBILE MENU */}
       {isOpen && (
         <div className="mobile-menu md:hidden">
-          <Link to="/" className="mobile-link" onClick={() => setIsOpen(false)}>Home</Link>
-          <Link to="/cerca" className="mobile-link" onClick={() => setIsOpen(false)}>Acquista</Link>
-          <Link to="/" className="mobile-link" onClick={() => setIsOpen(false)}>Affitta</Link>
-          <Link to="/valuta" className="mobile-link" onClick={() => setIsOpen(false)}>Vendi</Link>
-          <Link to="/chi-siamo" className="mobile-link" onClick={() => setIsOpen(false)}>Chi siamo</Link>
+          <Link to="/" className="mobile-link" onClick={() => setIsOpen(false)}>
+            Home
+          </Link>
+          <Link
+            to="/cerca"
+            className="mobile-link"
+            onClick={() => setIsOpen(false)}
+          >
+            Acquista
+          </Link>
+          <Link to="/" className="mobile-link" onClick={() => setIsOpen(false)}>
+            Affitta
+          </Link>
+          <Link
+            to="/valuta"
+            className="mobile-link"
+            onClick={() => setIsOpen(false)}
+          >
+            Vendi
+          </Link>
+
+          {/* VOCE "IL NOSTRO IMPEGNO" - STILE UNIFORMATO */}
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={() => {
+              scrollToMission();
+              setIsOpen(false);
+            }}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                scrollToMission();
+                setIsOpen(false);
+              }
+            }}
+            className="mobile-link w-full text-left px-6 py-3"
+          >
+            Il Nostro Impegno
+          </div>
+          {/* FINE VOCE */}
+
           {isAuthenticated && user?.role === "admin" && (
-            <Link to="/backoffice" className="mobile-link" onClick={() => setIsOpen(false)}>
+            <Link
+              to="/backoffice"
+              className="mobile-link"
+              onClick={() => setIsOpen(false)}
+            >
               Backoffice
             </Link>
           )}
           {isAuthenticated && user?.role !== "admin" && (
-            <Link to="/personal-area" className="mobile-link" onClick={() => setIsOpen(false)}>
+            <Link
+              to="/personal-area"
+              className="mobile-link"
+              onClick={() => setIsOpen(false)}
+            >
               Area personale
             </Link>
           )}
@@ -96,7 +178,8 @@ function Navbar() {
                   onClick={() => {
                     handleLogout();
                     setIsOpen(false);
-                  }}>
+                  }}
+                >
                   Logout
                 </button>
               </div>
@@ -106,9 +189,7 @@ function Navbar() {
                   <button className="mobile-login-btn">Login</button>
                 </Link>
                 <Link to="/signin" onClick={() => setIsOpen(false)}>
-                  <button className="mobile-register-btn">
-                    Registrati
-                  </button>
+                  <button className="mobile-register-btn">Registrati</button>
                 </Link>
               </>
             )}

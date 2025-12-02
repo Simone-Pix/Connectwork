@@ -4,6 +4,8 @@ import FeaturedProperties from "../components/FeaturedProperties";
 import SearchByZone from "../components/SearchByZone";
 import SearchByCity from "../components/SearchByCity";
 import WhyChoose from "../components/WhyChoose";
+import AgentsSection from "../components/AgentsSection";
+import MissionSection from "../components/MissionSection";
 
 function Home() {
   return (
@@ -40,6 +42,8 @@ function Home() {
 
       <FeaturedProperties />
       <SearchByCity />
+      <MissionSection />
+       <AgentsSection />
       <WhyChoose />
     </>
   );
