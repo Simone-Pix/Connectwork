@@ -3,6 +3,8 @@ import StepHome from "../components/ComponentStepHome";
 import FeaturedProperties from "../components/FeaturedProperties";
 import SearchByCity from "../components/SearchByCity";
 import WhyChoose from "../components/WhyChoose";
+import AgentsSection from "../components/AgentsSection";
+import MissionSection from "../components/MissionSection";
 import NewsLetter from "../components/NewsLetter";
 
 function Home() {
@@ -40,6 +42,8 @@ function Home() {
 
       <FeaturedProperties />
       <SearchByCity />
+      <MissionSection />
+       <AgentsSection />
       <WhyChoose />
       <NewsLetter />
     </>
