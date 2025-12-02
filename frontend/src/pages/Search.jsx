@@ -111,7 +111,7 @@ function Search() {
   }
 
   return (
-    <div className="pt-28 pb-10 min-h-screen">
+<div className="search-page-wrapper pt-28 pb-10 min-h-screen">
       <div className="max-w-7xl mx-auto px-4">
         
         {/* PULSANTE MOBILE (Stile copiato da .backoffice-mobileToggle-backoffice) */}

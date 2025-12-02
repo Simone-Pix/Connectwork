@@ -7,35 +7,15 @@ function ComponentStep1({ data, updateField, next }) {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Progress Bar */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-3">
-          <span 
-            className="text-sm font-semibold" 
-            style={{ color: '#3A6EA5' }}
-          >
-            Passo 1 di 6
-          </span>
-        </div>
-        <div 
-          className="w-full rounded-full h-2" 
-          style={{ backgroundColor: '#EBEBEB' }}
-        >
-          <div 
-            className="h-2 rounded-full transition-all duration-300"
-            style={{ 
-              width: '16.66%',
-              backgroundColor: '#FF6700'
-            }}
-          ></div>
-        </div>
-      </div>
+      {/* Progress Label */}
+      <span className="progress-label">Passo 1 di 6</span>
 
       {/* Title */}
-      <div className="flex-1 flex flex-col items-center justify-center py-8">
+      <div className="flex flex-col items-center justify-start pt-6 pb-4">
+
         <h3 
-          className="text-3xl font-bold mb-10 text-center" 
-          style={{ color: '#004E98' }}
+          className="text-3xl font-bold mb-10 text-center section-title" 
+          
         >
           Cosa vuoi vendere?
         </h3>
@@ -132,6 +112,11 @@ function ComponentStep1({ data, updateField, next }) {
             </div>
           </button>
         </div>
+      </div>
+
+      {/* Progress Bar */}
+      <div className="progress-bar">
+        <div className="progress progress-step-1"></div>
       </div>
 
       {/* Buttons positioned relative to the configurator container (same reference used elsewhere) */}
