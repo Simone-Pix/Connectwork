@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function PropertyDetail() {
   const { id } = useParams();
@@ -11,7 +11,8 @@ export default function PropertyDetail() {
   const [showCarousel, setShowCarousel] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const fallbackImage = "/placeholder";
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     async function load() {
@@ -102,8 +103,7 @@ export default function PropertyDetail() {
 
   const mainImage =
     images.find((i) => i.tipo === "foto")?.url ||
-    property.urlImmagine ||
-    fallbackImage;
+    property.urlImmagine
 
   const priceFormatted = property.prezzoRichiesto
     ? `€ ${Number(property.prezzoRichiesto).toLocaleString("it-IT")}`
@@ -174,9 +174,9 @@ export default function PropertyDetail() {
               <div className="mt-6 flex gap-3">
                 <button
                   className="px-4 py-2 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition shadow-sm"
-                  onClick={() => alert("Placeholder per la richeista di contatto")}
+                  onClick={() => navigate("/Home#agentsId")}
                 >
-                  Contatta proprietario
+                  Contatta un agente
                 </button>
               </div>
             </div>

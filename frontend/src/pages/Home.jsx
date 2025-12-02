@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import backgroundImg from "../assets/img_background.png";
 import StepHome from "../components/ComponentStepHome";
 import FeaturedProperties from "../components/FeaturedProperties";
@@ -8,6 +10,18 @@ import MissionSection from "../components/MissionSection";
 import NewsLetter from "../components/NewsLetter";
 
 function Home() {
+//codice per trovare le sezioni in base agli id  
+  const { hash } = useLocation();
+  useEffect(() => {
+    if (hash) {
+      const element = document.getElementById(hash.replace("#", ""));
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [hash]);  
   return (
     <>
       {/* Hero Section */}
@@ -43,7 +57,9 @@ function Home() {
       <FeaturedProperties />
       <SearchByCity />
       <MissionSection />
-       <AgentsSection />
+       <div id="agentsId">
+         <AgentsSection />
+       </div>
       <WhyChoose />
       <NewsLetter />
     </>
