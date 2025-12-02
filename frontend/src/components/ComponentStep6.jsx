@@ -17,17 +17,8 @@ function ComponentStep6({ data, updateField, back, next }) {
 
   return (
     <div className="wrapper-1-step">
-      <div className="progress-container">
-         <span 
-            className="text-sm font-semibold" 
-            style={{ color: '#3A6EA5' }}
-          >
-            Passo 6 di 6
-          </span>
-        <div className="progress-bar">
-          <div className="progress" style={{ width: "100%" }}></div>
-        </div>
-      </div>
+      {/* Progress Label */}
+      <span className="progress-label text-sm font-semibold">Passo 6 di 6</span>
 
       <h3 className="section-title mb-4">I tuoi dati</h3>
 
@@ -82,6 +73,10 @@ function ComponentStep6({ data, updateField, back, next }) {
         />
         </div>
        
+      </div>
+
+      <div className="progress-bar">
+        <div className="progress progress-step-6"></div>
       </div>
 
       <div className="button-group">

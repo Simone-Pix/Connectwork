@@ -25,19 +25,8 @@ function ComponentStep3({ data, updateField, next, back }) {
 
   return (
     <div className="wrapper-1-step">
-
-      {/* Progress Bar */}
-      <div className="progress-container">
-        <span 
-          className="text-sm font-semibold" 
-          style={{ color: '#3A6EA5' }}
-        >
-          Passo 3 di 6
-        </span>
-        <div className="progress-bar">
-          <div className="progress" style={{ width: "51%" }}></div>
-        </div>
-      </div>
+      {/* Progress Label */}
+      <span className="progress-label text-sm font-semibold">Passo 3 di 6</span>
 
       <h3 className="section-title">Dati dell'immobile</h3>
 
@@ -148,6 +137,11 @@ function ComponentStep3({ data, updateField, next, back }) {
           </select>
         </div>
 
+      </div>
+
+      {/* Progress Bar */}
+      <div className="progress-bar">
+        <div className="progress progress-step-3"></div>
       </div>
 
       {/* BUTTONS (positioned relative to configurator container) */}
