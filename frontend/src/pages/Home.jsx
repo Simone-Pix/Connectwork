@@ -1,9 +1,9 @@
 import backgroundImg from "../assets/img_background.png";
 import StepHome from "../components/ComponentStepHome";
 import FeaturedProperties from "../components/FeaturedProperties";
-import SearchByZone from "../components/SearchByZone";
 import SearchByCity from "../components/SearchByCity";
 import WhyChoose from "../components/WhyChoose";
+import NewsLetter from "../components/NewsLetter";
 
 function Home() {
   return (
@@ -41,6 +41,7 @@ function Home() {
       <FeaturedProperties />
       <SearchByCity />
       <WhyChoose />
+      <NewsLetter />
     </>
   );
 }
