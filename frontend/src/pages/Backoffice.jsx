@@ -475,7 +475,7 @@ function Backoffice() {
                 onSubmit={handleAddSubmit}
               >
                 {/* Il form di aggiunta è controllato */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3">
                   <div className="input-group">
                     <label className="mb-1">Anno costruzione</label>
                     <input
@@ -795,9 +795,9 @@ function Backoffice() {
                             {/* Form non controllato, usa defaultValue e legge da FormData in updateImmobile */}
                             <form
                               onSubmit={(e) => updateImmobile(e, immobile.id)}
-                              className="grid grid-cols-1 lg:grid-cols-2 gap-3"
+                              className="grid grid-cols-1 gap-3"
                             >
-                              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                              <div className="grid grid-cols-1 gap-3">
 
   <div className="input-group">
     <label className="mb-1">Anno costruzione</label>

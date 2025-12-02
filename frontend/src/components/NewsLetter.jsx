@@ -39,14 +39,14 @@ function NewsletterSection() {
   };
 
   return (
-    <section className="py-16 px-6 flex justify-center bg-gray-50">
+    <section className="py-16 px-6 flex justify-center bg-[#527597]">
       <div 
-        className="configurator w-full max-w-4xl flex flex-col items-center justify-center text-center"
+        className="configurator bg-[#3a6ea5] w-full max-w-4xl flex flex-col items-center justify-center text-center"
         style={{ minHeight: "auto", padding: "3rem" }} 
       >
         <div className="w-full max-w-xl flex flex-col items-center">
           <h2 className="section-title mb-4">Resta aggiornato</h2>
-          <p className="text-gray-500 mb-8 max-w-md">
+          <p className="text-white mb-8 max-w-md">
             Iscriviti alla nostra newsletter per ricevere in anteprima le nuove proprietà immobiliari 
             e le migliori offerte di mercato direttamente nella tua casella di posta.
           </p>
@@ -75,7 +75,7 @@ function NewsletterSection() {
             </button>
           </div>
 
-          <p className="text-xs text-gray-400 mt-6">
+          <p className="text-xs text-white mt-6">
             Non inviamo spam. Puoi disiscriverti in qualsiasi momento.
           </p>
         </div>
