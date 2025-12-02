@@ -5,10 +5,6 @@ import com.immobiliaris.backend.repo.UsersRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.immobiliaris.backend.service.BrevoEmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,14 +22,6 @@ public class AuthController {
 
     @Autowired
     private UsersRepository usersRepository;
-
-    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
-
-    @Autowired(required = false)
-    private BrevoEmailService brevoEmailService;
-
-    @Value("${brevo.default.listId:}")
-    private String brevoDefaultListId;
 
     /**
      * GET/POST /api/auth/check
@@ -162,34 +150,6 @@ public class AuthController {
             u.setVerificato(false);
             usersRepository.save(u);
             
-            // Prova ad aggiungere/aggiornare il contatto su Brevo (non bloccare la registrazione se fallisce)
-            try {
-                if (brevoEmailService != null && brevoEmailService.isEnabled()) {
-                    java.util.Map<String, Object> attrs = new java.util.HashMap<>();
-                    if (nome != null && !nome.isBlank()) attrs.put("FIRSTNAME", nome);
-                    if (cognome != null && !cognome.isBlank()) attrs.put("LASTNAME", cognome);
-                    if (telefono != null && !telefono.isBlank()) attrs.put("SMS", telefono);
-
-                    java.util.List<Integer> listIds = new java.util.ArrayList<>();
-                    if (brevoDefaultListId != null && !brevoDefaultListId.isBlank()) {
-                        try {
-                            listIds.add(Integer.parseInt(brevoDefaultListId.trim()));
-                        } catch (NumberFormatException nfe) {
-                            log.warn("brevo.default.listId is not a valid integer: {}", brevoDefaultListId);
-                        }
-                    }
-
-                    try {
-                        brevoEmailService.upsertContact(emailNorm, attrs, listIds.isEmpty() ? null : listIds);
-                        log.info("Brevo: upsert contact attempted for {}", emailNorm);
-                    } catch (Exception be) {
-                        log.warn("Brevo upsert failed for {}: {}", emailNorm, be.getMessage());
-                    }
-                }
-            } catch (Exception e) {
-                log.warn("Unexpected error while calling Brevo service: {}", e.getMessage());
-            }
-
             response.put("success", true);
             response.put("message", "Registrazione completata con successo");
             response.put("redirect", "/login");
