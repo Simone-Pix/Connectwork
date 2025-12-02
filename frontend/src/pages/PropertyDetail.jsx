@@ -174,16 +174,9 @@ export default function PropertyDetail() {
               <div className="mt-6 flex gap-3">
                 <button
                   className="px-4 py-2 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition shadow-sm"
-                  onClick={() => alert("Funzione prenotazione visita da implementare")}
+                  onClick={() => alert("Placeholder per la richeista di contatto")}
                 >
-                  Prenota visita
-                </button>
-
-                <button
-                  className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
-                  onClick={() => navigator.clipboard?.writeText(window.location.href)}
-                >
-                  Condividi
+                  Contatta proprietario
                 </button>
               </div>
             </div>
@@ -218,6 +211,12 @@ export default function PropertyDetail() {
               <div className="mt-3 text-sm text-gray-600">Classe energetica</div>
               <div className="font-semibold">{property.classeEnergetica ?? "-"}</div>
             </div>
+            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mt-4">
+              <div className="text-xs text-gray-500">Inserito il</div>
+              <div className="font-semibold text-sm">{property.dataInserimento ?? property.data_inserimento ?? "-"}</div>
+              <div className="mt-3 text-xs text-gray-500">CAP</div>
+              <div className="font-semibold text-sm">{property.cap ?? "-"}</div>
+            </div>
           </aside>
         </div>
 
@@ -243,35 +242,6 @@ export default function PropertyDetail() {
               </div>
             </div>
           </section>
-
-          <aside>
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-              <h4 className="text-sm text-gray-600">Contatti proprietario</h4>
-              <div className="mt-3">
-                <div className="text-sm text-gray-700">
-                  Proprietario ID: <span className="font-semibold">
-                    {property.proprietarioId ?? property.proprietario_id ?? "-"}
-                  </span>
-                </div>
-
-                <div className="mt-4">
-                  <button
-                    className="w-full py-2 px-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition"
-                    onClick={() => alert("Form contatto da implementare")}
-                  >
-                    Contatta proprietario
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mt-4">
-              <div className="text-xs text-gray-500">Inserito il</div>
-              <div className="font-semibold text-sm">{property.dataInserimento ?? property.data_inserimento ?? "-"}</div>
-              <div className="mt-3 text-xs text-gray-500">CAP</div>
-              <div className="font-semibold text-sm">{property.cap ?? "-"}</div>
-            </div>
-          </aside>
         </div>
 
       </div>

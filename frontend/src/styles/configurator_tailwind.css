@@ -65,7 +65,7 @@
 
   /* Titles */
   .section-title {
-    @apply text-2xl font-semibold text-center mt-4 mb-3;
+    @apply text-2xl font-semibold text-center;
     color: #ff8a3d;
   }
 
