@@ -67,6 +67,16 @@
     background: linear-gradient(90deg, #ff7a18, #ff9124);
   }
 
+  /* Step-specific progress widths */
+  .progress-step-2 {
+    width: 34%;
+  }
+
+  /* Progress label color consistent with design */
+  .progress-label {
+    color: #3A6EA5;
+  }
+
   /* Titles */
   .section-title {
     @apply text-2xl font-semibold text-center mt-4 mb-3;

@@ -150,8 +150,8 @@ function ComponentStep3({ data, updateField, next, back }) {
 
       </div>
 
-      {/* BUTTONS (FIXED + UNIFORM) */}
-      <div className="button-group">
+      {/* BUTTONS (positioned relative to configurator container) */}
+      <div className="button-group absolute left-1/2 transform -translate-x-1/2 bottom-6 w-full max-w-3xl flex justify-between px-4">
         <button className="back-btn" onClick={back}>
           Indietro
         </button>

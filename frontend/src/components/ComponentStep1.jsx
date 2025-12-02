@@ -1,9 +1,9 @@
 function ComponentStep1({ data, updateField, next }) {
   const handleSelect = (value) => {
     updateField("tipoImmobile", value);
-    // Auto-avanza dopo la selezione
-    setTimeout(() => next(), 300);
   };
+
+  const isStepValid = Boolean(data.tipoImmobile);
 
   return (
     <div className="flex flex-col h-full">
@@ -132,6 +132,17 @@ function ComponentStep1({ data, updateField, next }) {
             </div>
           </button>
         </div>
+      </div>
+
+      {/* Buttons positioned relative to the configurator container (same reference used elsewhere) */}
+      <div className="button-group absolute left-1/2 transform -translate-x-1/2 bottom-6 w-full max-w-3xl flex justify-end px-4">
+        <button
+          onClick={next}
+          disabled={!isStepValid}
+          className={`next-btn ${!isStepValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+        >
+          Avanti
+        </button>
       </div>
     </div>
   );

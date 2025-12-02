@@ -38,8 +38,8 @@ function ComponentStep4({ data, updateField, next, back }) {
         ))}
       </div>
 
-      {/* --- BOTTONI (AGGIUSTATI) --- */}
-      <div className="button-group">
+      {/* --- BOTTONI (posizionati come gli altri step) --- */}
+      <div className="button-group absolute left-1/2 transform -translate-x-1/2 bottom-6 w-full max-w-3xl flex justify-between px-4">
         <button className="back-btn" onClick={back}>
           Indietro
         </button>

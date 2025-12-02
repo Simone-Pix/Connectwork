@@ -161,7 +161,7 @@ function Configurator() {
       
       {/* Modale configuratore */}
       <div 
-        className="relative w-full max-w-3xl rounded-2xl shadow-2xl p-8 md:p-10 z-10 flex flex-col"
+        className="configurator relative w-full max-w-3xl rounded-2xl shadow-2xl p-8 md:p-10 z-10 flex flex-col"
         style={{ 
           backgroundColor: '#F8F9FA',
           minHeight: '550px',
