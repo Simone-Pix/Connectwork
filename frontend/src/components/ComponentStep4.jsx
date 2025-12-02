@@ -11,8 +11,14 @@ function ComponentStep4({ data, updateField, next, back }) {
 
   return (
     <div className="wrapper-1-step">
+      
       <div className="progress-container">
-        <span>Passo 4 di 6</span>
+         <span 
+            className="text-sm font-semibold" 
+            style={{ color: '#3A6EA5' }}
+          >
+            Passo 4 di 6
+          </span>
         <div className="progress-bar">
           <div className="progress" style={{ width: "68%" }}></div>
         </div>
@@ -32,15 +38,18 @@ function ComponentStep4({ data, updateField, next, back }) {
         ))}
       </div>
 
-      <div className="button-group">
-        <button className="back-btn" onClick={back}>Indietro</button>
-        <button
-  onClick={next}
-  className="next-btn py-2 px-4 rounded-lg text-white bg-primary hover:bg-primary-dark transition cursor-pointer"
->
-  Avanti
-</button>
+      {/* --- BOTTONI (posizionati come gli altri step) --- */}
+      <div className="button-group absolute left-1/2 transform -translate-x-1/2 bottom-6 w-full max-w-3xl flex justify-between px-4">
+        <button className="back-btn" onClick={back}>
+          Indietro
+        </button>
 
+        <button
+          onClick={next}
+          className="next-btn cursor-pointer"
+        >
+          Avanti
+        </button>
       </div>
     </div>
   );

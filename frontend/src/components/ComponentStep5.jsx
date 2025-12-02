@@ -7,7 +7,12 @@ function ComponentStep5({ data, updateField, next, back }) {
   return (
     <div className="wrapper-1-step">
       <div className="progress-container">
-        <span>Passo 5 di 6</span>
+         <span 
+            className="text-sm font-semibold" 
+            style={{ color: '#3A6EA5' }}
+          >
+            Passo 5 di 6
+          </span>
         <div className="progress-bar">
           <div className="progress" style={{ width: "85%" }}></div>
         </div>
@@ -27,19 +32,16 @@ function ComponentStep5({ data, updateField, next, back }) {
         ))}
       </div>
 
-      <div className="button-group">
+      <div className="button-group absolute left-1/2 transform -translate-x-1/2 bottom-6 w-full max-w-3xl flex justify-between px-4">
         <button className="back-btn" onClick={back}>Indietro</button>
 
         <button
-  onClick={next}
-  disabled={isDisabled}
-  className={`
-    next-btn py-2 px-4 rounded-lg text-white bg-primary hover:bg-primary-dark transition
-    ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
-  `}
->
-  Avanti
-</button>
+          onClick={next}
+          disabled={isDisabled}
+          className={`next-btn ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+        >
+          Avanti
+        </button>
 
       </div>
     </div>

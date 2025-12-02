@@ -9,37 +9,37 @@ function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center text-center overflow-hidden">
-        <img
-          src={backgroundImg}
-          alt="Background edificio"
-          className="absolute inset-0 w-full h-full object-cover -z-10"
-        />
+      <section className="relative min-h-screen flex flex-col">
+        <div className="flex-1 flex items-center">
+     
+          <div className="w-full grid grid-cols-1 lg:grid-cols-[55%_45%] gap-0 items-center">
+            
+            
+            <div className="relative h-[50vh] lg:h-screen order-2 lg:order-1">
+              <img 
+                src={backgroundImg} 
+                alt="Casa dei sogni" 
+                className="absolute inset-0 w-full h-full object-cover"
+              />
 
-        <div className="absolute inset-0  -z-[1]"></div>
+              {/* Gradiente spostato più a destra */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent from-50% via-blue-900/30 via-80% to-blue-900"></div>
+              
+              {/* Layer mobile */}
+              <div className="absolute inset-0 bg-gradient-to-b from-blue-900/20 to-blue-900/40 lg:hidden"></div>
+            </div>
 
-        <div className="max-w-3xl px-4">
-          <h1 className="text-white text-4xl md:text-5xl font-bold leading-tight">
-            Trova la casa dei{" "}
-            <span className="text-orange-500">tuoi sogni</span>
-            <br />
-            <span className="text-lg md:text-xl font-normal text-blue-100 mt-2 inline-block">
-              Migliaia di annunci verificati di case in vendita e affitto in tutta Italia
-            </span>
-          </h1>
-          <div className="mt-8">
-            <StepHome />
+            
+            <div className="relative bg-blue-900 px-6 py-12 lg:py-0 lg:px-12 h-[50vh] lg:h-screen flex items-center order-1 lg:order-2">
+              <StepHome />
+            </div>
           </div>
         </div>
+
       </section>
 
-      {/*Sezione proprietà in evidenza*/}
       <FeaturedProperties />
-
-      {/* Sezione ricerca da città */}
       <SearchByCity />
-
-       {/* Sezione Perchè sceglierci con bottone cta  */}
       <WhyChoose />
     </>
   );

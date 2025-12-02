@@ -143,3 +143,10 @@
 .backoffice-sendButton-backoffice {
   @apply bg-orange-500 text-white px-5 py-3 rounded-lg font-semibold hover:bg-orange-600 transition shadow-sm;
 }
+.input-group label {
+  display: inline-block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333; /* Colore per testare se le etichette sono visibili */
+}
+

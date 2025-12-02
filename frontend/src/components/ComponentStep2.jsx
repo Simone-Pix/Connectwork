@@ -21,9 +21,9 @@ function ComponentStep2({ data, updateField, next, back }) {
     <div className="wrapper-step-2">
       {/* Progress Bar */}
       <div className="progress-container">
-        <span>Passo 2 di 6</span>
+        <span className="progress-label text-sm font-semibold">Passo 2 di 6</span>
         <div className="progress-bar">
-          <div className="progress" style={{ width: "34%" }}></div>
+          <div className="progress progress-step-2"></div>
         </div>
       </div>
 
@@ -75,7 +75,7 @@ function ComponentStep2({ data, updateField, next, back }) {
           <label className="input-label">Provincia</label>
           <input
             type="text"
-            placeholder="RM"
+            placeholder="TO"
             maxLength={2}
             className="input-step2 border-gray-300 uppercase"
             value={data.provincia || ""}
@@ -86,16 +86,14 @@ function ComponentStep2({ data, updateField, next, back }) {
         </div>
       </div>
 
-      <div className="button-group">
+      <div className="button-group absolute left-1/2 transform -translate-x-1/2 bottom-6 w-full max-w-3xl flex justify-between px-4">
         <button className="back-btn" onClick={back}>
           Indietro
         </button>
         <button
           onClick={next}
           disabled={!isStepValid}
-          className={`next-btn ${
-            !isStepValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-          }`}
+          className={`next-btn ${!isStepValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
         >
           Avanti
         </button>

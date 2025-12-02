@@ -3,6 +3,7 @@ import { Suspense, lazy } from "react";
 import { useAuthContext } from "./Contexts/AuthContext.jsx";
 import Layout from "./Layout/Layout";
 import AboutUs from "./pages/AboutUs.jsx";
+import ScrollTop from "../src/components/ScrollTop.jsx";
 
 import "./App.css";
 
@@ -22,6 +23,7 @@ function App() {
   return (
     <BrowserRouter>
       <Suspense fallback={<div>Loading…</div>}>
+      <ScrollTop />
         <Routes>
 
           {/* Layout wrapper */}

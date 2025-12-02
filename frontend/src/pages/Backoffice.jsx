@@ -476,133 +476,178 @@ function Backoffice() {
               >
                 {/* Il form di aggiunta è controllato */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-                  <input
-                    name="annoCostruzione"
-                    value={addForm.annoCostruzione}
-                    onChange={handleAddFormChange}
-                    className="backoffice-formInput-backoffice"
-                    placeholder="Anno costruzione (YYYY)"
-                    type="number"
-                  />
+                  <div className="input-group">
+                    <label className="mb-1">Anno costruzione</label>
+                    <input
+                      name="annoCostruzione"
+                      value={addForm.annoCostruzione}
+                      onChange={handleAddFormChange}
+                      className="backoffice-formInput-backoffice"
+                      placeholder="Anno costruzione (YYYY)"
+                      type="number"
+                    />
+                  </div>
 
-                  <input
-                    name="cap"
-                    value={addForm.cap}
-                    onChange={handleAddFormChange}
-                    className="backoffice-formInput-backoffice"
-                    placeholder="CAP"
-                  />
+                  <div className="input-group">
+                    <label className="mb-1">CAP</label>
+                    <input
+                      name="cap"
+                      value={addForm.cap}
+                      onChange={handleAddFormChange}
+                      className="backoffice-formInput-backoffice"
+                      placeholder="CAP"
+                    />
+                  </div>
 
-                  <input
-                    name="citta"
-                    value={addForm.citta}
-                    onChange={handleAddFormChange}
-                    className="backoffice-formInput-backoffice"
-                    placeholder="Città"
-                  />
+                  <div className="input-group">
+                    <label className="mb-1">Città</label>
+                    <input
+                      name="citta"
+                      value={addForm.citta}
+                      onChange={handleAddFormChange}
+                      className="backoffice-formInput-backoffice"
+                      placeholder="Città"
+                    />
+                  </div>
 
-                  <input
-                    name="provincia"
-                    value={addForm.provincia}
-                    onChange={handleAddFormChange}
-                    className="backoffice-formInput-backoffice"
-                    placeholder="Provincia"
-                  />
+                  <div className="input-group">
+                    <label className="mb-1">Provincia</label>
+                    <input
+                      name="provincia"
+                      value={addForm.provincia}
+                      onChange={handleAddFormChange}
+                      className="backoffice-formInput-backoffice"
+                      placeholder="Provincia"
+                    />
+                  </div>
 
-                  <input
-                    name="classeEnergetica"
-                    value={addForm.classeEnergetica}
-                    onChange={handleAddFormChange}
-                    className="backoffice-formInput-backoffice"
-                    placeholder="Classe energetica"
-                  />
+                  <div className="input-group">
+                    <label className="mb-1">Classe energetica</label>
+                    <input
+                      name="classeEnergetica"
+                      value={addForm.classeEnergetica}
+                      onChange={handleAddFormChange}
+                      className="backoffice-formInput-backoffice"
+                      placeholder="Classe energetica"
+                    />
+                  </div>
 
-                  <input
-                    name="tipoImmobile"
-                    value={addForm.tipoImmobile}
-                    onChange={handleAddFormChange}
-                    className="backoffice-formInput-backoffice"
-                    placeholder="Tipo immobile (es. appartamento, casa)"
-                  />
+                  <div className="input-group">
+                    <label className="mb-1">Tipo immobile</label>
+                    <input
+                      name="tipoImmobile"
+                      value={addForm.tipoImmobile}
+                      onChange={handleAddFormChange}
+                      className="backoffice-formInput-backoffice"
+                      placeholder="Tipo immobile (es. appartamento, casa)"
+                    />
+                  </div>
 
-                  <input
-                    name="indirizzo"
-                    value={addForm.indirizzo}
-                    onChange={handleAddFormChange}
-                    className="backoffice-formInput-backoffice"
-                    placeholder="Indirizzo"
-                  />
+                  <div className="input-group">
+                    <label className="mb-1">Indirizzo</label>
+                    <input
+                      name="indirizzo"
+                      value={addForm.indirizzo}
+                      onChange={handleAddFormChange}
+                      className="backoffice-formInput-backoffice"
+                      placeholder="Indirizzo"
+                    />
+                  </div>
 
-                  <input
-                    name="superficie"
-                    value={addForm.superficie}
-                    onChange={handleAddFormChange}
-                    className="backoffice-formInput-backoffice"
-                    placeholder="Superficie (m²)"
-                    type="number"
-                    step="0.01"
-                  />
+                  <div className="input-group">
+                    <label className="mb-1">Superficie (m²)</label>
+                    <input
+                      name="superficie"
+                      value={addForm.superficie}
+                      onChange={handleAddFormChange}
+                      className="backoffice-formInput-backoffice"
+                      placeholder="Superficie (m²)"
+                      type="number"
+                      step="0.01"
+                    />
+                  </div>
 
-                  <input
-                    name="numLocali"
-                    value={addForm.numLocali}
-                    onChange={handleAddFormChange}
-                    className="backoffice-formInput-backoffice"
-                    placeholder="Numero locali"
-                    type="number"
-                  />
+                  <div className="input-group">
+                    <label className="mb-1">Numero locali</label>
+                    <input
+                      name="numLocali"
+                      value={addForm.numLocali}
+                      onChange={handleAddFormChange}
+                      className="backoffice-formInput-backoffice"
+                      placeholder="Numero locali"
+                      type="number"
+                    />
+                  </div>
 
-                  <input
-                    name="numBagni"
-                    value={addForm.numBagni}
-                    onChange={handleAddFormChange}
-                    className="backoffice-formInput-backoffice"
-                    placeholder="Numero bagni"
-                    type="number"
-                  />
+                  <div className="input-group">
+                    <label className="mb-1">Numero bagni</label>
+                    <input
+                      name="numBagni"
+                      value={addForm.numBagni}
+                      onChange={handleAddFormChange}
+                      className="backoffice-formInput-backoffice"
+                      placeholder="Numero bagni"
+                      type="number"
+                    />
+                  </div>
 
-                  <input
-                    name="piano"
-                    value={addForm.piano}
-                    onChange={handleAddFormChange}
-                    className="backoffice-formInput-backoffice"
-                    placeholder="Piano"
-                  />
+                  <div className="input-group">
+                    <label className="mb-1">Piano</label>
+                    <input
+                      name="piano"
+                      value={addForm.piano}
+                      onChange={handleAddFormChange}
+                      className="backoffice-formInput-backoffice"
+                      placeholder="Piano"
+                    />
+                  </div>
 
-                  <input
-                    name="prezzoRichiesto"
-                    value={addForm.prezzoRichiesto}
-                    onChange={handleAddFormChange}
-                    className="backoffice-formInput-backoffice"
-                    placeholder="Prezzo richiesto (€)"
-                    type="number"
-                    step="0.01"
-                  />
+                  <div className="input-group">
+                    <label className="mb-1">Prezzo richiesto (€)</label>
+                    <input
+                      name="prezzoRichiesto"
+                      value={addForm.prezzoRichiesto}
+                      onChange={handleAddFormChange}
+                      className="backoffice-formInput-backoffice"
+                      placeholder="Prezzo richiesto (€)"
+                      type="number"
+                      step="0.01"
+                    />
+                  </div>
 
-                  <input
-                    name="stato"
-                    value={addForm.stato}
-                    onChange={handleAddFormChange}
-                    className="backoffice-formInput-backoffice"
-                    placeholder="Stato (es. bozza, pubblicato)"
-                  />
+                  <div className="input-group">
+                    <label className="mb-1">Stato</label>
+                    <input
+                      name="stato"
+                      value={addForm.stato}
+                      onChange={handleAddFormChange}
+                      className="backoffice-formInput-backoffice"
+                      placeholder="Stato (es. bozza, pubblicato)"
+                    />
+                  </div>
 
-                  <input
-                    name="statoConservazione"
-                    value={addForm.statoConservazione}
-                    onChange={handleAddFormChange}
-                    className="backoffice-formInput-backoffice"
-                    placeholder="Stato di conservazione"
-                  />
+                  <div className="input-group">
+                    <label className="mb-1">Stato di conservazione</label>
+                    <input
+                      name="statoConservazione"
+                      value={addForm.statoConservazione}
+                      onChange={handleAddFormChange}
+                      className="backoffice-formInput-backoffice"
+                      placeholder="Stato di conservazione"
+                    />
+                  </div>
 
-                  <input
-                    name="proprietarioId"
-                    value={addForm.proprietarioId}
-                    onChange={handleAddFormChange}
-                    className="backoffice-formInput-backoffice"
-                    placeholder="Proprietario ID"
-                    type="number"
-                  />
+                  <div className="input-group">
+                    <label className="mb-1">Proprietario ID</label>
+                    <input
+                      name="proprietarioId"
+                      value={addForm.proprietarioId}
+                      onChange={handleAddFormChange}
+                      className="backoffice-formInput-backoffice"
+                      placeholder="Proprietario ID"
+                      type="number"
+                    />
+                  </div>
 
                   <div className="flex items-center gap-2">
                     <input
@@ -613,19 +658,20 @@ function Backoffice() {
                       onChange={handleAddFormChange}
                       className="backoffice-checkbox-backoffice"
                     />
-                    <label htmlFor="disponibileEsclusiva">
-                      Disponibile in esclusiva
-                    </label>
+                    <label htmlFor="disponibileEsclusiva">Disponibile in esclusiva</label>
                   </div>
 
-                  <textarea
-                    name="descrizione"
-                    value={addForm.descrizione}
-                    onChange={handleAddFormChange}
-                    className="backoffice-formInput-backoffice col-span-full"
-                    placeholder="Descrizione"
-                    rows={4}
-                  />
+                  <div className="input-group col-span-full">
+                    <label className="mb-1">Descrizione</label>
+                    <textarea
+                      name="descrizione"
+                      value={addForm.descrizione}
+                      onChange={handleAddFormChange}
+                      className="backoffice-formInput-backoffice"
+                      placeholder="Descrizione"
+                      rows={4}
+                    />
+                  </div>
                 </div>
 
                 {/* Images upload */}
@@ -751,140 +797,190 @@ function Backoffice() {
                               onSubmit={(e) => updateImmobile(e, immobile.id)}
                               className="grid grid-cols-1 lg:grid-cols-2 gap-3"
                             >
+                              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
 
-                              <input
-                                name="annoCostruzione"
-                                defaultValue={immobile.annoCostruzione}
-                                className="backoffice-formInput-backoffice"
-                                placeholder="Anno costruzione"
-                                type="number"
-                              />
+  <div className="input-group">
+    <label className="mb-1">Anno costruzione</label>
+    <input
+      name="annoCostruzione"
+      defaultValue={immobile.annoCostruzione ?? ""}
+      className="backoffice-formInput-backoffice"
+      placeholder="YYYY"
+      type="number"
+    />
+  </div>
 
-                              <input
-                                name="cap"
-                                defaultValue={immobile.cap}
-                                className="backoffice-formInput-backoffice"
-                                placeholder="CAP"
-                              />
+  <div className="input-group">
+    <label className="mb-1">CAP</label>
+    <input
+      name="cap"
+      defaultValue={immobile.cap ?? ""}
+      className="backoffice-formInput-backoffice"
+      placeholder="CAP"
+    />
+  </div>
 
-                              <input
-                                name="citta"
-                                defaultValue={immobile.citta}
-                                className="backoffice-formInput-backoffice"
-                                placeholder="Città"
-                              />
+  <div className="input-group">
+    <label className="mb-1">Città</label>
+    <input
+      name="citta"
+      defaultValue={immobile.citta ?? ""}
+      className="backoffice-formInput-backoffice"
+      placeholder="Città"
+    />
+  </div>
 
-                              <input
-                                name="provincia"
-                                defaultValue={immobile.provincia}
-                                className="backoffice-formInput-backoffice"
-                                placeholder="Provincia"
-                              />
+  <div className="input-group">
+    <label className="mb-1">Provincia</label>
+    <input
+      name="provincia"
+      defaultValue={immobile.provincia ?? ""}
+      className="backoffice-formInput-backoffice"
+      placeholder="Provincia"
+    />
+  </div>
 
-                              <input
-                                name="classeEnergetica"
-                                defaultValue={immobile.classeEnergetica}
-                                className="backoffice-formInput-backoffice"
-                                placeholder="Classe energetica"
-                              />
+  <div className="input-group">
+    <label className="mb-1">Classe energetica</label>
+    <input
+      name="classeEnergetica"
+      defaultValue={immobile.classeEnergetica ?? ""}
+      className="backoffice-formInput-backoffice"
+      placeholder="Classe energetica"
+    />
+  </div>
 
-                              <input
-                                name="tipoImmobile"
-                                defaultValue={immobile.tipoImmobile}
-                                className="backoffice-formInput-backoffice"
-                                placeholder="Tipo immobile"
-                              />
+  <div className="input-group">
+    <label className="mb-1">Tipo immobile</label>
+    <input
+      name="tipoImmobile"
+      defaultValue={immobile.tipoImmobile ?? ""}
+      className="backoffice-formInput-backoffice"
+      placeholder="Es. appartamento, villetta…"
+    />
+  </div>
 
-                              <input
-                                name="indirizzo"
-                                defaultValue={immobile.indirizzo}
-                                className="backoffice-formInput-backoffice"
-                                placeholder="Indirizzo"
-                              />
+  <div className="input-group">
+    <label className="mb-1">Indirizzo</label>
+    <input
+      name="indirizzo"
+      defaultValue={immobile.indirizzo ?? ""}
+      className="backoffice-formInput-backoffice"
+      placeholder="Indirizzo"
+    />
+  </div>
 
-                              <input
-                                name="superficie"
-                                defaultValue={immobile.superficie}
-                                className="backoffice-formInput-backoffice"
-                                placeholder="Superficie"
-                                type="number"
-                                step="0.01"
-                              />
+  <div className="input-group">
+    <label className="mb-1">Superficie (m²)</label>
+    <input
+      name="superficie"
+      defaultValue={immobile.superficie ?? ""}
+      className="backoffice-formInput-backoffice"
+      placeholder="Superficie"
+      type="number"
+      step="0.01"
+    />
+  </div>
 
-                              <input
-                                name="numLocali"
-                                defaultValue={immobile.numLocali}
-                                className="backoffice-formInput-backoffice"
-                                placeholder="Locali"
-                                type="number"
-                              />
+  <div className="input-group">
+    <label className="mb-1">Numero locali</label>
+    <input
+      name="numLocali"
+      defaultValue={immobile.numLocali ?? ""}
+      className="backoffice-formInput-backoffice"
+      placeholder="Locali"
+      type="number"
+    />
+  </div>
 
-                              <input
-                                name="numBagni"
-                                defaultValue={immobile.numBagni}
-                                className="backoffice-formInput-backoffice"
-                                placeholder="Bagni"
-                                type="number"
-                              />
+  <div className="input-group">
+    <label className="mb-1">Numero bagni</label>
+    <input
+      name="numBagni"
+      defaultValue={immobile.numBagni ?? ""}
+      className="backoffice-formInput-backoffice"
+      placeholder="Bagni"
+      type="number"
+    />
+  </div>
 
-                              <input
-                                name="piano"
-                                defaultValue={immobile.piano}
-                                className="backoffice-formInput-backoffice"
-                                placeholder="Piano"
-                              />
+  <div className="input-group">
+    <label className="mb-1">Piano</label>
+    <input
+      name="piano"
+      defaultValue={immobile.piano ?? ""}
+      className="backoffice-formInput-backoffice"
+      placeholder="Piano"
+    />
+  </div>
 
-                              <input
-                                name="prezzoRichiesto"
-                                defaultValue={immobile.prezzoRichiesto}
-                                className="backoffice-formInput-backoffice"
-                                placeholder="Prezzo richiesto"
-                                type="number"
-                                step="0.01"
-                              />
+  <div className="input-group">
+    <label className="mb-1">Prezzo richiesto (€)</label>
+    <input
+      name="prezzoRichiesto"
+      defaultValue={immobile.prezzoRichiesto ?? ""}
+      className="backoffice-formInput-backoffice"
+      placeholder="Prezzo"
+      type="number"
+      step="0.01"
+    />
+  </div>
 
-                              <input
-                                name="stato"
-                                defaultValue={immobile.stato}
-                                className="backoffice-formInput-backoffice"
-                                placeholder="Stato"
-                              />
+  <div className="input-group">
+    <label className="mb-1">Stato (bozza, pubblicato…)</label>
+    <input
+      name="stato"
+      defaultValue={immobile.stato ?? ""}
+      className="backoffice-formInput-backoffice"
+      placeholder="Stato"
+    />
+  </div>
 
-                              <input
-                                name="statoConservazione"
-                                defaultValue={immobile.statoConservazione}
-                                className="backoffice-formInput-backoffice"
-                                placeholder="Stato conservazione"
-                              />
-                              <input
-                                name="proprietarioId"
-                                defaultValue={immobile.proprietarioId}
-                                className="backoffice-formInput-backoffice"
-                                placeholder="Proprietario ID"
-                                type="number"
-                              />
+  <div className="input-group">
+    <label className="mb-1">Stato di conservazione</label>
+    <input
+      name="statoConservazione"
+      defaultValue={immobile.statoConservazione ?? ""}
+      className="backoffice-formInput-backoffice"
+      placeholder="Es. ottimo, da ristrutturare…"
+    />
+  </div>
 
-                              <div className="flex items-center gap-2">
-                                <input
-                                  id={`disponibileEsclusiva-${immobile.id}`}
-                                  name="disponibileEsclusiva"
-                                  type="checkbox"
-                                  defaultChecked={immobile.disponibileEsclusiva}
-                                  className="backoffice-checkbox-backoffice"
-                                />
-                                <label htmlFor={`disponibileEsclusiva-${immobile.id}`}>
-                                  Disponibile in esclusiva
-                                </label>
-                              </div>
+  <div className="input-group">
+    <label className="mb-1">Proprietario ID</label>
+    <input
+      name="proprietarioId"
+      defaultValue={immobile.proprietarioId ?? ""}
+      className="backoffice-formInput-backoffice"
+      placeholder="ID proprietario"
+      type="number"
+    />
+  </div>
 
+  <div className="flex items-center gap-2 mt-2">
+    <input
+      id="disponibileEsclusiva"
+      name="disponibileEsclusiva"
+      type="checkbox"
+      defaultChecked={!!immobile.disponibileEsclusiva}
+      className="backoffice-checkbox-backoffice"
+    />
+    <label htmlFor="disponibileEsclusiva">Disponibile in esclusiva</label>
+  </div>
 
-                              <textarea
-                                name="descrizione"
-                                defaultValue={immobile.descrizione}
-                                className="backoffice-formInput-backoffice col-span-full"
-                                placeholder="Descrizione"
-                                rows={4}
-                              />
+  <div className="input-group col-span-full">
+    <label className="mb-1">Descrizione</label>
+    <textarea
+      name="descrizione"
+      defaultValue={immobile.descrizione ?? ""}
+      className="backoffice-formInput-backoffice"
+      placeholder="Descrizione"
+      rows={4}
+    />
+  </div>
+
+</div>
+
 
                               <button
                                 type="submit"

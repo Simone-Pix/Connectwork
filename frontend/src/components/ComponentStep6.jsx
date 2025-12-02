@@ -18,7 +18,12 @@ function ComponentStep6({ data, updateField, back, next }) {
   return (
     <div className="wrapper-1-step">
       <div className="progress-container">
-        <span>Passo 6 di 6</span>
+         <span 
+            className="text-sm font-semibold" 
+            style={{ color: '#3A6EA5' }}
+          >
+            Passo 6 di 6
+          </span>
         <div className="progress-bar">
           <div className="progress" style={{ width: "100%" }}></div>
         </div>
@@ -27,7 +32,9 @@ function ComponentStep6({ data, updateField, back, next }) {
       <h3 className="section-title mb-4">I tuoi dati</h3>
 
       <div className="form-grid-step6 grid gap-4">
-        <input
+            <div className="input-group">
+          <label className="input-label">Nome</label>
+          <input
           type="text"
           placeholder="Nome"
           value={data.nome}
@@ -36,8 +43,10 @@ function ComponentStep6({ data, updateField, back, next }) {
             data.nome && !isNameValid ? "border-red-500" : "border-gray-300"
           }`}
         />
-
-        <input
+        </div>
+         <div className="input-group">
+          <label className="input-label">Cognome</label>
+          <input
           type="text"
           placeholder="Cognome"
           value={data.cognome}
@@ -46,8 +55,11 @@ function ComponentStep6({ data, updateField, back, next }) {
             data.cognome && !isSurnameValid ? "border-red-500" : "border-gray-300"
           }`}
         />
-
-        <input
+        </div>
+        
+<div className="input-group">
+          <label className="input-label">E-mail</label>
+          <input
           type="email"
           placeholder="Email"
           value={data.email}
@@ -56,16 +68,20 @@ function ComponentStep6({ data, updateField, back, next }) {
             data.email && !isEmailValid ? "border-red-500" : "border-gray-300"
           }`}
         />
-
-        <input
+        </div>
+          <div className="input-group">
+          <label className="input-label">Telefono</label>
+          <input
           type="tel"
           placeholder="Telefono"
-          value={data.telefono}
+          value={data.email}
           onChange={(e) => updateField("telefono", e.target.value)}
           className={`p-3 border rounded-lg ${
-            data.telefono && !isPhoneValid ? "border-red-500" : "border-gray-300"
+            data.email && !isEmailValid ? "border-red-500" : "border-gray-300"
           }`}
         />
+        </div>
+       
       </div>
 
       <div className="button-group">
