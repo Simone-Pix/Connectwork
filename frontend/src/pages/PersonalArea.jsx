@@ -94,7 +94,7 @@ export default function PersonalArea() {
 
           <div className="wrapper-1-step-personal">
 
-            {/* --- ID --- */}
+            {/*  ID  */}
             <div className="mb-6">
               <label className="block text-orange-500 mb-2 font-semibold">
                 Nome
@@ -107,7 +107,7 @@ export default function PersonalArea() {
               />
             </div>
 
-            {/* --- ROLE --- */}
+            {/*  ROLE  */}
             <div className="mb-6">
               <label className="block text-orange-500 mb-2 font-semibold">
                 Cognome
@@ -119,7 +119,7 @@ export default function PersonalArea() {
                 className="input-step2-personal bg-gray-200 cursor-not-allowed"
               />
             </div>
-            {/* --- TEL --- */}
+            {/*  TEL  */}
             <div className="mb-6">
               <label className="block text-orange-500 mb-2 font-semibold">
                 Telefono
@@ -132,7 +132,7 @@ export default function PersonalArea() {
               />
             </div>
 
-            {/* --- EMAIL (modificabile) --- */}
+            {/* EMAIL */}
             <div className="mb-6">
               <label className="block text-orange-500 mb-2 font-semibold">
                 Email
@@ -152,7 +152,7 @@ export default function PersonalArea() {
           </div>
         </div>
 
-        {/* ===== CARD LISTA RICHIESTE ===== */}
+        {/* CARD LISTA RICHIESTE */}
         <div className="configurator-personal-requests text-black">
           <h2 className="section-title-personal">Le tue Valutazioni:</h2>
           <p className="section-subtitle-personal">Tutte le richieste di valutazione associate alla tua email</p>

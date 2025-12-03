@@ -45,11 +45,11 @@ function Backoffice() {
   // Gestione del Modal di Successo
   const [successModal, setSuccessModal] = useState({ show: false, message: "" });
 
-  // NUOVO STATO: Gestione del Modal di Conferma (Custom Confirm)
+  // Stato gestione del Modal di Conferma 
   const [confirmModal, setConfirmModal] = useState({
     show: false,
     message: "",
-    onConfirm: null, // Funzione da eseguire se si clicca "Conferma"
+    onConfirm: null,
   });
 
   // Funzione helper per mostrare il successo
@@ -139,7 +139,7 @@ function Backoffice() {
     }
   }
 
-  // --- LOGICA ELIMINAZIONE RICHIESTA (Modificata per usare il Modal Custom) ---
+  // LOGICA ELIMINAZIONE RICHIESTA
 
   // 1. Funzione che apre il modal
   const openDeleteRichiestaModal = (id) => {
@@ -276,7 +276,7 @@ function Backoffice() {
     setSubmitMessage(null);
   }
 
-  // --- LOGICA ELIMINAZIONE IMMOBILE (Modificata per usare il Modal Custom) ---
+  // LOGICA ELIMINAZIONE IMMOBILE 
 
   // 1. Funzione che apre il modal
   const openDeleteImmobileModal = (id) => {

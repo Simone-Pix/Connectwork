@@ -1,5 +1,3 @@
-import React from "react";
-
 function ComponentSummary({ data, back, submit }) {
 
   // Campi obbligatori per abilitare il pulsante (extra check)
@@ -15,7 +13,6 @@ function ComponentSummary({ data, back, submit }) {
     <>
       {/* 1. HEADER */}
       <div className="step-header-container justify-center">
-        {/* Qui non mettiamo la progress bar, ma solo un titolo chiaro */}
         <h2 className="section-title m-0 text-xl">Riepilogo Dati</h2>
       </div>
 

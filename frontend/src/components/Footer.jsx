@@ -8,7 +8,6 @@ const Footer = () => {
         {/* Colonna 1: Logo + Descrizione */}
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            {/* Logo Icona Casa (Sostituisce il div vuoto) */}
             <div className="w-8 h-8 text-orange-500">
               <img src={logo} alt="Logo Immobiliaris" className="navbar-logo" />
             </div>
@@ -71,7 +70,7 @@ const Footer = () => {
               <a href="mailto:info@immobiliaris.it" className="hover:text-white transition-colors">info@immobiliaris.it</a>
             </p>
 
-            {/* Posizione (SVG Richiesto) */}
+            {/* Posizione */}
             <p className="flex items-start gap-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

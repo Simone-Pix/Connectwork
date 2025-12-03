@@ -42,7 +42,7 @@ export default function PropertyCard({ property, images }) {
   alt={property.titolo || "Property image"}
   className="prop-image"
   onError={(e) => {
-    e.target.onerror = null; // evita loop
+    e.target.onerror = null; // per evitare loop
     e.target.src = placeholderImg; 
   }}
 />

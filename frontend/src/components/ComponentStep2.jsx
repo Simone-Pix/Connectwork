@@ -22,7 +22,7 @@ function ComponentStep2({ data, updateField, next, back }) {
 
       {/* BODY */}
       <div className="step-body-scroll">
-        <div className="w-full max-w-md mx-auto pt-2"> {/* Aggiunto un piccolo pt-2 opzionale */}
+        <div className="w-full max-w-md mx-auto pt-2">
           
           <div className="input-group">
             <label className="input-label">Indirizzo</label>

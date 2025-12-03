@@ -1,5 +1,3 @@
-import React from "react";
-
 function ComponentStep4({ data, updateField, next, back }) {
   const options = ["Balcone", "Terrazzo", "Giardino", "Box Auto", "Cantina", "Ascensore", "Allarme", "Condizionatore"];
   

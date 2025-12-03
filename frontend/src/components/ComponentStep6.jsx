@@ -1,5 +1,3 @@
-import React from "react";
-
 function ComponentStep6({ data, updateField, next, back }) {
   const isValid = data.nome && data.cognome && data.email.includes('@') && data.telefono.length > 6;
 

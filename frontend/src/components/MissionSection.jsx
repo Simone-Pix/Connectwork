@@ -22,7 +22,7 @@ export default function MissionSection() {
           Il Vostro Successo Immobiliare Inizia Qui
         </h2>
 
-        {/* Main paragraph — allargato ai lati */}
+        {/* Main paragraph */}
         <div className="max-w-4xl mx-auto text-lg text-gray-300 leading-relaxed mb-12 px-4 sm:px-6">
           <p>
             Per noi, ogni cliente è una storia da ascoltare — non un numero da chiudere.  

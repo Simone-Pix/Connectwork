@@ -53,10 +53,6 @@
   @apply bg-white rounded-xl p-10 text-center text-gray-600 shadow-sm;
 }
 
-/*****************************
-     RICHIESTE VALUTAZIONI
-******************************/
-
 .backoffice-item-backoffice {
   @apply bg-white border border-gray-200 rounded-xl shadow-sm;
 }
@@ -99,9 +95,7 @@
   @apply bg-orange-500 text-white px-5 py-3 rounded-lg font-semibold hover:bg-orange-600 transition shadow-sm;
 }
 
-/*****************************
-         FORM ADD IMMOBILE
-******************************/
+
 .backoffice-addForm-backoffice {
   @apply grid grid-cols-1 gap-4;
 }
@@ -147,6 +141,6 @@
   display: inline-block;
   font-weight: bold;
   margin-bottom: 8px;
-  color: #333; /* Colore per testare se le etichette sono visibili */
+  color: #333; 
 }
 

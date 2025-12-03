@@ -36,8 +36,6 @@ function FiltersSidebar({ filters, cities, onApply, onReset }) {
       <div className="flex items-center justify-between mb-2">
          <h3 className="text-white text-lg font-bold">Filtra risultati</h3>
       </div>
-
-      {/* NUOVO: Filtro Città (Sostituisce Tipo Contratto) */}
       <div>
         <label className="block text-blue-100 text-sm mb-1 font-medium">Città</label>
         <select

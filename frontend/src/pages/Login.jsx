@@ -44,21 +44,12 @@ function Login() {
         <div className="absolute bottom-20 right-20 w-96 h-96 rounded-full blur-3xl bg-[#EBEBEB]"></div>
       </div>
 
-      {/* MODIFICHE QUI: 
-          1. !h-auto: altezza automatica come Signin.
-          2. !min-h-0: rimuove vincoli minimi.
-      */}
+
       <div className="configurator !h-auto !min-h-0">
-        
-        {/* HEADER: border-b-0 rimuove la linea grigia sotto il titolo */}
+
         <div className="step-header-container justify-center border-b-0 pb-0">
           <h2 className="section-title m-0">Accedi</h2>
         </div>
-
-        {/* BODY: !flex-none impedisce che si espanda a vuoto. 
-           Ho aumentato il padding verticale (py-8) e il gap (gap-5) 
-           per dare volume al box e renderlo simile al Signin. 
-        */}
         <div className="step-body-scroll !flex-none py-8">
           <div className="w-full max-w-sm mx-auto flex flex-col gap-5">
 
@@ -85,8 +76,7 @@ function Login() {
             </div>
           </div>
         </div>
-
-        {/* FOOTER: Rimosso bordo superiore (opzionale, se vuoi togliere anche quella linea) */}
+        
         <div className="button-group-footer mt-2">
           <Link to="/signin">
             <button className="back-btn">Crea account</button>

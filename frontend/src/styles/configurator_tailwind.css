@@ -4,13 +4,13 @@
     @apply flex items-center justify-center min-h-screen p-4;
   }
 
-  /* --- CONTENITORE PRINCIPALE (MODALE) --- */
+  /* --- CONTENITORE PRINCIPALE --- */
   .configurator {
     @apply relative rounded-xl shadow-2xl flex flex-col w-full bg-white overflow-hidden;
     max-width: 700px;
-    height: 85vh;       /* Altezza relativa alla viewport */
-    max-height: 650px;  /* Limite massimo altezza */
-    min-height: 500px;  /* Limite minimo */
+    height: 85vh;       
+    max-height: 650px;  
+    min-height: 500px;  
     box-shadow: 0 10px 40px rgba(0, 78, 152, 0.2);
     padding: 0; 
   }
@@ -18,7 +18,7 @@
   /* --- HEADER (Fisso in alto) --- */
   .step-header-container {
     @apply w-full px-6 py-4 flex items-center gap-4 bg-white z-10 border-b border-gray-100;
-    flex-shrink: 0; /* Impedisce che si rimpicciolisca */
+    flex-shrink: 0; 
     min-height: 60px;
   }
 
@@ -40,7 +40,7 @@
   .step-title-wrapper {
     @apply w-full px-6 pt-4 pb-2 bg-white z-10 flex flex-col items-center justify-center;
     flex-shrink: 0; /* Impedisce che si schiacci */
-    min-height: 80px; /* Altezza minima garantita per il titolo */
+    min-height: 80px; 
   }
 
   /* --- BODY (Scrollabile al centro) --- */
@@ -62,7 +62,7 @@
   /* --- FOOTER (Fisso in basso) --- */
   .button-group-footer {
     @apply w-full px-6 py-4 bg-white border-t border-gray-100 flex items-center justify-between z-10;
-    flex-shrink: 0; /* Impedisce che si rimpicciolisca */
+    flex-shrink: 0;
     min-height: 70px;
   }
 
@@ -71,12 +71,12 @@
   @apply px-4 py-2 rounded-full text-xs font-semibold transition-all border;
 
   color: #004E98;
-  border-color: #bcd3ea;      /* bordo blu chiaro visibile */
-  background-color: #f0f6ff;  /* leggerissimo azzurro */
+  border-color: #bcd3ea;      
+  background-color: #f0f6ff; 
 }
 
 .back-btn:hover {
-  background-color: #e2edff;  /* più scuro all'hover */
+  background-color: #e2edff; 
   border-color: #004E98;
   color: #004E98;
 }
@@ -111,7 +111,7 @@
   .form-grid {
     @apply grid grid-cols-1 sm:grid-cols-2 gap-3 w-full;
   }
-/* --- CARDS (Step 1, 4, 5) --- */
+/* --- CARDS --- */
 
 .card-container {
   @apply grid grid-cols-2 gap-4 w-full max-w-lg mx-auto;
@@ -121,27 +121,27 @@
   @apply w-full rounded-xl p-5 cursor-pointer flex flex-col items-center justify-center gap-2 
          transition-all shadow-sm;
   
-  background-color: #f5f8ff; /* azzurro chiarissimo */
-  border: 2px solid #d6e3f5; /* bordo più visibile */
+  background-color: #f5f8ff;
+  border: 2px solid #d6e3f5; 
 }
 
 .card:hover {
-  background-color: #e8f0ff; /* leggermente più contrastato */
-  border-color: #004E98;     /* blu brand */
+  background-color: #e8f0ff;
+  border-color: #004E98;
   @apply shadow-md;
 }
 
 /* Stato selezionato */
 .card.active {
   background-color: #004E98;
-  border-color: #FF6700; /* arancione brand */
+  border-color: #FF6700; 
   @apply shadow-xl transform -translate-y-1;
 }
 
 /* Interni */
 .card .icon {
   @apply text-2xl mb-1;
-  color: #004E98; /* icone blu */
+  color: #004E98; 
 }
 
 .card h4 {
@@ -151,7 +151,7 @@
 
 .card p {
   @apply text-xs text-center;
-  color: #6b7280; /* gray-500 */
+  color: #6b7280;
 }
 
 /* Override per lo stato attivo */
@@ -164,7 +164,7 @@
  /* --- MEDIA QUERY MOBILE --- */
   @media (max-width: 640px) {
     .configurator {
-      height: 95vh; /* Più spazio su mobile */
+      height: 95vh; 
       border-radius: 12px;
     }
     .section-title { @apply text-lg; }
@@ -172,12 +172,10 @@
     
     /* Su mobile i campi input prendono tutta la larghezza */
     .form-grid { @apply grid-cols-1; }
-    
-    /* Le card rimangono a 2 colonne per risparmiare spazio verticale, 
-       ma riduciamo il padding se necessario */
+
     .card { 
       @apply p-3;
-      min-height: 90px; /* <--- CORRETTO: Uso CSS standard invece di @apply */
+      min-height: 90px; 
     }
   }
 }

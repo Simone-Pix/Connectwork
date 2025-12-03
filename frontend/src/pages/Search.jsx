@@ -100,7 +100,7 @@ function Search() {
     });
     setFilteredProperties(result);
     
-    // Opzionale: chiude i filtri su mobile dopo aver applicato
+    //chiude i filtri su mobile dopo aver applicato
     setMobileFiltersOpen(false);
   }
 

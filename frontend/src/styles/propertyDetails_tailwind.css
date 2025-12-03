@@ -46,9 +46,6 @@
   @apply flex gap-3 text-gray-600 text-sm;
 }
 
-
-/* --- detail page specific styles --- */
-
 /* wrap hero area */
 .pd-hero {
   @apply bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm;

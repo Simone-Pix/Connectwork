@@ -122,31 +122,18 @@ export default function PropertyDetail() {
         ).toLocaleString("it-IT")}/m²`
       : "";
 
-  // =========================================================
-  // LOGICA SEO (REACT 19)
-  // =========================================================
-  const siteUrl = "https://www.immobiliaris.it"; // Sostituisci con il tuo dominio reale
-  const currentUrl = `${siteUrl}/immobili/${id}`;
   
   // 1. Titolo e Descrizione
   const metaTitle = `${property.titolo || property.tipoImmobile} a ${property.citta} | Immobiliaris`;
   const metaDescRaw = property.descrizione || `Scopri ${property.tipoImmobile} in vendita a ${property.citta}, ${property.superficie}mq.`;
-  // Taglia a 160 caratteri e rimuovi a capo
   const metaDescription = metaDescRaw.substring(0, 160).replace(/\n/g, ' ') + (metaDescRaw.length > 160 ? "..." : "");
 
-  // 2. Immagine Assoluta per Social
-  let ogImageUrl = mainImage;
-  if (ogImageUrl && ogImageUrl.startsWith("/")) {
-    ogImageUrl = `${siteUrl}${ogImageUrl}`;
-  }
-
-  // 3. Dati Strutturati (JSON-LD)
+// JSON LTD
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "SingleFamilyResidence", 
     "name": metaTitle,
     "description": metaDescription,
-    "image": [ogImageUrl],
     "address": {
       "@type": "PostalAddress",
       "streetAddress": property.indirizzo || "Indirizzo su richiesta",
@@ -172,12 +159,12 @@ export default function PropertyDetail() {
 
   return (
     <>
-      {/* ----- METADATA SEO (Verranno spostati nell'HEAD) ----- */}
+      {/* METADATI SEO */}
       <title>{metaTitle}</title>
       <meta name="description" content={metaDescription} />
       <link rel="canonical" href={currentUrl} />
 
-      {/* Open Graph (Facebook / WhatsApp) */}
+      {/* Open Graph */}
       <meta property="og:type" content="website" />
       <meta property="og:title" content={metaTitle} />
       <meta property="og:description" content={`Occasione a ${property.citta}: ${property.numLocali || ''} locali, ${priceFormatted}. ${metaDescription}`} />
@@ -295,7 +282,7 @@ export default function PropertyDetail() {
               </div>
               <div className="bg-[#1E3A8A] rounded-xl p-4 shadow-lg border border-blue-400/30 mt-4">
                 <div className="text-xs text-blue-200">Inserito il</div>
-                <div className="font-semibold text-sm text-white">{property.dataInserimento ?? property.data_inserimento ?? "-"}</div>
+                <div className="font-semibold text-sm text-white">{property.dataInserimento ?? "-"}</div>
                 <div className="mt-3 text-xs text-blue-200">CAP</div>
                 <div className="font-semibold text-sm text-white">{property.cap ?? "-"}</div>
               </div>

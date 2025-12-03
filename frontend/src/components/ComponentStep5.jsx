@@ -1,5 +1,3 @@
-import React from "react";
-
 function ComponentStep5({ data, updateField, next, back }) {
   const choices = ["Subito", "Entro 3 mesi", "Entro 6 mesi", "Solo curiosità"];
 
