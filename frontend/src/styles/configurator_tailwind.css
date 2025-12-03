@@ -68,9 +68,19 @@
 
   /* Bottoni */
   .back-btn {
-    @apply px-4 py-2 rounded-full text-xs font-medium text-gray-600 hover:bg-gray-100 transition-colors border border-gray-200;
-  }
-  
+  @apply px-4 py-2 rounded-full text-xs font-semibold transition-all border;
+
+  color: #004E98;
+  border-color: #bcd3ea;      /* bordo blu chiaro visibile */
+  background-color: #f0f6ff;  /* leggerissimo azzurro */
+}
+
+.back-btn:hover {
+  background-color: #e2edff;  /* più scuro all'hover */
+  border-color: #004E98;
+  color: #004E98;
+}
+
   .next-btn {
     @apply px-6 py-2 rounded-full text-xs font-bold text-white shadow-md transition-transform hover:scale-105;
     background: linear-gradient(90deg, #ff7a18, #ff6126);
@@ -101,35 +111,55 @@
   .form-grid {
     @apply grid grid-cols-1 sm:grid-cols-2 gap-3 w-full;
   }
+/* --- CARDS (Step 1, 4, 5) --- */
 
-  /* --- CARDS (Step 1, 4, 5) --- */
-  .card-container {
-    @apply grid grid-cols-2 gap-3 w-full max-w-lg mx-auto;
-  }
+.card-container {
+  @apply grid grid-cols-2 gap-4 w-full max-w-lg mx-auto;
+}
 
-  .card {
-    @apply w-full rounded-xl p-4 cursor-pointer flex flex-col items-center justify-center gap-2 border border-gray-100 transition-all bg-gray-50;
-    min-height: 100px;
-  }
+.card {
+  @apply w-full rounded-xl p-5 cursor-pointer flex flex-col items-center justify-center gap-2 
+         transition-all shadow-sm;
+  
+  background-color: #f5f8ff; /* azzurro chiarissimo */
+  border: 2px solid #d6e3f5; /* bordo più visibile */
+}
 
-  .card:hover {
-    @apply bg-orange-50 border-orange-200;
-  }
+.card:hover {
+  background-color: #e8f0ff; /* leggermente più contrastato */
+  border-color: #004E98;     /* blu brand */
+  @apply shadow-md;
+}
 
-  .card.active {
-    @apply ring-2 ring-[#004E98] bg-[#004E98] text-white shadow-lg transform -translate-y-1 border-transparent;
-  }
+/* Stato selezionato */
+.card.active {
+  background-color: #004E98;
+  border-color: #FF6700; /* arancione brand */
+  @apply shadow-xl transform -translate-y-1;
+}
 
-  /* Override colori interni quando attivo */
-  .card.active h4, 
-  .card.active p, 
-  .card.active .icon {
-    color: white !important;
-  }
+/* Interni */
+.card .icon {
+  @apply text-2xl mb-1;
+  color: #004E98; /* icone blu */
+}
 
-  .card .icon { @apply text-2xl mb-1 text-gray-600; }
-  .card h4 { @apply text-sm font-bold text-gray-800 text-center; }
-  .card p { @apply text-xs text-gray-500 text-center; }
+.card h4 {
+  @apply text-sm font-bold text-center;
+  color: #004E98;
+}
+
+.card p {
+  @apply text-xs text-center;
+  color: #6b7280; /* gray-500 */
+}
+
+/* Override per lo stato attivo */
+.card.active .icon,
+.card.active h4,
+.card.active p {
+  color: white !important;
+}
 
  /* --- MEDIA QUERY MOBILE --- */
   @media (max-width: 640px) {

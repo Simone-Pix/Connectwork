@@ -34,17 +34,17 @@ function FiltersSidebar({ filters, cities, onApply, onReset }) {
   return (
     <form onSubmit={handleApply} className="space-y-4">
       <div className="flex items-center justify-between mb-2">
-         <h3 className="text-gray-900 text-lg font-bold">Filtra risultati</h3>
+         <h3 className="text-white text-lg font-bold">Filtra risultati</h3>
       </div>
 
       {/* NUOVO: Filtro Città (Sostituisce Tipo Contratto) */}
       <div>
-        <label className="block text-gray-600 text-sm mb-1 font-medium">Città</label>
+        <label className="block text-blue-100 text-sm mb-1 font-medium">Città</label>
         <select
           name="citta"
           value={local.citta}
           onChange={handleChange}
-          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition bg-white"
+          className="w-full px-3 py-2.5 border border-blue-400/30 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition bg-[#1E3A8A] text-white"
         >
           <option value="">Tutte le città</option>
           {cities && cities.map((city, idx) => (
@@ -55,11 +55,11 @@ function FiltersSidebar({ filters, cities, onApply, onReset }) {
         </select>
       </div>
 
-      <hr className="border-gray-100" />
+      <hr className="border-blue-400/30" />
 
       {/* Prezzo */}
       <div>
-        <label className="block text-gray-600 text-sm mb-1">Prezzo (min - max €)</label>
+        <label className="block text-blue-100 text-sm mb-1">Prezzo (min - max €)</label>
         <div className="grid grid-cols-2 gap-2">
           <input
             type="number"
@@ -67,7 +67,7 @@ function FiltersSidebar({ filters, cities, onApply, onReset }) {
             value={local.minPrice}
             onChange={handleChange}
             placeholder="Min"
-            className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+            className="w-full px-3 py-2.5 border border-blue-400/30 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none text-sm bg-[#1E3A8A] text-white placeholder-blue-300"
           />
           <input
             type="number"
@@ -75,19 +75,19 @@ function FiltersSidebar({ filters, cities, onApply, onReset }) {
             value={local.maxPrice}
             onChange={handleChange}
             placeholder="Max"
-            className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+            className="w-full px-3 py-2.5 border border-blue-400/30 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none text-sm bg-[#1E3A8A] text-white placeholder-blue-300"
           />
         </div>
       </div>
 
       {/* Camere */}
       <div>
-        <label className="block text-gray-600 text-sm mb-1">Camere</label>
+        <label className="block text-blue-100 text-sm mb-1">Camere</label>
         <select
           name="rooms"
           value={local.rooms}
           onChange={handleChange}
-          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+          className="w-full px-3 py-2.5 border border-blue-400/30 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none bg-[#1E3A8A] text-white"
         >
           <option value="all">Qualsiasi</option>
           <option value="1">1+</option>
@@ -99,12 +99,12 @@ function FiltersSidebar({ filters, cities, onApply, onReset }) {
 
       {/* Bagni */}
       <div>
-        <label className="block text-gray-600 text-sm mb-1">Bagni</label>
+        <label className="block text-blue-100 text-sm mb-1">Bagni</label>
         <select
           name="baths"
           value={local.baths}
           onChange={handleChange}
-          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+          className="w-full px-3 py-2.5 border border-blue-400/30 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none bg-[#1E3A8A] text-white"
         >
           <option value="all">Qualsiasi</option>
           <option value="1">1+</option>
@@ -115,14 +115,14 @@ function FiltersSidebar({ filters, cities, onApply, onReset }) {
 
       {/* Superficie */}
       <div>
-        <label className="block text-gray-600 text-sm mb-1">Superficie minima (m²)</label>
+        <label className="block text-blue-100 text-sm mb-1">Superficie minima (m²)</label>
         <input
           type="number"
           name="minSurface"
           value={local.minSurface}
           onChange={handleChange}
           placeholder="Es. 80"
-          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          className="w-full px-3 py-2.5 border border-blue-400/30 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none bg-[#1E3A8A] text-white placeholder-blue-300"
         />
       </div>
 
@@ -131,13 +131,13 @@ function FiltersSidebar({ filters, cities, onApply, onReset }) {
         <button
           type="button"
           onClick={handleReset}
-          className="flex-1 py-2.5 px-4 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition"
+          className="flex-1 py-2.5 px-4 border border-blue-400/30 text-blue-100 rounded-lg font-medium hover:bg-blue-800/50 transition"
         >
           Reset
         </button>
         <button
           type="submit"
-          className="flex-1 py-2.5 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition shadow-sm"
+          className="flex-1 py-2.5 px-4 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition shadow-sm"
         >
           Cerca
         </button>

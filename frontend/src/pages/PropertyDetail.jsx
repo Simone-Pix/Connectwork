@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
+import placeholderImg from "../assets/img_background.png";
 export default function PropertyDetail() {
   const { id } = useParams();
   const [property, setProperty] = useState(null);
@@ -12,7 +12,6 @@ export default function PropertyDetail() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const navigate = useNavigate();
-
 
   useEffect(() => {
     async function load() {
@@ -41,7 +40,7 @@ export default function PropertyDetail() {
 
   // FUNZIONI PER IL CAROSELLO
   const openCarousel = (startIndex = 0) => {
-    if (!images || images.length === 0) return; // aggiunta per non fare aorire il carosello se non ci sono img
+    if (!images || images.length === 0) return;
     setCurrentIndex(startIndex);
     setShowCarousel(true);
   };
@@ -70,8 +69,6 @@ export default function PropertyDetail() {
     touchEndX = e.touches[0].clientX;
   };
 
-  //funzioni per lo swipe del carosello
-
   const handleTouchEnd = () => {
     if (touchStartX - touchEndX > 50) nextImage();
     if (touchEndX - touchStartX > 50) prevImage();
@@ -79,9 +76,9 @@ export default function PropertyDetail() {
 
   if (loading) {
     return (
-      <div className="pt-28 pb-10 min-h-screen">
+      <div className="pt-28 pb-10 min-h-screen bg-[#527597]">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="bg-white rounded-xl p-10 text-center text-gray-600 shadow-sm">
+          <div className="bg-[#1E3A8A] rounded-xl p-10 text-center text-blue-100 shadow-lg">
             Caricamento immobile...
           </div>
         </div>
@@ -91,9 +88,9 @@ export default function PropertyDetail() {
 
   if (!property) {
     return (
-      <div className="pt-28 pb-10 min-h-screen">
+      <div className="pt-28 pb-10 min-h-screen bg-[#527597]">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="bg-white rounded-xl p-10 text-center text-gray-600 shadow-sm">
+          <div className="bg-[#1E3A8A] rounded-xl p-10 text-center text-blue-100 shadow-lg">
             Impossibile trovare l'immobile.
           </div>
         </div>
@@ -103,7 +100,7 @@ export default function PropertyDetail() {
 
   const mainImage =
     images.find((i) => i.tipo === "foto")?.url ||
-    property.urlImmagine
+    property.urlImmagine;
 
   const priceFormatted = property.prezzoRichiesto
     ? `€ ${Number(property.prezzoRichiesto).toLocaleString("it-IT")}`
@@ -117,30 +114,35 @@ export default function PropertyDetail() {
       : "";
 
   return (
-    <main className="pt-28 pb-10 min-h-screen">
+    <main className="pt-28 pb-10 min-h-screen bg-[#527597]">
       <div className="max-w-7xl mx-auto px-4">
 
         {/* HERO */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 mb-6">
           {/* Immagine principale */}
-          <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
+          <div className="bg-[#1E3A8A] rounded-xl overflow-hidden shadow-lg border border-blue-400/30">
             <img
-              src={mainImage}
-              alt={property.titolo || "Immagine immobile"}
-              className="w-full h-[420px] object-cover cursor-pointer"
-              onClick={() => images.length > 0 && openCarousel(0)}
-            />
+  src={mainImage}
+  alt={property.titolo || "Immagine immobile"}
+  className="w-full h-[420px] object-cover cursor-pointer"
+  onClick={() => images.length > 0 && openCarousel(0)}
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = placeholderImg;
+  }}
+/>
+
 
             <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-2xl font-bold text-orange-500">{priceFormatted}</div>
-                  <div className="text-sm text-gray-500">{pricePerM2}</div>
+                  <div className="text-sm text-blue-200">{pricePerM2}</div>
                 </div>
 
                 <div className="text-right">
-                  <h1 className="text-xl font-bold text-gray-900">{property.tipoImmobile || ""}</h1>
-                  <div className="text-sm text-gray-600 mt-1">
+                  <h1 className="text-xl font-bold text-white">{property.tipoImmobile || ""}</h1>
+                  <div className="text-sm text-blue-100 mt-1">
                     {property.indirizzo
                       ? `${property.indirizzo}, ${property.citta}`
                       : `${property.citta || ""}`}
@@ -149,24 +151,24 @@ export default function PropertyDetail() {
               </div>
 
               {/* Caratteristiche */}
-              <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm text-gray-700">
-                <div className="p-3 bg-blue-900/5 rounded-lg">
-                  <div className="font-semibold">{property.numLocali ?? "-"}</div>
-                  <div className="text-xs text-gray-500">Camere</div>
+              <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+                <div className="p-3 bg-blue-800/50 rounded-lg border border-blue-400/20">
+                  <div className="font-semibold text-white">{property.numLocali ?? "-"}</div>
+                  <div className="text-xs text-blue-200">Camere</div>
                 </div>
-                <div className="p-3 bg-blue-900/5 rounded-lg">
-                  <div className="font-semibold">{property.numBagni ?? "-"}</div>
-                  <div className="text-xs text-gray-500">Bagni</div>
+                <div className="p-3 bg-blue-800/50 rounded-lg border border-blue-400/20">
+                  <div className="font-semibold text-white">{property.numBagni ?? "-"}</div>
+                  <div className="text-xs text-blue-200">Bagni</div>
                 </div>
-                <div className="p-3 bg-blue-900/5 rounded-lg">
-                  <div className="font-semibold">
+                <div className="p-3 bg-blue-800/50 rounded-lg border border-blue-400/20">
+                  <div className="font-semibold text-white">
                     {property.superficie ? `${property.superficie} m²` : "-"}
                   </div>
-                  <div className="text-xs text-gray-500">Superficie</div>
+                  <div className="text-xs text-blue-200">Superficie</div>
                 </div>
-                <div className="p-3 bg-blue-900/5 rounded-lg">
-                  <div className="font-semibold">{property.piano ?? "-"}</div>
-                  <div className="text-xs text-gray-500">Piano</div>
+                <div className="p-3 bg-blue-800/50 rounded-lg border border-blue-400/20">
+                  <div className="font-semibold text-white">{property.piano ?? "-"}</div>
+                  <div className="text-xs text-blue-200">Piano</div>
                 </div>
               </div>
 
@@ -184,7 +186,7 @@ export default function PropertyDetail() {
 
           {/* Colonna destra → UNA sola foto */}
           <aside className="space-y-4">
-            <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 p-3">
+            <div className="bg-[#1E3A8A] rounded-xl overflow-hidden shadow-lg border border-blue-400/30 p-3">
               <div className="grid grid-cols-1 gap-2">
                 {images[0] && (
                   <img
@@ -196,49 +198,49 @@ export default function PropertyDetail() {
                   />
                 )}
 
-                <div
-                  className="w-full h-24 bg-blue-900/80 rounded flex items-center justify-center text-white text-sm font-medium cursor-pointer"
+                <button
+                  className="w-full h-24 bg-orange-500 hover:bg-orange-600 rounded flex items-center justify-center text-white text-sm font-semibold cursor-pointer transition shadow-md"
                   onClick={() => images.length > 0 && openCarousel(0)}
                 >
                   + Altre foto
-                </div>
+                </button>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-              <div className="text-sm text-gray-600">Anno costruzione</div>
-              <div className="font-semibold">{property.annoCostruzione ?? "-"}</div>
-              <div className="mt-3 text-sm text-gray-600">Classe energetica</div>
-              <div className="font-semibold">{property.classeEnergetica ?? "-"}</div>
+            <div className="bg-[#1E3A8A] rounded-xl p-4 shadow-lg border border-blue-400/30">
+              <div className="text-sm text-blue-200">Anno costruzione</div>
+              <div className="font-semibold text-white">{property.annoCostruzione ?? "-"}</div>
+              <div className="mt-3 text-sm text-blue-200">Classe energetica</div>
+              <div className="font-semibold text-white">{property.classeEnergetica ?? "-"}</div>
             </div>
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mt-4">
-              <div className="text-xs text-gray-500">Inserito il</div>
-              <div className="font-semibold text-sm">{property.dataInserimento ?? property.data_inserimento ?? "-"}</div>
-              <div className="mt-3 text-xs text-gray-500">CAP</div>
-              <div className="font-semibold text-sm">{property.cap ?? "-"}</div>
+            <div className="bg-[#1E3A8A] rounded-xl p-4 shadow-lg border border-blue-400/30 mt-4">
+              <div className="text-xs text-blue-200">Inserito il</div>
+              <div className="font-semibold text-sm text-white">{property.dataInserimento ?? property.data_inserimento ?? "-"}</div>
+              <div className="mt-3 text-xs text-blue-200">CAP</div>
+              <div className="font-semibold text-sm text-white">{property.cap ?? "-"}</div>
             </div>
           </aside>
         </div>
 
-        {/* DESCRIZIONE E DETTAGLI (invariati) */}
+        {/* DESCRIZIONE E DETTAGLI */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
           <section>
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Descrizione</h3>
-              <p className="text-gray-700 text-sm leading-relaxed">
+            <div className="bg-[#1E3A8A] rounded-xl p-6 shadow-lg border border-blue-400/30 mb-6">
+              <h3 className="text-lg font-bold text-white mb-3">Descrizione</h3>
+              <p className="text-blue-100 text-sm leading-relaxed">
                 {property.descrizione || "Descrizione non disponibile."}
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Caratteristiche principali</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm text-gray-700">
-                <div>Camere: <span className="font-semibold">{property.numLocali ?? "-"}</span></div>
-                <div>Bagni: <span className="font-semibold">{property.numBagni ?? "-"}</span></div>
-                <div>Superficie: <span className="font-semibold">{property.superficie ? `${property.superficie} m²` : "-"}</span></div>
-                <div>Piano: <span className="font-semibold">{property.piano ?? "-"}</span></div>
-                <div>Prezzo: <span className="font-semibold">{priceFormatted}</span></div>
-                <div>Stato: <span className="font-semibold">{property.stato ?? "-"}</span></div>
+            <div className="bg-[#1E3A8A] rounded-xl p-6 shadow-lg border border-blue-400/30 mb-6">
+              <h3 className="text-lg font-bold text-white mb-3">Caratteristiche principali</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm text-blue-100">
+                <div>Camere: <span className="font-semibold text-white">{property.numLocali ?? "-"}</span></div>
+                <div>Bagni: <span className="font-semibold text-white">{property.numBagni ?? "-"}</span></div>
+                <div>Superficie: <span className="font-semibold text-white">{property.superficie ? `${property.superficie} m²` : "-"}</span></div>
+                <div>Piano: <span className="font-semibold text-white">{property.piano ?? "-"}</span></div>
+                <div>Prezzo: <span className="font-semibold text-white">{priceFormatted}</span></div>
+                <div>Stato: <span className="font-semibold text-white">{property.stato ?? "-"}</span></div>
               </div>
             </div>
           </section>
@@ -249,19 +251,19 @@ export default function PropertyDetail() {
       {/* ===== CAROSELLO SOVRIMPRESSIONE ===== */}
       {showCarousel && images.length > 0 && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[999]"
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[999]"
           onClick={(e) => {
             if (e.target === e.currentTarget) closeCarousel();
           }}>
           <div
-            className="relative w-[90%] max-w-3xl bg-white rounded-xl overflow-hidden shadow-2xl"
+            className="relative w-[90%] max-w-3xl bg-[#1E3A8A] rounded-xl overflow-hidden shadow-2xl border border-blue-400/30"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
             {/* X CHIUDI */}
             <button
-              className="absolute top-3 right-3 text-gray-900 text-xl bg-white/70 backdrop-blur-sm rounded-full px-2"
+              className="absolute top-3 right-3 text-white text-2xl bg-orange-500 hover:bg-orange-600 rounded-full w-8 h-8 flex items-center justify-center z-10 transition"
               onClick={closeCarousel}
             >
               ✕
@@ -270,13 +272,14 @@ export default function PropertyDetail() {
             {/* IMMAGINE */}
             <img
               src={images[currentIndex].url}
+              alt="Immagine immobile"
               className="w-full max-h-[75vh] object-contain bg-black"
             />
 
             {/* FRECCIA SINISTRA */}
             <button
               onClick={prevImage}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/70 backdrop-blur-sm px-3 py-2 rounded-full text-xl"
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-orange-500/90 hover:bg-orange-600 text-white px-4 py-2 rounded-full text-2xl font-bold transition"
             >
               ‹
             </button>
@@ -284,7 +287,7 @@ export default function PropertyDetail() {
             {/* FRECCIA DESTRA */}
             <button
               onClick={nextImage}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 backdrop-blur-sm px-3 py-2 rounded-full text-xl"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-orange-500/90 hover:bg-orange-600 text-white px-4 py-2 rounded-full text-2xl font-bold transition"
             >
               ›
             </button>
@@ -294,7 +297,7 @@ export default function PropertyDetail() {
               {images.map((_, i) => (
                 <div
                   key={i}
-                  className={`w-2 h-2 rounded-full ${i === currentIndex ? "bg-orange-500" : "bg-white/70"
+                  className={`w-2 h-2 rounded-full transition ${i === currentIndex ? "bg-orange-500 w-8" : "bg-white/70"
                     }`}
                 ></div>
               ))}

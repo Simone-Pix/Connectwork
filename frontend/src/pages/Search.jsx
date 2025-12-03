@@ -111,10 +111,10 @@ function Search() {
   }
 
   return (
-<div className="search-page-wrapper pt-28 pb-10 min-h-screen">
+    <div className="search-page-wrapper pt-28 pb-10 min-h-screen">
       <div className="max-w-7xl mx-auto px-4">
         
-        {/* PULSANTE MOBILE (Stile copiato da .backoffice-mobileToggle-backoffice) */}
+        {/* PULSANTE MOBILE */}
         <div 
           className="lg:hidden bg-orange-500 text-white px-4 py-3 rounded-lg shadow-lg cursor-pointer font-semibold mb-6 flex justify-between items-center"
           onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
@@ -127,10 +127,9 @@ function Search() {
 
         <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-7">
           
-          {/* Sidebar filtri */}
-          {/* Logica visibilità: nascosto su mobile (hidden) a meno che mobileFiltersOpen non sia true. Su Desktop (lg) sempre visibile (block) */}
+          {/* Sidebar filtri con sfondo blu scuro */}
           <aside className={`
-            bg-white rounded-xl p-5 shadow-sm border border-gray-100 h-fit top-28
+            bg-[#1E3A8A] rounded-xl p-5 shadow-lg border border-blue-400/30 h-fit top-28
             ${mobileFiltersOpen ? "block" : "hidden"} lg:block
           `}>
             <FiltersSidebar
@@ -153,13 +152,13 @@ function Search() {
             </header>
 
             {loading ? (
-              <div className="bg-white rounded-xl p-10 text-center text-gray-600 shadow-sm">
+              <div className="bg-[#1E3A8A] rounded-xl p-10 text-center text-blue-100 shadow-lg">
                 Caricamento immobili...
               </div>
             ) : filteredProperties.length === 0 ? (
-              <div className="bg-white rounded-xl p-10 text-center shadow-sm">
-                <p className="text-gray-600 mb-2">Nessun immobile trovato</p>
-                <p className="text-gray-500 text-sm">Prova a modificare i filtri di ricerca</p>
+              <div className="bg-[#1E3A8A] rounded-xl p-10 text-center shadow-lg">
+                <p className="text-blue-100 mb-2">Nessun immobile trovato</p>
+                <p className="text-blue-200 text-sm">Prova a modificare i filtri di ricerca</p>
               </div>
             ) : (
               <PropertyList properties={filteredProperties} images={images} />

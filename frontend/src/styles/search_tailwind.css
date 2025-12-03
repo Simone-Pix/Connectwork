@@ -1,6 +1,6 @@
 @layer components {
   .prop-card {
-    @apply rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow bg-[#3A6EA5] cursor-pointer block h-full flex flex-col;
+    @apply rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow bg-[#1E3A8A] cursor-pointer block h-full flex flex-col;
   }
 
   .prop-image-wrapper {
@@ -50,5 +50,5 @@
 }
 /* Sfondo pagina Search */
 .search-page-wrapper {
-  background-color: #527597;
+  background-color:#527597;
 }

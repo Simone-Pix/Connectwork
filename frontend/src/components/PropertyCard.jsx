@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import placeholderImg from "../assets/img_background.png";
 
 function formatPrice(num) {
   if (!num && num !== 0) return "";
   return "€ " + Number(num).toLocaleString("it-IT");
 }
+
 
 export default function PropertyCard({ property, images }) {
   const navigate = useNavigate();
@@ -36,10 +38,16 @@ export default function PropertyCard({ property, images }) {
     >
       <div className="prop-image-wrapper">
         <img
-          src={image}
-          alt={property.titolo || "Property image"}
-          className="prop-image"
-        />
+  src={image}
+  alt={property.titolo || "Property image"}
+  className="prop-image"
+  onError={(e) => {
+    e.target.onerror = null; // evita loop
+    e.target.src = placeholderImg; 
+  }}
+/>
+
+
         <div className="prop-badge-container">
           {isNew && <span className="prop-badge bg-green-500">Nuovo</span>}
           {isExclusive && <span className="prop-badge bg-orange-500">Esclusiva</span>}
