@@ -131,7 +131,7 @@ function FiltersSidebar({ filters, cities, onApply, onReset }) {
         <button
           type="button"
           onClick={handleReset}
-          className="flex-1 py-2.5 px-4 border border-blue-400/30 text-blue-100 rounded-lg font-medium hover:bg-blue-800/50 transition"
+          className="flex-1 py-2.5 px-4 rounded-lg font-medium transition border-2 border-white/80 text-white hover:bg-white hover:text-[#1E3A8A]"
         >
           Reset
         </button>

@@ -29,6 +29,19 @@ function Search() {
 
   const [filters, setFilters] = useState(defaultFilters);
 
+  // Al mount, carica i filtri da localStorage se disponibili
+  useEffect(() => {
+    const savedFilters = localStorage.getItem("searchFilters");
+    if (savedFilters) {
+      try {
+        const parsed = JSON.parse(savedFilters);
+        setFilters(parsed);
+      } catch (err) {
+        console.error("Errore nel caricamento dei filtri salvati:", err);
+      }
+    }
+  }, []);
+
   // 1. Leggi la città dall'URL all'avvio o quando cambia
   useEffect(() => {
     const cittaFromURL = searchParams.get("citta");
@@ -47,14 +60,6 @@ function Search() {
         const res = await fetch("/api/immobili");
         const data = await res.json();
         setAllProperties(data);
-
-        const cittaFromURL = searchParams.get("citta");
-        if (cittaFromURL) {
-          const filtered = data.filter(p => p.citta === cittaFromURL);
-          setFilteredProperties(filtered);
-        } else {
-          setFilteredProperties(data);
-        }
       } catch (err) {
         console.error("Failed to fetch properties", err);
         setAllProperties([]);
@@ -65,6 +70,33 @@ function Search() {
     }
     loadProperties();
   }, []);
+
+  // Applica i filtri ogni volta che cambiano i dati o i filtri (persistenza su ritorno pagina)
+  useEffect(() => {
+    // Evita di filtrare se non ci sono dati
+    if (!allProperties || allProperties.length === 0) return;
+
+    const current = filters || defaultFilters;
+
+    const result = allProperties.filter((p) => {
+      if (current.citta && p.citta !== current.citta) return false;
+      if (current.minPrice && Number(p.prezzoRichiesto) < Number(current.minPrice)) return false;
+      if (current.maxPrice && Number(p.prezzoRichiesto) > Number(current.maxPrice)) return false;
+      if (current.rooms !== "all" && Number(p.numLocali) < Number(current.rooms)) return false;
+      if (current.baths !== "all" && Number(p.numBagni) < Number(current.baths)) return false;
+      if (current.minSurface && Number(p.superficie) < Number(current.minSurface)) return false;
+      return true;
+    });
+
+    setFilteredProperties(result);
+
+    // Mantieni la città nell'URL per deep-linking
+    if (current.citta) {
+      setSearchParams({ citta: current.citta });
+    } else {
+      setSearchParams({});
+    }
+  }, [allProperties, filters]);
 
   // Caricamento immagini
   useEffect(() => {
@@ -82,6 +114,9 @@ function Search() {
 
   function applyFilters(newFilters) {
     setFilters(newFilters);
+
+    // Salva i filtri in localStorage
+    localStorage.setItem("searchFilters", JSON.stringify(newFilters));
 
     if (newFilters.citta) {
       setSearchParams({ citta: newFilters.citta });
@@ -108,6 +143,8 @@ function Search() {
     setFilters(defaultFilters);
     setFilteredProperties(allProperties);
     setSearchParams({});
+    // Cancella i filtri da localStorage
+    localStorage.removeItem("searchFilters");
   }
 
   return (

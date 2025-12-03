@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import ErrorToast from "../components/ErrorToast";
 
 // Stato iniziale del form per Aggiungi Immobile
 const initialFormState = {
@@ -52,12 +53,23 @@ function Backoffice() {
     onConfirm: null, // Funzione da eseguire se si clicca "Conferma"
   });
 
+  // Stato per ErrorToast
+  const [errorShow, setErrorShow] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   // Funzione helper per mostrare il successo
   const showSuccess = (message) => {
     setSuccessModal({ show: true, message });
     setTimeout(() => {
       setSuccessModal({ show: false, message: "" });
     }, 3000); 
+  };
+
+  // Funzione helper per mostrare errore con ErrorToast
+  const showError = (message) => {
+    setErrorMessage(message);
+    setErrorShow(true);
+    setTimeout(() => setErrorShow(false), 4000);
   };
 
   // Funzione helper per chiudere il confirm
@@ -135,7 +147,7 @@ function Backoffice() {
       showSuccess(`Valutazione: ${data.valoreStimatoMin}€ - ${data.valoreStimatoMax}€`);
       
     } catch (err) {
-      alert(err.message); 
+      showError(err.message || "Errore durante la valutazione automatica.");
     }
   }
 
@@ -188,7 +200,7 @@ function Backoffice() {
 
   function preparePayload(data) {
     return {
-      titolo: data.titolo || "",
+      
       annoCostruzione: data.annoCostruzione ? parseInt(data.annoCostruzione, 10) : null,
       cap: data.cap || "",
       citta: data.citta || "",
@@ -210,10 +222,65 @@ function Backoffice() {
     };
   }
 
+  // Funzione per validare il form "Aggiungi immobile"
+  function validateAddForm(form) {
+    const requiredFields = [
+      "annoCostruzione",
+      "cap",
+      "citta",
+      "classeEnergetica",
+      "descrizione",
+      "indirizzo",
+      "numBagni",
+      "numLocali",
+      "piano",
+      "prezzoRichiesto",
+      "provincia",
+      "stato",
+      "statoConservazione",
+      "superficie",
+      "tipoImmobile",
+    ];
+
+    for (const field of requiredFields) {
+      const value = form[field];
+      if (!value || (typeof value === "string" && value.trim() === "")) {
+        return { valid: false, error: `Il campo "${field}" è obbligatorio.` };
+      }
+    }
+
+    // Validazione numeri
+    if (isNaN(form.annoCostruzione)) {
+      return { valid: false, error: "Anno costruzione deve essere un numero." };
+    }
+    if (isNaN(form.numBagni) || form.numBagni < 0) {
+      return { valid: false, error: "Numero bagni deve essere un numero positivo." };
+    }
+    if (isNaN(form.numLocali) || form.numLocali < 0) {
+      return { valid: false, error: "Numero locali deve essere un numero positivo." };
+    }
+    if (isNaN(form.prezzoRichiesto) || form.prezzoRichiesto <= 0) {
+      return { valid: false, error: "Prezzo richiesto deve essere un numero positivo." };
+    }
+    if (isNaN(form.superficie) || form.superficie <= 0) {
+      return { valid: false, error: "Superficie deve essere un numero positivo." };
+    }
+
+    return { valid: true };
+  }
+
   async function handleAddSubmit(e) {
     e.preventDefault();
     setSubmitting(true);
     setSubmitMessage(null);
+
+    // Validazione form
+    const validation = validateAddForm(addForm);
+    if (!validation.valid) {
+      showError(validation.error);
+      setSubmitting(false);
+      return;
+    }
 
     try {
       const payload = preparePayload(addForm);
@@ -265,6 +332,7 @@ function Backoffice() {
     } catch (err) {
       console.error("Errore nel submit:", err);
       setSubmitMessage({ success: false, message: err.message || "Errore sconosciuto" });
+      showError(err.message || "Errore durante la creazione dell'immobile.");
     } finally {
       setSubmitting(false);
     }
@@ -303,7 +371,7 @@ function Backoffice() {
       setOpenItem(null); 
     } catch (err) {
       console.error("Errore nell'eliminazione dell'immobile", err);
-      window.alert(err.message || "Errore sconosciuto durante l'eliminazione.");
+      showError(err.message || "Errore sconosciuto durante l'eliminazione.");
     }
   }
 
@@ -337,7 +405,7 @@ function Backoffice() {
 
     } catch (err) {
       console.error("Errore nell'aggiornamento dell'immobile", err);
-      window.alert(err.message || "Errore sconosciuto durante l'aggiornamento.");
+      showError(err.message || "Errore sconosciuto durante l'aggiornamento.");
     }
   }
 
@@ -393,6 +461,9 @@ function Backoffice() {
           </div>
         </div>
       )}
+
+      {/* ErrorToast per messaggi di errore */}
+      <ErrorToast show={errorShow} message={errorMessage} />
 
       {/* Mobile header */}
       <div

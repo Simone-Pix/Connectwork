@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import placeholderImg from "../assets/img_background.png"; // <--- Assicurati che questo percorso sia corretto
+import { useParams, useNavigate, Link } from "react-router-dom";
+import placeholderImg from "../assets/img_background.png";
 
 export default function PropertyDetail() {
   const { id } = useParams();
@@ -39,13 +39,11 @@ export default function PropertyDetail() {
     load();
   }, [id]);
 
-  // --- FUNZIONE DI FALLBACK IMMAGINE (Stessa logica della Card) ---
   const handleImageError = (e) => {
-    e.target.onerror = null; // evita loop infiniti
+    e.target.onerror = null;
     e.target.src = placeholderImg;
   };
 
-  // --- FUNZIONI PER IL CAROSELLO ---
   const openCarousel = (startIndex = 0) => {
     if (!images || images.length === 0) return;
     setCurrentIndex(startIndex);
@@ -64,7 +62,6 @@ export default function PropertyDetail() {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
-  // Swipe mobile
   let touchStartX = 0;
   let touchEndX = 0;
 
@@ -123,6 +120,17 @@ export default function PropertyDetail() {
     <main className="pt-28 pb-10 min-h-screen">
       <div className="max-w-7xl mx-auto px-4">
 
+        {/* PULSANTE INDIETRO */}
+        <Link
+          to="/cerca"
+          className="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-[#1E3A8A] text-white rounded-lg font-medium hover:bg-blue-900 transition shadow-md border border-blue-400/30 w-fit"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          Torna alla ricerca
+        </Link>
+
         {/* HERO */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 mb-6">
           {/* 1. Immagine principale */}
@@ -132,7 +140,7 @@ export default function PropertyDetail() {
               alt={property.titolo || "Immagine immobile"}
               className="w-full h-[420px] object-cover cursor-pointer"
               onClick={() => images.length > 0 && openCarousel(0)}
-              onError={handleImageError} // <--- STRATEGIA APPLICATA QUI
+              onError={handleImageError}
             />
 
             <div className="p-6">
@@ -190,7 +198,6 @@ export default function PropertyDetail() {
           <aside className="space-y-4">
             <div className="bg-[#1E3A8A] rounded-xl overflow-hidden shadow-lg border border-blue-400/30 p-3">
               <div className="grid grid-cols-1 gap-2">
-                {/* 2. Immagine Sidebar (Miniatura) */}
                 {images[0] && (
                   <img
                     key={images[0].id}
@@ -198,7 +205,7 @@ export default function PropertyDetail() {
                     alt="Immagine immobile"
                     className="w-full h-24 object-cover rounded cursor-pointer"
                     onClick={() => images.length > 0 && openCarousel(0)}
-                    onError={handleImageError} // <--- STRATEGIA APPLICATA QUI
+                    onError={handleImageError}
                   />
                 )}
 
@@ -271,12 +278,11 @@ export default function PropertyDetail() {
               ✕
             </button>
 
-            {/* 3. Immagine Carosello */}
             <img
               src={images[currentIndex].url}
               alt="Immagine immobile"
               className="w-full max-h-[75vh] object-contain bg-black"
-              onError={handleImageError} // <--- STRATEGIA APPLICATA QUI
+              onError={handleImageError}
             />
 
             <button

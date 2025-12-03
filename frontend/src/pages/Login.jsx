@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import ErrorToast from "../components/ErrorToast";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [errorShow, setErrorShow] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async () => {
     try {
@@ -21,7 +24,10 @@ function Login() {
       const result = await res.json();
 
       if (!result.success) {
-        alert(result.message || "Credenziali errate");
+        const msg = result.message || "Credenziali sbagliate";
+        setErrorMessage(msg);
+        setErrorShow(true);
+        setTimeout(() => setErrorShow(false), 4000);
         return;
       }
 
@@ -29,7 +35,9 @@ function Login() {
       window.location.href = "/";
     } catch (err) {
       console.error("Errore login", err);
-      alert("Errore durante il login");
+      setErrorMessage("Errore durante il login");
+      setErrorShow(true);
+      setTimeout(() => setErrorShow(false), 4000);
     }
   };
 
@@ -95,6 +103,8 @@ function Login() {
             Accedi
           </button>
         </div>
+
+        <ErrorToast show={errorShow} message={errorMessage} onClose={() => setErrorShow(false)} />
 
       </div>
     </div>
