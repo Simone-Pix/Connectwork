@@ -7,6 +7,7 @@ import ScrollTop from "../src/components/ScrollTop.jsx";
 
 import "./App.css";
 
+import LoadingScreen from './pages/LoadingScreen';
 const Home = lazy(() => import("./pages/Home"));
 const Search = lazy(() => import("./pages/Search"));
 const Configurator = lazy(() => import("./pages/Configurator"));
@@ -22,7 +23,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>Loading…</div>}>
+      <Suspense fallback={<LoadingScreen />}>
         <ScrollTop />
         <Routes>
           {/* Layout wrapper */}
