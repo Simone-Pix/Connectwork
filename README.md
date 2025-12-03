@@ -1684,20 +1684,6 @@ mvn clean install
 
 ---
 
-### Problema: Frontend bianco dopo build
-
-**Causa**: Base URL non configurata per produzione
-
-**Soluzione**: In `vite.config.js` aggiungi:
-```javascript
-export default defineConfig({
-  base: './',  // Per deployment relativo
-  // ...
-})
-```
-
----
-
 ## Risorse Aggiuntive
 
 
