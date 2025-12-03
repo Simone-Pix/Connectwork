@@ -1,135 +1,86 @@
 function ComponentStep1({ data, updateField, next }) {
-  const handleSelect = (value) => {
-    updateField("tipoImmobile", value);
-  };
-
-  const isStepValid = Boolean(data.tipoImmobile);
+  const handleSelect = (value) => updateField("tipoImmobile", value);
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Progress Label */}
-      <span className="progress-label">Passo 1 di 6</span>
+    <>
+      {/* HEADER */}
+      <div className="step-header-container">
+        <span className="progress-label">Passo 1 di 6</span>
+        <div className="progress-bar-container">
+          <div className="progress-fill" style={{ width: '16.6%' }}></div>
+        </div>
+        <div className="w-6"></div>
+      </div>
 
-      {/* Title */}
-      <div className="flex flex-col items-center justify-start pt-6 pb-4">
+      {/* --- TITOLO FISSO --- */}
+      <div className="step-title-wrapper">
+        <h3 className="section-title">Cosa vuoi vendere?</h3>
+        <p className="section-subtitle">Scegli la tipologia di immobile</p>
+      </div>
 
-        <h3 
-          className="text-3xl font-bold mb-10 text-center section-title" 
-          
-        >
-          Cosa vuoi vendere?
-        </h3>
+      {/* BODY (Scrollabile) */}
+      <div className="step-body-scroll justify-center">
+        <div className="w-full max-w-lg mx-auto">
+          <div className="card-container">
+            <button
+              className={`card ${data.tipoImmobile === "appartamento" ? "active" : ""}`}
+              onClick={() => handleSelect("appartamento")}
+            >
+              <div className="icon"><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ width: '1.5em', height: '1.5em' }} // Stile inline per la dimensione
+                >
+                  <path d="M2 22h20" />
+                  <path d="M17 2H7a2 2 0 0 0-2 2v18h14V4a2 2 0 0 0-2-2Z" />
+                  <path d="M9 22V12h6v10" />
+                  <path d="M5 8h14" />
+                  <path d="M5 12h4" />
+                  <path d="M15 12h4" />
+                  <path d="M5 16h4" />
+                  <path d="M15 16h4" />
+                </svg></div>
+              <h4>Appartamento</h4>
+              <p>Condominio, loft, ecc.</p>
+            </button>
 
-        {/* Cards Container */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full max-w-2xl px-4">
-          {/* Card Appartamento */}
-          <button
-            className={`relative rounded-xl p-6 transition-all duration-200 transform hover:scale-[1.02] ${
-              data.tipoImmobile === "appartamento" 
-                ? "ring-3 shadow-lg" 
-                : "shadow hover:shadow-md"
-            }`}
-            style={{
-              backgroundColor: data.tipoImmobile === "appartamento" ? '#004E98' : 'white',
-              borderWidth: data.tipoImmobile === "appartamento" ? '0' : '2px',
-              borderColor: '#EBEBEB',
-              ringColor: '#FF6700'
-            }}
-            onClick={() => handleSelect("appartamento")}
-          >
-            <div className="flex flex-col items-center text-center space-y-3">
-              <div 
-                className="text-4xl p-3 rounded-full"
-                style={{
-                  backgroundColor: data.tipoImmobile === "appartamento" 
-                    ? 'rgba(255, 103, 0, 0.15)' 
-                    : '#F5F5F5'
-                }}
-              >
-                🔑
-              </div>
-              <h4 
-                className="text-xl font-bold"
-                style={{
-                  color: data.tipoImmobile === "appartamento" ? 'white' : '#004E98'
-                }}
-              >
-                Appartamento
-              </h4>
-              <p 
-                className="text-sm"
-                style={{
-                  color: data.tipoImmobile === "appartamento" ? '#EBEBEB' : '#3A6EA5'
-                }}
-              >
-                Vendi il tuo immobile
-              </p>
-            </div>
-          </button>
-
-          {/* Card Villa */}
-          <button
-            className={`relative rounded-xl p-6 transition-all duration-200 transform hover:scale-[1.02] ${
-              data.tipoImmobile === "villa" 
-                ? "ring-3 shadow-lg" 
-                : "shadow hover:shadow-md"
-            }`}
-            style={{
-              backgroundColor: data.tipoImmobile === "villa" ? '#004E98' : 'white',
-              borderWidth: data.tipoImmobile === "villa" ? '0' : '2px',
-              borderColor: '#EBEBEB',
-              ringColor: '#FF6700'
-            }}
-            onClick={() => handleSelect("villa")}
-          >
-            <div className="flex flex-col items-center text-center space-y-3">
-              <div 
-                className="text-4xl p-3 rounded-full"
-                style={{
-                  backgroundColor: data.tipoImmobile === "villa" 
-                    ? 'rgba(255, 103, 0, 0.15)' 
-                    : '#F5F5F5'
-                }}
-              >
-                🏠
-              </div>
-              <h4 
-                className="text-xl font-bold"
-                style={{
-                  color: data.tipoImmobile === "villa" ? 'white' : '#004E98'
-                }}
-              >
-                Villa/Casa indipendente
-              </h4>
-              <p 
-                className="text-sm"
-                style={{
-                  color: data.tipoImmobile === "villa" ? '#EBEBEB' : '#3A6EA5'
-                }}
-              >
-                Vendi il tuo immobile
-              </p>
-            </div>
-          </button>
+            <button
+              className={`card ${data.tipoImmobile === "villa" ? "active" : ""}`}
+              onClick={() => handleSelect("villa")}
+            >
+              <div className="icon"><svg 
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="1.5" // Portato a 1.5 per matchare l'appartamento
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  style={{ width: '1.5em', height: '1.5em' }} // Dimensione adattata
+                >
+                  {/* Tracciato originale invariato */}
+                  <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg></div>
+              <h4>Villa / Casa</h4>
+              <p>Indipendente, schiera</p>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Progress Bar */}
-      <div className="progress-bar">
-        <div className="progress progress-step-1"></div>
-      </div>
-
-      {/* Buttons positioned relative to the configurator container (same reference used elsewhere) */}
-      <div className="button-group absolute left-1/2 transform -translate-x-1/2 bottom-6 w-full max-w-3xl flex justify-end px-4">
-        <button
-          onClick={next}
-          disabled={!isStepValid}
-          className={`next-btn ${!isStepValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
-        >
+      {/* FOOTER */}
+      <div className="button-group-footer">
+        <div></div>
+        <button className="next-btn" onClick={next} disabled={!data.tipoImmobile}>
           Avanti
         </button>
       </div>
-    </div>
+    </>
   );
 }
 

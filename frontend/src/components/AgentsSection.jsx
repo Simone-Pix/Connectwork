@@ -44,7 +44,7 @@ export default function AgentsSection() {
 
   return (
     <div
-      className="py-24 px-4 sm:px-6 md:px-6" // ← responsive padding laterale
+      className="py-24 px-4 sm:px-6 md:px-6"
       style={{ background: "linear-gradient(to bottom, #1f242f, #13497e)" }}
     >
       <div className="max-w-7xl mx-auto">
@@ -58,15 +58,14 @@ export default function AgentsSection() {
           </p>
         </div>
 
-        {/* Agent Cards Grid - responsive */}
+        {/* Agent Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 justify-items-center gap-6 mb-12 px-2">
           {agents.map((agent, index) => (
             <div
               key={index}
               onClick={() => setActiveAgent(index)}
-              className={`cursor-pointer group relative overflow-hidden rounded-xl shadow-md hover:shadow-lg transition-all duration-300 w-full max-w-[240px] ${
-                activeAgent === index ? "ring-2 ring-orange-500 scale-105" : ""
-              }`}
+              className={`cursor-pointer group relative overflow-hidden rounded-xl shadow-md hover:shadow-lg transition-all duration-300 w-full max-w-[240px] ${activeAgent === index ? "ring-2 ring-orange-500 scale-105" : ""
+                }`}
               style={{ backgroundColor: "#3A6EA5" }}
             >
               <div className="aspect-square w-full overflow-hidden">
@@ -96,7 +95,7 @@ export default function AgentsSection() {
           ))}
         </div>
 
-        {/* Agent Detail - responsive */}
+        {/* Agent Detail */}
         <div className="rounded-xl p-4 sm:p-6 text-white bg-indigo-500/10 shadow-lg max-w-5xl mx-auto px-2">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
             <div className="flex justify-center">
@@ -118,34 +117,80 @@ export default function AgentsSection() {
               <p className="text-base sm:text-lg text-blue-300 mb-4">
                 {agents[activeAgent].role}
               </p>
-              <div className="space-y-2 mb-5">
-                <div className="flex items-start gap-1.5">
-                  <div className="text-lg">🎓</div>
+
+              <div className="space-y-4 mb-5">
+                <div className="flex items-start gap-3">
+                  <div className="mt-0.5 flex-shrink-0">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="w-5 h-5 text-blue-200"
+                    >
+                      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                      <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                    </svg>
+                  </div>
                   <div>
-                    <div className="font-semibold text-sm">Esperienza</div>
+                    <div className="font-semibold text-sm text-blue-100">Esperienza</div>
                     <div className="text-blue-200 text-xs sm:text-sm">
                       {agents[activeAgent].experience}
                     </div>
                   </div>
                 </div>
-                <div className="flex items-start gap-1.5">
-                  <div className="text-lg">💼</div>
+                <div className="flex items-start gap-3">
+                  <div className="mt-0.5 flex-shrink-0">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="w-5 h-5 text-blue-200"
+                    >
+                      <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
+                      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                    </svg>
+                  </div>
                   <div>
-                    <div className="font-semibold text-sm">Specializzazione</div>
+                    <div className="font-semibold text-sm text-blue-100">Specializzazione</div>
                     <div className="text-blue-200 text-xs sm:text-sm">
                       {agents[activeAgent].specialization}
                     </div>
                   </div>
                 </div>
-                <div className="flex items-start gap-1.5">
-                  <div className="text-lg">📧</div>
+                <div className="flex items-start gap-3">
+                  <div className="text-lg"><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-5 h-5 text-blue-200"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg></div>
                   <div>
-                    <div className="font-semibold text-sm">Contatti</div>
+                    <div className="font-semibold text-sm text-blue-100">Contatti</div>
                     <div className="text-blue-200 text-xs sm:text-sm break-words">
                       {agents[activeAgent].contacts}
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>

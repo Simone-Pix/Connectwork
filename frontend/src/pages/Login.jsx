@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -33,50 +34,76 @@ function Login() {
   };
 
   return (
-    <div className="hero">
-      <div className="heroContent">
-        <div className="configurator">
-          <div className="wrapper-1-step">
-            <h2 className="section-title">Accedi</h2>
+    <div 
+      className="hero relative overflow-hidden"
+      style={{ background: 'linear-gradient(135deg, #004E98 0%, #3A6EA5 50%, #5B8DB8 100%)' }}
+    >
+      {/* Background Shapes */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div className="absolute top-10 left-10 w-64 h-64 rounded-full blur-3xl bg-[#FF6700]"></div>
+        <div className="absolute bottom-20 right-20 w-96 h-96 rounded-full blur-3xl bg-[#EBEBEB]"></div>
+      </div>
 
-            {/* RIMOSSO "max-w-md mx-auto" per permettere larghezza piena */}
-            <div className="flex flex-col gap-5 mt-6 w-full">
-              
-              {/* Email */}
-              <div className="input-group">
-                <label className="input-label">Email</label>
-                <input
-                  type="email"
-                  placeholder="name@example.com"
-                  className="input-step2"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
+      {/* Tasto Chiudi (X) */}
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-6 right-6 text-white/80 hover:text-white transition z-50"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
 
-              {/* Password */}
-              <div className="input-group">
-                <label className="input-label">Password</label>
-                <input
-                  type="password"
-                  placeholder="Inserisci la password"
-                  className="input-step2"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
+      {/* MODIFICHE QUI: 
+          1. !h-auto: altezza automatica come Signin.
+          2. !min-h-0: rimuove vincoli minimi.
+      */}
+      <div className="configurator !h-auto !min-h-0">
+        
+        {/* HEADER: border-b-0 rimuove la linea grigia sotto il titolo */}
+        <div className="step-header-container justify-center border-b-0 pb-0">
+          <h2 className="section-title m-0">Accedi</h2>
+        </div>
+
+        {/* BODY: !flex-none impedisce che si espanda a vuoto. 
+           Ho aumentato il padding verticale (py-8) e il gap (gap-5) 
+           per dare volume al box e renderlo simile al Signin. 
+        */}
+        <div className="step-body-scroll !flex-none py-8">
+          <div className="w-full max-w-sm mx-auto flex flex-col gap-5">
+
+            <div className="input-group">
+              <label className="input-label">Email</label>
+              <input
+                type="email"
+                placeholder="name@example.com"
+                className="input-standard"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
 
-            <div className="button-group">
-              <Link to="/signin">
-                <button className="back-btn">Registrati</button>
-              </Link>
-              <button className="next-btn" onClick={handleLogin}>
-                Accedi
-              </button>
+            <div className="input-group">
+              <label className="input-label">Password</label>
+              <input
+                type="password"
+                placeholder="Inserisci la password"
+                className="input-standard"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
           </div>
         </div>
+
+        {/* FOOTER: Rimosso bordo superiore (opzionale, se vuoi togliere anche quella linea) */}
+        <div className="button-group-footer mt-2">
+          <Link to="/signin">
+            <button className="back-btn">Crea account</button>
+          </Link>
+          <button className="next-btn" onClick={handleLogin}>
+            Accedi
+          </button>
+        </div>
+
       </div>
     </div>
   );

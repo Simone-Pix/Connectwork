@@ -14,10 +14,16 @@ function Configurator() {
   const [formData, setFormData] = useState({
     tipoImmobile: "",
     indirizzo: "",
+    citta: "",
+    provincia: "",
+    cap: "",
     superficie: "",
     stanze: "",
     bagni: "",
     piano: "",
+    annoCostruzione: "",
+    statoConservazione: "",
+    classeEnergetica: "",
     optional: [],
     tempistica: "",
     nome: "",
@@ -71,139 +77,55 @@ function Configurator() {
   };
 
   const renderStep = () => {
+    const props = { data: formData, updateField, next: handleNext, back: handleBack };
+    
     switch (step) {
-      case 1:
-        return (
-          <ComponentStep1
-            data={formData}
-            updateField={updateField}
-            next={handleNext}
-          />
-        );
-      case 2:
-        return (
-          <ComponentStep2
-            data={formData}
-            updateField={updateField}
-            next={handleNext}
-            back={handleBack}
-          />
-        );
-      case 3:
-        return (
-          <ComponentStep3
-            data={formData}
-            updateField={updateField}
-            next={handleNext}
-            back={handleBack}
-          />
-        );
-      case 4:
-        return (
-          <ComponentStep4
-            data={formData}
-            updateField={updateField}
-            next={handleNext}
-            back={handleBack}
-          />
-        );
-      case 5:
-        return (
-          <ComponentStep5
-            data={formData}
-            updateField={updateField}
-            next={handleNext}
-            back={handleBack}
-          />
-        );
-      case 6:
-        return (
-          <ComponentStep6
-            data={formData}
-            updateField={updateField}
-            next={handleNext}
-            back={handleBack}
-          />
-        );
-      case 7:
-        return (
-          <ComponentSummary
-            data={formData}
-            back={handleBack}
-            submit={handleSubmit}
-          />
-        );
-      default:
-        return null;
+      case 1: return <ComponentStep1 {...props} />;
+      case 2: return <ComponentStep2 {...props} />;
+      case 3: return <ComponentStep3 {...props} />;
+      case 4: return <ComponentStep4 {...props} />;
+      case 5: return <ComponentStep5 {...props} />;
+      case 6: return <ComponentStep6 {...props} />;
+      case 7: return <ComponentSummary data={formData} back={handleBack} submit={handleSubmit} />;
+      default: return null;
     }
   };
 
   return (
     <div 
-      className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
-      style={{ 
-        background: 'linear-gradient(135deg, #004E98 0%, #3A6EA5 50%, #5B8DB8 100%)'
-      }}
+      className="hero relative overflow-hidden"
+      style={{ background: 'linear-gradient(135deg, #004E98 0%, #3A6EA5 50%, #5B8DB8 100%)' }}
     >
-      {/* Pattern decorativo di sfondo */}
+      {/* Background Shapes */}
       <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <div 
-          className="absolute top-10 left-10 w-64 h-64 rounded-full blur-3xl" 
-          style={{ backgroundColor: '#FF6700' }}
-        ></div>
-        <div 
-          className="absolute bottom-20 right-20 w-96 h-96 rounded-full blur-3xl" 
-          style={{ backgroundColor: '#EBEBEB' }}
-        ></div>
-        <div 
-          className="absolute top-1/2 left-1/3 w-48 h-48 rounded-full blur-3xl" 
-          style={{ backgroundColor: '#FF6700' }}
-        ></div>
+        <div className="absolute top-10 left-10 w-64 h-64 rounded-full blur-3xl bg-[#FF6700]"></div>
+        <div className="absolute bottom-20 right-20 w-96 h-96 rounded-full blur-3xl bg-[#EBEBEB]"></div>
       </div>
       
-      {/* Modale configuratore */}
-      <div className="configurator-scale-wrapper">
-  <div 
-    className="configurator configurator-scale relative w-full max-w-3xl rounded-2xl shadow-2xl p-8 md:p-10 z-10 flex flex-col"
-    style={{ 
-      backgroundColor: '#F8F9FA',
-      minHeight: '550px',
-      maxHeight: '85vh'
-    }}
-  >
-    {/* Bottone di chiusura X */}
-    <button
-      onClick={() => navigate("/")}
-      className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full hover:opacity-80 transition-opacity z-20"
-      title="Chiudi"
-    >
-      <svg
-        width="32"
-        height="32"
-        viewBox="0 0 32 32"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        {/* Cerchio esterno */}
-        <circle cx="16" cy="16" r="15" stroke="#004E98" strokeWidth="2" />
-        {/* X interna */}
-        <line x1="10" y1="10" x2="22" y2="22" stroke="#004E98" strokeWidth="2" strokeLinecap="round" />
-        <line x1="22" y1="10" x2="10" y2="22" stroke="#004E98" strokeWidth="2" strokeLinecap="round" />
-      </svg>
-    </button>
-
-    {renderStep()}
-  </div>
-</div>
-
-
-      {/* Toast di successo */}
-      {showSuccess && (
-        <div 
-          className="fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 animate-slide-in"
-          style={{ backgroundColor: '#004E98', color: 'white' }}
+      {/* Container Modale */}
+      <div className="configurator">
+          
+        {/* Pulsante Chiudi */}
+        <button
+          onClick={() => navigate("/")}
+          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 z-50 text-gray-600 transition-colors"
+          title="Chiudi"
         >
-          <p className="font-semibold">✓ Richiesta inviata con successo!</p>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+
+        {/* Step Corrente */}
+        {renderStep()}
+        
+      </div>
+
+      {/* Toast Successo */}
+      {showSuccess && (
+        <div className="fixed top-6 right-6 p-4 rounded-lg shadow-xl z-50 bg-[#004E98] text-white animate-bounce">
+          <p className="font-semibold text-sm">✓ Richiesta inviata!</p>
         </div>
       )}
     </div>

@@ -1,95 +1,119 @@
-import SuccessToast from "./SuccessToast";
+import React from "react";
 
-function ComponentSummary({ data, back, submit, showSuccess }) {
+function ComponentSummary({ data, back, submit }) {
 
+  // Campi obbligatori per abilitare il pulsante (extra check)
   const requiredFields = [
-    "tipoImmobile",
-    "indirizzo",
-    "superficie",
-    "stanze",
-    "bagni",
-    "tempistica",
-    "nome",
-    "cognome",
-    "email",
-    "telefono",
+    "tipoImmobile", "indirizzo", "superficie", 
+    "stanze", "bagni", "tempistica", 
+    "nome", "cognome", "email", "telefono"
   ];
-
 
   const isValid = requiredFields.every((field) => data[field]);
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
-      <h2 className="text-3xl font-bold mb-6 text-primary">Riepilogo dei dati</h2>
+    <>
+      {/* 1. HEADER */}
+      <div className="step-header-container justify-center">
+        {/* Qui non mettiamo la progress bar, ma solo un titolo chiaro */}
+        <h2 className="section-title m-0 text-xl">Riepilogo Dati</h2>
+      </div>
 
-      {/* Card Dati Immobile */}
-      <div className="bg-white shadow-xl rounded-2xl p-6 mb-6 hover:shadow-2xl transition">
-        <h3 className="text-xl font-semibold text-primary mb-4">Dati immobile</h3>
+      {/* 2. BODY SCROLLABILE */}
+      <div className="step-body-scroll">
+        <div className="w-full max-w-lg mx-auto">
+          <p className="section-subtitle">Controlla che sia tutto corretto prima di inviare.</p>
 
-        <div className="grid grid-cols-2 gap-4">
-          <span className="text-gray-600">Tipo operazione</span>
-          <span className="font-medium">{data.tipoImmobile}</span>
+          {/* Card Dati Immobile */}
+          <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 mb-4">
+            <h3 className="text-sm font-bold text-[#004E98] uppercase tracking-wide mb-3 border-b border-gray-200 pb-2">
+             Immobile
+            </h3>
 
-          <span className="text-gray-600">Indirizzo</span>
-          <span className="font-medium">{data.indirizzo}</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4 text-sm">
+              <div className="flex flex-col">
+                <span className="text-gray-500 text-xs">Tipologia</span>
+                <span className="font-semibold text-gray-800 capitalize">{data.tipoImmobile}</span>
+              </div>
 
-          <span className="text-gray-600">Superficie / Stanze / Bagni</span>
-          <span className="font-medium">
-            {data.superficie} m² / {data.stanze} stanze / {data.bagni} bagni
-          </span>
-
-          {data.piano && (
-            <>
-              <span className="text-gray-600">Piano</span>
-              <span className="font-medium">{data.piano}</span>
-            </>
-          )}
-
-          <span className="text-gray-600">Tempistica</span>
-          <span className="font-medium">{data.tempistica}</span>
-        </div>
-
-        {/* Optional */}
-        <div className="mt-4">
-          <span className="text-gray-600 font-semibold">Optional</span>
-          <div className="flex flex-wrap gap-2 mt-1">
-            {data.optional.length > 0 ? (
-              data.optional.map((opt) => (
-                <span
-                  key={opt}
-                  className="bg-primary-light text-primary font-semibold px-2 py-1 rounded-full"
-                >
-                  {opt}
+              <div className="flex flex-col">
+                <span className="text-gray-500 text-xs">Indirizzo</span>
+                <span className="font-semibold text-gray-800 truncate" title={data.indirizzo}>
+                  {data.indirizzo}, {data.citta} ({data.provincia})
                 </span>
-              ))
-            ) : (
-              <span className="text-gray-400">Nessuno</span>
-            )}
+              </div>
+
+              <div className="flex flex-col sm:col-span-2">
+                <span className="text-gray-500 text-xs">Dettagli</span>
+                <span className="font-semibold text-gray-800">
+                  {data.superficie} m² • {data.stanze} Locali • {data.bagni} Bagni
+                  {data.piano && ` • Piano ${data.piano}`}
+                </span>
+              </div>
+
+              <div className="flex flex-col">
+                <span className="text-gray-500 text-xs">Tempistica</span>
+                <span className="font-semibold text-gray-800">{data.tempistica}</span>
+              </div>
+              
+              <div className="flex flex-col">
+                 <span className="text-gray-500 text-xs">Classe En. / Stato</span>
+                 <span className="font-semibold text-gray-800 capitalize">{data.classeEnergetica} / {data.statoConservazione}</span>
+              </div>
+            </div>
+
+            {/* Optional Tags */}
+            <div className="mt-4 pt-3 border-t border-gray-200">
+              <span className="text-gray-500 text-xs block mb-2">Optional inclusi</span>
+              <div className="flex flex-wrap gap-2">
+                {data.optional.length > 0 ? (
+                  data.optional.map((opt) => (
+                    <span
+                      key={opt}
+                      className="bg-white border border-gray-300 text-gray-700 text-xs font-medium px-2 py-1 rounded-md shadow-sm"
+                    >
+                      {opt}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-gray-400 text-xs italic">Nessun optional selezionato</span>
+                )}
+              </div>
+            </div>
           </div>
+
+          {/* Card Dati Personali */}
+          <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 mb-4">
+            <h3 className="text-sm font-bold text-[#004E98] uppercase tracking-wide mb-3 border-b border-gray-200 pb-2">
+             I tuoi contatti
+            </h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4 text-sm">
+              <div className="flex flex-col">
+                <span className="text-gray-500 text-xs">Nome e Cognome</span>
+                <span className="font-semibold text-gray-800">{data.nome} {data.cognome}</span>
+              </div>
+
+              <div className="flex flex-col">
+                <span className="text-gray-500 text-xs">Telefono</span>
+                <span className="font-semibold text-gray-800">{data.telefono}</span>
+              </div>
+
+              <div className="flex flex-col sm:col-span-2">
+                <span className="text-gray-500 text-xs">Email</span>
+                <span className="font-semibold text-gray-800 break-all">{data.email}</span>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
-      {/* Card Dati Personali */}
-      <div className="bg-white shadow-xl rounded-2xl p-6 mb-6 hover:shadow-2xl transition">
-        <h3 className="text-xl font-semibold text-primary mb-4">Dati personali</h3>
-
-        <div className="grid grid-cols-2 gap-4">
-          <span className="text-gray-600">Nome / Cognome</span>
-          <span className="font-medium">{data.nome} {data.cognome}</span>
-
-          <span className="text-gray-600">Email</span>
-          <span className="font-medium">{data.email}</span>
-
-          <span className="text-gray-600">Telefono</span>
-          <span className="font-medium">{data.telefono}</span>
-        </div>
-      </div>
-
-      {/* Pulsanti */}
-      <div className="flex justify-between mt-4 gap-4">
+      {/* 3. FOOTER */}
+      <div className="button-group-footer">
         <button
           onClick={back}
-          className="bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition"
+          className="back-btn"
         >
           Indietro
         </button>
@@ -97,20 +121,12 @@ function ComponentSummary({ data, back, submit, showSuccess }) {
         <button
           onClick={isValid ? submit : undefined}
           disabled={!isValid}
-          className={`next-btn py-2 px-4 rounded-lg text-white bg-primary hover:bg-primary-dark transition ${
-            !isValid ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-primary-dark"
-          }`}
+          className="next-btn"
         >
-          Invia richiesta
+          Conferma e Invia
         </button>
       </div>
-
-      {/* Toast */}
-      <SuccessToast
-        show={showSuccess}
-        message="I dati sono stati inviati con successo!"
-      />
-    </div>
+    </>
   );
 }
 

@@ -13,6 +13,7 @@ function NewsletterSection() {
     setLoading(true);
 
     try {
+      // Simulazione fetch (sostituisci con la tua logica reale)
       const res = await fetch("/api/brevo/newsletter", {
         method: "POST",
         headers: { 
@@ -32,53 +33,58 @@ function NewsletterSection() {
 
     } catch (error) {
       console.error("Errore newsletter:", error);
-      alert("Errore di rete. Riprova più tardi.");
+      // alert("Errore di rete. Riprova più tardi."); 
+      // (Opzionale: scommenta se vuoi l'alert anche in catch)
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section className="py-16 px-6 flex justify-center bg-[#527597]">
-      <div 
-        className="configurator bg-[#3a6ea5] w-full max-w-4xl flex flex-col items-center justify-center text-center"
-        style={{ minHeight: "auto", padding: "3rem" }} 
-      >
-        <div className="w-full max-w-xl flex flex-col items-center">
-          <h2 className="section-title mb-4">Resta aggiornato</h2>
-          <p className="text-white mb-8 max-w-md">
-            Iscriviti alla nostra newsletter per ricevere in anteprima le nuove proprietà immobiliari 
-            e le migliori offerte di mercato direttamente nella tua casella di posta.
+    <section className="py-16 px-4 flex justify-center bg-[#527597]">
+      {/* Uso la classe .configurator per lo stile (bianco, ombra, rounded), 
+         ma sovrascrivo altezza e padding perché questo non è un wizard a step 
+      */}
+      <div className="configurator  bg-[#3a6ea5] h-auto min-h-0 p-8 flex flex-col items-center justify-center text-center">
+        
+        <div className="w-full max-w-md flex flex-col items-center">
+          
+          {/* Titoli aggiornati con le nuove classi */}
+          <h2 className="section-title">Resta aggiornato</h2>
+          <p className="section-subtitle text-white !mb-6">
+            Iscriviti alla newsletter per ricevere in anteprima le nuove proprietà 
+            e le migliori offerte direttamente nella tua casella di posta.
           </p>
 
-          {/* Container del form: Flex Column per mettere input sopra e bottone sotto */}
-          <div className="flex flex-col gap-4 w-full max-w-md">
+          <div className="flex flex-col w-full gap-4">
             
-            {/* Input Email */}
-            <div className="input-group w-full">
+            {/* Input aggiornato con .input-standard */}
+            <div className="input-group">
               <input
                 type="email"
-                placeholder="Inserisci la tua email"
-                className="input-step2 bg-white w-full" 
+                placeholder="nome@esempio.com"
+                className="input-standard text-white" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
-            {/* Bottone */}
+            {/* Bottone aggiornato con .next-btn */}
             <button 
-              className="next-btn w-full !ml-0 flex items-center justify-center text-base py-3"
+              className="next-btn w-full justify-center text-sm py-3 mt-1"
               onClick={handleSubscribe}
               disabled={loading}
             >
-              {loading ? "Invio..." : "Iscriviti"}
+              {loading ? "Invio in corso..." : "Iscriviti Ora"}
             </button>
+
           </div>
 
-          <p className="text-xs text-white mt-6">
+          <p className="text-xs text-white mt-4">
             Non inviamo spam. Puoi disiscriverti in qualsiasi momento.
           </p>
         </div>
+
       </div>
     </section>
   );

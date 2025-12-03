@@ -40,84 +40,107 @@ function Signin() {
   };
 
   return (
-    <div className="hero">
-      <div className="heroContent">
-        <div className="configurator">
-          <div className="wrapper-1-step">
-            <h2 className="section-title">Crea un account</h2>
+    <div 
+      className="hero relative overflow-hidden"
+      style={{ background: 'linear-gradient(135deg, #004E98 0%, #3A6EA5 50%, #5B8DB8 100%)' }}
+    >
+      {/* Background Shapes */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div className="absolute top-10 left-10 w-64 h-64 rounded-full blur-3xl bg-[#FF6700]"></div>
+        <div className="absolute bottom-20 right-20 w-96 h-96 rounded-full blur-3xl bg-[#EBEBEB]"></div>
+      </div>
 
-            <div className="form-grid-step6 mt-6">
-              {/* Nome */}
+       {/* Tasto Chiudi (X) */}
+       <button
+        onClick={() => navigate("/")}
+        className="absolute top-6 right-6 text-white/80 hover:text-white transition z-50"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
+      {/* MODIFICA QUI: 
+         Aggiunto '!h-auto' per sovrascrivere l'altezza fissa del CSS e adattarsi al contenuto.
+         Aggiunto 'min-h-0' per sicurezza.
+      */}
+      <div className="configurator !h-auto !min-h-0">
+        
+        {/* HEADER */}
+        <div className="step-header-container justify-center border-b-0 pb-0">
+          <h2 className="section-title m-0">Registrati</h2>
+        </div>
+
+        {/* BODY */}
+        <div className="step-body-scroll !flex-none">
+          <div className="w-full max-w-md mx-auto">
+
+            <div className="form-grid">
               <div className="input-group">
                 <label className="input-label">Nome</label>
                 <input
                   type="text"
-                  placeholder="Inserisci il nome"
-                  className="input-step2"
+                  placeholder="Mario"
+                  className="input-standard"
                   value={nome}
                   onChange={(e) => setNome(e.target.value)}
                 />
               </div>
-
-              {/* Cognome */}
               <div className="input-group">
                 <label className="input-label">Cognome</label>
                 <input
                   type="text"
-                  placeholder="Inserisci il cognome"
-                  className="input-step2"
+                  placeholder="Rossi"
+                  className="input-standard"
                   value={cognome}
                   onChange={(e) => setCognome(e.target.value)}
                 />
               </div>
-
-              {/* Email */}
-              <div className="input-group">
-                <label className="input-label">Email</label>
-                <input
-                  type="email"
-                  placeholder="name@example.com"
-                  className="input-step2"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-
-              {/* Telefono */}
-              <div className="input-group">
-                <label className="input-label">Telefono</label>
-                <input
-                  type="tel"
-                  placeholder="Numero di telefono"
-                  className="input-step2"
-                  value={telefono}
-                  onChange={(e) => setTelefono(e.target.value)}
-                />
-              </div>
-
-              {/* Password - Occupa 2 colonne su schermi grandi */}
-              <div className="input-group col-span-1 sm:col-span-2">
-                <label className="input-label">Password</label>
-                <input
-                  type="password"
-                  placeholder="Scegli una password"
-                  className="input-step2"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
             </div>
 
-            <div className="button-group">
-              <Link to="/login">
-                <button className="back-btn">Accedi</button>
-              </Link>
-              <button className="next-btn" onClick={handleSubmit}>
-                Registrati
-              </button>
+            <div className="input-group">
+              <label className="input-label">Email</label>
+              <input
+                type="email"
+                placeholder="name@example.com"
+                className="input-standard"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+
+            <div className="input-group">
+              <label className="input-label">Telefono</label>
+              <input
+                type="tel"
+                placeholder="333 1234567"
+                className="input-standard"
+                value={telefono}
+                onChange={(e) => setTelefono(e.target.value)}
+              />
+            </div>
+
+            <div className="input-group">
+              <label className="input-label">Password</label>
+              <input
+                type="password"
+                placeholder="Scegli una password sicura"
+                className="input-standard"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
           </div>
         </div>
+
+        {/* FOOTER */}
+        <div className="button-group-footer mt-2">
+          <Link to="/login">
+            <button className="back-btn">Ho già un account</button>
+          </Link>
+          <button className="next-btn" onClick={handleSubmit}>
+            Registrati
+          </button>
+        </div>
+
       </div>
     </div>
   );

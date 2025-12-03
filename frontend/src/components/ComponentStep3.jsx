@@ -1,165 +1,84 @@
-import React from "react";
-
 function ComponentStep3({ data, updateField, next, back }) {
-
-  const currentYear = new Date().getFullYear();
-
-  // Calcolo errore anno di costruzione in base al valore presente in data
-  let annoError = "";
-  if (data.annoCostruzione !== "" && data.annoCostruzione !== null && data.annoCostruzione !== undefined) {
-    const year = Number(data.annoCostruzione);
-    if (Number.isNaN(year) || year < 1800 || year > currentYear) {
-      annoError = `Inserisci un anno tra 1800 e ${currentYear}`;
-    }
-  }
-
-  const isDisabled =
-    !data.superficie || Number(data.superficie) <= 0 ||
-    !data.stanze || Number(data.stanze) <= 0 ||
-    !data.bagni || Number(data.bagni) <= 0 ||
-    (data.tipoImmobile === "appartamento" && (data.piano === "" || data.piano === null)) ||
-    !data.annoCostruzione ||
-    annoError || // <-- disabilita se l'anno è fuori range
-    !data.statoConservazione ||
-    !data.classeEnergetica;
+  const isValid = data.superficie && data.stanze && data.bagni && data.annoCostruzione && data.statoConservazione && data.classeEnergetica;
 
   return (
-    <div className="wrapper-1-step">
-      {/* Progress Label */}
-      <span className="progress-label text-sm font-semibold">Passo 3 di 6</span>
-
-      <h3 className="section-title">Dati dell'immobile</h3>
-
-      <div className="form-grid-step3 grid gap-4">
-
-        {/* Superficie */}
-        <div className="input-group">
-          <label className="input-label">Superficie (m²)</label>
-          <input
-            type="number"
-            placeholder="Es. 100"
-            value={data.superficie}
-            min={0}
-            onChange={(e) => updateField("superficie", Math.max(0, Number(e.target.value)))}
-            className="input-step3"
-          />
+    <>
+      <div className="step-header-container">
+        <span className="progress-label">Passo 3 di 6</span>
+        <div className="progress-bar-container">
+          <div className="progress-fill" style={{ width: '50%' }}></div>
         </div>
-
-        {/* Stanze */}
-        <div className="input-group">
-          <label className="input-label">Numero Stanze</label>
-          <input
-            type="number"
-            placeholder="Es. 4"
-            value={data.stanze}
-            min={0}
-            onChange={(e) => updateField("stanze", Math.max(0, Number(e.target.value)))}
-            className="input-step3"
-          />
+        <div className="w-6"></div>
+      </div>
+      <div className="step-title-wrapper">
+          <h3 className="section-title">Caratteristiche</h3>
+          <p className="section-subtitle">Dettagli tecnici dell'immobile</p>
         </div>
+      <div className="step-body-scroll">
+        <div className="w-full max-w-lg mx-auto">
 
-        {/* Bagni */}
-        <div className="input-group">
-          <label className="input-label">Numero Bagni</label>
-          <input
-            type="number"
-            placeholder="Es. 2"
-            value={data.bagni}
-            min={0}
-            onChange={(e) => updateField("bagni", Math.max(0, Number(e.target.value)))}
-            className="input-step3"
-          />
-        </div>
 
-        {/* Piano */}
-        {data.tipoImmobile === "appartamento" && (
-          <div className="input-group">
-            <label className="input-label">Piano</label>
-            <input
-              type="number"
-              placeholder="Es. 1"
-              value={data.piano}
-              min={0}
-              onChange={(e) => updateField("piano", Math.max(0, Number(e.target.value)))}
-              className="input-step3"
-            />
+          <div className="form-grid">
+            <div className="input-group">
+              <label className="input-label">Superficie (m²)</label>
+              <input type="number" placeholder="100" className="input-standard"
+                value={data.superficie} onChange={(e) => updateField("superficie", e.target.value)} />
+            </div>
+
+            <div className="input-group">
+              <label className="input-label">Locali</label>
+              <input type="number" placeholder="4" className="input-standard"
+                value={data.stanze} onChange={(e) => updateField("stanze", e.target.value)} />
+            </div>
+
+            <div className="input-group">
+              <label className="input-label">Bagni</label>
+              <input type="number" placeholder="2" className="input-standard"
+                value={data.bagni} onChange={(e) => updateField("bagni", e.target.value)} />
+            </div>
+
+            <div className="input-group">
+              <label className="input-label">Anno Costr.</label>
+              <input type="number" placeholder="1990" className="input-standard"
+                value={data.annoCostruzione} onChange={(e) => updateField("annoCostruzione", e.target.value)} />
+            </div>
+
+            <div className="input-group">
+              <label className="input-label">Stato</label>
+              <select className="input-standard bg-white" value={data.statoConservazione} onChange={(e) => updateField("statoConservazione", e.target.value)}>
+                <option value="">Seleziona...</option>
+                <option value="da ristrutturare">Da ristrutturare</option>
+                <option value="buono">Buono</option>
+                <option value="ottimo">Ottimo</option>
+                <option value="nuovo">Nuovo</option>
+              </select>
+            </div>
+
+            <div className="input-group">
+              <label className="input-label">Classe En.</label>
+              <select className="input-standard bg-white" value={data.classeEnergetica} onChange={(e) => updateField("classeEnergetica", e.target.value)}>
+                <option value="">Seleziona...</option>
+                {['A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G'].map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
           </div>
-        )}
 
-        {/* Anno costruzione */}
-        <div className="input-group">
-          <label className="input-label">Anno di costruzione</label>
-          <input
-            type="number"
-            placeholder="Es. 1990"
-            min={1800}
-            max={currentYear}
-            value={data.annoCostruzione}
-            onChange={(e) => {
-              // qui lasciamo inserire il valore, la validazione la fa annoError
-              updateField("annoCostruzione", e.target.value);
-            }}
-            className={`input-step3 ${annoError ? "border-red-500" : ""}`}
-          />
-          {annoError && (
-            <p className="text-red-500 text-sm mt-1">{annoError}</p>
+          {/* Se appartamento, chiedi piano */}
+          {data.tipoImmobile === 'appartamento' && (
+            <div className="input-group mt-3">
+              <label className="input-label">Piano</label>
+              <input type="number" placeholder="1" className="input-standard"
+                value={data.piano} onChange={(e) => updateField("piano", e.target.value)} />
+            </div>
           )}
         </div>
-
-        {/* Stato conservazione */}
-        <div className="input-group">
-          <label className="input-label">Stato conservazione</label>
-          <select
-            value={data.statoConservazione}
-            onChange={(e) => updateField("statoConservazione", e.target.value)}
-            className="input-step3"
-          >
-            <option value="">Seleziona...</option>
-            <option value="da ristrutturare">Da ristrutturare</option>
-            <option value="buono">Buono</option>
-            <option value="ottimo">Ottimo</option>
-            <option value="lusso">Lusso</option>
-          </select>
-        </div>
-
-        {/* Classe energetica */}
-        <div className="input-group">
-          <label className="input-label">Classe energetica</label>
-          <select
-            value={data.classeEnergetica}
-            onChange={(e) => updateField("classeEnergetica", e.target.value)}
-            className="input-step3"
-          >
-            <option value="">Seleziona...</option>
-            {["A", "B", "C", "D", "E", "F", "G"].map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
-        </div>
-
       </div>
 
-      {/* Progress Bar */}
-      <div className="progress-bar">
-        <div className="progress progress-step-3"></div>
+      <div className="button-group-footer">
+        <button className="back-btn" onClick={back}>Indietro</button>
+        <button className="next-btn" onClick={next} disabled={!isValid}>Avanti</button>
       </div>
-
-      {/* BUTTONS (positioned relative to configurator container) */}
-      <div className="button-group absolute left-1/2 transform -translate-x-1/2 bottom-6 w-full max-w-3xl flex justify-between px-4">
-        <button className="back-btn" onClick={back}>
-          Indietro
-        </button>
-
-        <button
-          className={`next-btn ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
-          onClick={isDisabled ? undefined : next}
-          disabled={isDisabled}
-        >
-          Avanti
-        </button>
-
-      </div>
-    </div>
+    </>
   );
 }
 

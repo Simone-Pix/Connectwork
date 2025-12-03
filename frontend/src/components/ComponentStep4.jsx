@@ -1,51 +1,47 @@
-const optionalList = ["Balcone", "Terrazzo", "Parcheggio", "Giardino", "Garage"];
+import React from "react";
 
 function ComponentStep4({ data, updateField, next, back }) {
-  const toggleOptional = (item) => {
-    if (data.optional.includes(item)) {
-      updateField("optional", data.optional.filter((o) => o !== item));
-    } else {
-      updateField("optional", [...data.optional, item]);
-    }
+  const options = ["Balcone", "Terrazzo", "Giardino", "Box Auto", "Cantina", "Ascensore", "Allarme", "Condizionatore"];
+  
+  const toggle = (opt) => {
+    if (data.optional.includes(opt)) updateField("optional", data.optional.filter(o => o !== opt));
+    else updateField("optional", [...data.optional, opt]);
   };
 
   return (
-    <div className="wrapper-1-step">
-      {/* Progress Label */}
-      <span className="progress-label">Passo 4 di 6</span>
-      
-      <h3 className="section-title">Optional dell'immobile</h3>
-
-      <div className="card-container">
-        {optionalList.map((opt) => (
-          <div
-            key={opt}
-            className={`card ${data.optional.includes(opt) ? "active" : ""}`}
-            onClick={() => toggleOptional(opt)}
-          >
-            <h4>{opt}</h4>
+    <>
+      <div className="step-header-container">
+        <span className="progress-label">Passo 4 di 6</span>
+        <div className="progress-bar-container">
+          <div className="progress-fill" style={{ width: '66.6%' }}></div>
+        </div>
+        <div className="w-6"></div>
+      </div>
+      <div className="step-title-wrapper">
+          <h3 className="section-title">Optional</h3>
+          <p className="section-subtitle">Seleziona cosa è incluso</p>
+        </div>
+      <div className="step-body-scroll">
+        <div className="w-full max-w-lg mx-auto">
+          <div className="card-container">
+            {options.map(opt => (
+              <div 
+                key={opt} 
+                className={`card ${data.optional.includes(opt) ? 'active' : ''}`}
+                onClick={() => toggle(opt)}
+              >
+                <h4 className="m-0">{opt}</h4>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
 
-      <div className="progress-bar">
-        <div className="progress progress-step-4"></div>
+      <div className="button-group-footer">
+        <button className="back-btn" onClick={back}>Indietro</button>
+        <button className="next-btn" onClick={next}>Avanti</button>
       </div>
-
-      {/* --- BOTTONI (posizionati come gli altri step) --- */}
-      <div className="button-group absolute left-1/2 transform -translate-x-1/2 bottom-6 w-full max-w-3xl flex justify-between px-4">
-        <button className="back-btn" onClick={back}>
-          Indietro
-        </button>
-
-        <button
-          onClick={next}
-          className="next-btn cursor-pointer"
-        >
-          Avanti
-        </button>
-      </div>
-    </div>
+    </>
   );
 }
 
