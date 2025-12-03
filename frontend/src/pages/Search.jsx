@@ -144,10 +144,10 @@ function Search() {
           {/* Area risultati */}
           <main>
             <header className="mb-6">
-              <h2 className="text-gray-900 text-xl font-bold">
+              <h2 className="text-white text-xl font-bold">
                 Immobili {filters.citta ? `a ${filters.citta}` : "in vendita"}
               </h2>
-              <p className="text-gray-600 text-sm">
+              <p className="text-white text-sm">
                 {filteredProperties.length} {filteredProperties.length === 1 ? 'risultato trovato' : 'risultati trovati'}
               </p>
             </header>
