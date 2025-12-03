@@ -122,7 +122,8 @@ export default function PropertyDetail() {
         ).toLocaleString("it-IT")}/m²`
       : "";
 
-  
+const currentUrl = "https://www.Immobiliaris.domain/";  
+
   // 1. Titolo e Descrizione
   const metaTitle = `${property.titolo || property.tipoImmobile} a ${property.citta} | Immobiliaris`;
   const metaDescRaw = property.descrizione || `Scopri ${property.tipoImmobile} in vendita a ${property.citta}, ${property.superficie}mq.`;
@@ -169,13 +170,11 @@ export default function PropertyDetail() {
       <meta property="og:title" content={metaTitle} />
       <meta property="og:description" content={`Occasione a ${property.citta}: ${property.numLocali || ''} locali, ${priceFormatted}. ${metaDescription}`} />
       <meta property="og:url" content={currentUrl} />
-      <meta property="og:image" content={ogImageUrl} />
 
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={metaTitle} />
       <meta name="twitter:description" content={metaDescription} />
-      <meta name="twitter:image" content={ogImageUrl} />
 
       {/* JSON-LD Script */}
       <script type="application/ld+json">

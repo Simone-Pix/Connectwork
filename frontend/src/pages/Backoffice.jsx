@@ -344,7 +344,7 @@ function Backoffice() {
   return (
     <div className="backoffice-wrapper-backoffice pt-28 pb-10 min-h-screen relative">
       
-      {/* --- MODAL DI SUCCESSO CENTRATO --- */}
+      {/* --- MODAL DI SUCCESSO --- */}
       {successModal.show && (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-6 rounded-xl shadow-2xl z-50 bg-[#004E98] text-white text-center min-w-[300px]">
           <div className="mb-2 flex justify-center">
@@ -371,7 +371,7 @@ function Backoffice() {
              <p className="font-semibold text-lg mb-8">{confirmModal.message}</p>
              
              <div className="flex justify-center gap-4">
-                {/* Pulsante ANNULLA (Stile Reset/Grigio chiaro per contrasto su sfondo blu) */}
+                {/* Pulsante ANNULLA*/}
                 <button 
                   onClick={closeConfirm} 
                   className="px-6 py-2 rounded-lg bg-gray-100 text-[#004E98] font-bold shadow hover:bg-white transition-colors"
@@ -379,7 +379,7 @@ function Backoffice() {
                   Annulla
                 </button>
 
-                {/* Pulsante CONFERMA (Stile Elimina/Rosso) */}
+                {/* Pulsante CONFERMA*/}
                 <button 
                   onClick={() => {
                     if (confirmModal.onConfirm) confirmModal.onConfirm();
@@ -486,7 +486,6 @@ function Backoffice() {
 
                             {/* BOTTONI AZIONI */}
                             <div className="backoffice-actions-backoffice">
-                              {/* Modificato per usare il Modal Custom */}
                               <button
                                 className="backoffice-deleteButton-backoffice"
                                 onClick={() => openDeleteRichiestaModal(r.id)}
@@ -747,13 +746,11 @@ function Backoffice() {
                   </button>
                 </div>
 
-                {/* Submission result (debug) */}
                 {submitMessage && (
                   <div className="mt-4 p-3 border rounded">
                     {submitMessage.success ? (
                       <div>
                         <strong>Immobile creato con successo (Debug Info).</strong>
-                        {/* Il Modal di successo viene mostrato sopra */}
                       </div>
                     ) : (
                       <div>
@@ -788,7 +785,7 @@ function Backoffice() {
                           <span>ID: {immobile.id}</span>
                           <span>{immobile.tipoImmobile}</span>
 
-                          {/* PULSANTE ELIMINA (Modificato per usare Modal Custom) */}
+                          {/* PULSANTE ELIMINA*/}
                           <button
                             className="backoffice-deleteButton-backoffice"
                             onClick={(e) => {

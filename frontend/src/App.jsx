@@ -5,8 +5,6 @@ import Layout from "./Layout/Layout";
 
 import ScrollTop from "../src/components/ScrollTop.jsx";
 
-import "./App.css";
-
 import LoadingScreen from './pages/LoadingScreen';
 const Home = lazy(() => import("./pages/Home"));
 const Search = lazy(() => import("./pages/Search"));
