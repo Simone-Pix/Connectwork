@@ -50,5 +50,5 @@
 }
 /* Sfondo pagina Search */
 .search-page-wrapper {
-  background-color:#527597;
+  background: linear-gradient(135deg, #004E98 0%, #3A6EA5 50%, #5B8DB8 100%);
 }

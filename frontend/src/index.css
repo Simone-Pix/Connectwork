@@ -13,6 +13,7 @@
 /* Stili globali aggiuntivi */
 body {
   @apply bg-gray-100 text-gray-900 font-sans;
+ background: linear-gradient(135deg, #004E98 0%, #3A6EA5 50%, #5B8DB8 100%);
 }
 
 @layer base {

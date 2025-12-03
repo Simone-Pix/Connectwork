@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import placeholderImg from "../assets/img_background.png";
+import placeholderImg from "../assets/img_background.png"; // <--- Assicurati che questo percorso sia corretto
+
 export default function PropertyDetail() {
   const { id } = useParams();
   const [property, setProperty] = useState(null);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  //stato per aprire il carosello
+  // Stato per il carosello
   const [showCarousel, setShowCarousel] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -38,7 +39,13 @@ export default function PropertyDetail() {
     load();
   }, [id]);
 
-  // FUNZIONI PER IL CAROSELLO
+  // --- FUNZIONE DI FALLBACK IMMAGINE (Stessa logica della Card) ---
+  const handleImageError = (e) => {
+    e.target.onerror = null; // evita loop infiniti
+    e.target.src = placeholderImg;
+  };
+
+  // --- FUNZIONI PER IL CAROSELLO ---
   const openCarousel = (startIndex = 0) => {
     if (!images || images.length === 0) return;
     setCurrentIndex(startIndex);
@@ -99,8 +106,7 @@ export default function PropertyDetail() {
   }
 
   const mainImage =
-    images.find((i) => i.tipo === "foto")?.url ||
-    property.urlImmagine;
+    images.find((i) => i.tipo === "foto")?.url || property.urlImmagine || "/placeholder-property.jpg"; 
 
   const priceFormatted = property.prezzoRichiesto
     ? `€ ${Number(property.prezzoRichiesto).toLocaleString("it-IT")}`
@@ -114,24 +120,20 @@ export default function PropertyDetail() {
       : "";
 
   return (
-    <main className="pt-28 pb-10 min-h-screen bg-[#527597]">
+    <main className="pt-28 pb-10 min-h-screen">
       <div className="max-w-7xl mx-auto px-4">
 
         {/* HERO */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 mb-6">
-          {/* Immagine principale */}
+          {/* 1. Immagine principale */}
           <div className="bg-[#1E3A8A] rounded-xl overflow-hidden shadow-lg border border-blue-400/30">
             <img
-  src={mainImage}
-  alt={property.titolo || "Immagine immobile"}
-  className="w-full h-[420px] object-cover cursor-pointer"
-  onClick={() => images.length > 0 && openCarousel(0)}
-  onError={(e) => {
-    e.target.onerror = null;
-    e.target.src = placeholderImg;
-  }}
-/>
-
+              src={mainImage}
+              alt={property.titolo || "Immagine immobile"}
+              className="w-full h-[420px] object-cover cursor-pointer"
+              onClick={() => images.length > 0 && openCarousel(0)}
+              onError={handleImageError} // <--- STRATEGIA APPLICATA QUI
+            />
 
             <div className="p-6">
               <div className="flex items-center justify-between">
@@ -184,10 +186,11 @@ export default function PropertyDetail() {
             </div>
           </div>
 
-          {/* Colonna destra → UNA sola foto */}
+          {/* Colonna destra */}
           <aside className="space-y-4">
             <div className="bg-[#1E3A8A] rounded-xl overflow-hidden shadow-lg border border-blue-400/30 p-3">
               <div className="grid grid-cols-1 gap-2">
+                {/* 2. Immagine Sidebar (Miniatura) */}
                 {images[0] && (
                   <img
                     key={images[0].id}
@@ -195,6 +198,7 @@ export default function PropertyDetail() {
                     alt="Immagine immobile"
                     className="w-full h-24 object-cover rounded cursor-pointer"
                     onClick={() => images.length > 0 && openCarousel(0)}
+                    onError={handleImageError} // <--- STRATEGIA APPLICATA QUI
                   />
                 )}
 
@@ -245,7 +249,6 @@ export default function PropertyDetail() {
             </div>
           </section>
         </div>
-
       </div>
 
       {/* ===== CAROSELLO SOVRIMPRESSIONE ===== */}
@@ -261,7 +264,6 @@ export default function PropertyDetail() {
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
-            {/* X CHIUDI */}
             <button
               className="absolute top-3 right-3 text-white text-2xl bg-orange-500 hover:bg-orange-600 rounded-full w-8 h-8 flex items-center justify-center z-10 transition"
               onClick={closeCarousel}
@@ -269,14 +271,14 @@ export default function PropertyDetail() {
               ✕
             </button>
 
-            {/* IMMAGINE */}
+            {/* 3. Immagine Carosello */}
             <img
               src={images[currentIndex].url}
               alt="Immagine immobile"
               className="w-full max-h-[75vh] object-contain bg-black"
+              onError={handleImageError} // <--- STRATEGIA APPLICATA QUI
             />
 
-            {/* FRECCIA SINISTRA */}
             <button
               onClick={prevImage}
               className="absolute left-2 top-1/2 -translate-y-1/2 bg-orange-500/90 hover:bg-orange-600 text-white px-4 py-2 rounded-full text-2xl font-bold transition"
@@ -284,7 +286,6 @@ export default function PropertyDetail() {
               ‹
             </button>
 
-            {/* FRECCIA DESTRA */}
             <button
               onClick={nextImage}
               className="absolute right-2 top-1/2 -translate-y-1/2 bg-orange-500/90 hover:bg-orange-600 text-white px-4 py-2 rounded-full text-2xl font-bold transition"
@@ -292,7 +293,6 @@ export default function PropertyDetail() {
               ›
             </button>
 
-            {/* INDICATORI */}
             <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-2">
               {images.map((_, i) => (
                 <div

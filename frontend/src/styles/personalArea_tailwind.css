@@ -1,6 +1,6 @@
 @layer components {
   .hero-personal {
-    @apply flex items-center justify-center min-h-screen p-6;
+    @apply flex items-center justify-center min-h-screen p-6 pt-28;
 
   }
 

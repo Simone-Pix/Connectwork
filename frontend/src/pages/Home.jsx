@@ -10,8 +10,8 @@ import MissionSection from "../components/MissionSection";
 import NewsLetter from "../components/NewsLetter";
 
 function Home() {
-//codice per trovare le sezioni in base agli id  
   const { hash } = useLocation();
+
   useEffect(() => {
     if (hash) {
       const element = document.getElementById(hash.replace("#", ""));
@@ -21,34 +21,42 @@ function Home() {
     } else {
       window.scrollTo(0, 0);
     }
-  }, [hash]);  
+  }, [hash]);
+
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-screen flex flex-col">
+      {/* FIX 1: pt-16 (4rem) corrisponde esattamente ad h-16 della navbar. 
+          Nessuno spazio vuoto, nessuna sovrapposizione. */}
+      <section className="relative min-h-screen flex flex-col pt-16">
+        
         <div className="flex-1 flex items-center">
-     
           <div className="w-full grid grid-cols-1 lg:grid-cols-[55%_45%] gap-0 items-center">
             
-            
-            <div className="relative h-[50vh] lg:h-screen order-2 lg:order-1">
+            {/* IMMAGINE */}
+            {/* FIX 2: Calcoli aggiornati su 4rem (altezza navbar) */}
+            {/* Mobile: h-[calc(50vh-2rem)] -> Metà schermo meno metà navbar per non scrollare */}
+            {/* Desktop: h-[calc(100vh-4rem)] -> Intero schermo meno navbar */}
+            <div className="relative h-[calc(50vh-2rem)] lg:h-[calc(100vh-4rem)] order-2 lg:order-1">
               <img 
                 src={backgroundImg} 
                 alt="Casa dei sogni" 
                 className="absolute inset-0 w-full h-full object-cover"
               />
 
-              {/* Gradiente spostato più a destra */}
+              {/* Gradiente */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent from-50% via-blue-900/30 via-80% to-blue-900"></div>
               
               {/* Layer mobile */}
               <div className="absolute inset-0 bg-gradient-to-b from-blue-900/20 to-blue-900/40 lg:hidden"></div>
             </div>
 
-            
-            <div className="relative bg-blue-900 px-6 py-12 lg:py-0 lg:px-12 h-[50vh] lg:h-screen flex items-center order-1 lg:order-2">
+            {/* CONTENUTO (StepHome) */}
+            {/* FIX 3: Stessi calcoli dell'immagine per allineamento perfetto */}
+            <div className="relative bg-blue-900 px-6 py-12 lg:py-0 lg:px-12 h-[calc(50vh-2rem)] lg:h-[calc(100vh-4rem)] flex items-center order-1 lg:order-2">
               <StepHome />
             </div>
+
           </div>
         </div>
 
@@ -58,7 +66,7 @@ function Home() {
       <SearchByCity />
       <MissionSection />
        <div id="agentsId">
-         <AgentsSection />
+          <AgentsSection />
        </div>
       <WhyChoose />
       <NewsLetter />

@@ -143,39 +143,9 @@ export default function PersonalArea() {
                   type="email"
                   value={emailValue}
                   onChange={(e) => setEmailValue(e.target.value)}
-                  disabled={!isEditing}
-                  className={`
-                    input-step2-personal
-                    ${isEditing ? "" : "bg-gray-200 cursor-not-allowed"}
-                  `}
+                  disabled
+                  className={"input-step2-personal bg-gray-200 cursor-not-allowed"}
                 />
-
-                {!isEditing ? (
-                  <button
-                    onClick={() => setIsEditing(true)}
-                    className="btn-change-personal"
-                  >
-                    Change
-                  </button>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={handleSaveEmail}
-                      className="btn-save-personal"
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={() => {
-                        setEmailValue(user.email);
-                        setIsEditing(false);
-                      }}
-                      className="btn-cancel-personal"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                )}
               </div>
             </div>
 

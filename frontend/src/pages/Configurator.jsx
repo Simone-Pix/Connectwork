@@ -124,8 +124,13 @@ function Configurator() {
 
       {/* Toast Successo */}
       {showSuccess && (
-        <div className="fixed top-6 right-6 p-4 rounded-lg shadow-xl z-50 bg-[#004E98] text-white animate-bounce">
-          <p className="font-semibold text-sm">✓ Richiesta inviata!</p>
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-6 rounded-xl shadow-2xl z-50 bg-[#004E98] text-white text-center">
+          <div className="mb-2 flex justify-center">
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </div>
+          <p className="font-semibold text-lg">Richiesta inviata!</p>
         </div>
       )}
     </div>
