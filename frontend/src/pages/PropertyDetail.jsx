@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import placeholderImg from "../assets/img_background.png"; // <--- Assicurati che questo percorso sia corretto
+import placeholderImg from "../assets/img_background.png"; 
 
 export default function PropertyDetail() {
   const { id } = useParams();
@@ -39,9 +39,9 @@ export default function PropertyDetail() {
     load();
   }, [id]);
 
-  // --- FUNZIONE DI FALLBACK IMMAGINE (Stessa logica della Card) ---
+  // --- FUNZIONE DI FALLBACK IMMAGINE ---
   const handleImageError = (e) => {
-    e.target.onerror = null; // evita loop infiniti
+    e.target.onerror = null; 
     e.target.src = placeholderImg;
   };
 
@@ -81,6 +81,7 @@ export default function PropertyDetail() {
     if (touchEndX - touchStartX > 50) prevImage();
   };
 
+  // 1. LOADING STATE
   if (loading) {
     return (
       <div className="pt-28 pb-10 min-h-screen bg-[#527597]">
@@ -93,6 +94,7 @@ export default function PropertyDetail() {
     );
   }
 
+  // 2. ERROR STATE
   if (!property) {
     return (
       <div className="pt-28 pb-10 min-h-screen bg-[#527597]">
@@ -105,6 +107,7 @@ export default function PropertyDetail() {
     );
   }
 
+  // --- LOGICA VARIABILI VISUALI ---
   const mainImage =
     images.find((i) => i.tipo === "foto")?.url || property.urlImmagine || "/placeholder-property.jpg"; 
 
@@ -115,196 +118,271 @@ export default function PropertyDetail() {
   const pricePerM2 =
     property.prezzoRichiesto && property.superficie
       ? `€ ${Math.round(
-        Number(property.prezzoRichiesto) / Number(property.superficie)
-      ).toLocaleString("it-IT")}/m²`
+          Number(property.prezzoRichiesto) / Number(property.superficie)
+        ).toLocaleString("it-IT")}/m²`
       : "";
 
+  // =========================================================
+  // LOGICA SEO (REACT 19)
+  // =========================================================
+  const siteUrl = "https://www.immobiliaris.it"; // Sostituisci con il tuo dominio reale
+  const currentUrl = `${siteUrl}/immobili/${id}`;
+  
+  // 1. Titolo e Descrizione
+  const metaTitle = `${property.titolo || property.tipoImmobile} a ${property.citta} | Immobiliaris`;
+  const metaDescRaw = property.descrizione || `Scopri ${property.tipoImmobile} in vendita a ${property.citta}, ${property.superficie}mq.`;
+  // Taglia a 160 caratteri e rimuovi a capo
+  const metaDescription = metaDescRaw.substring(0, 160).replace(/\n/g, ' ') + (metaDescRaw.length > 160 ? "..." : "");
+
+  // 2. Immagine Assoluta per Social
+  let ogImageUrl = mainImage;
+  if (ogImageUrl && ogImageUrl.startsWith("/")) {
+    ogImageUrl = `${siteUrl}${ogImageUrl}`;
+  }
+
+  // 3. Dati Strutturati (JSON-LD)
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "SingleFamilyResidence", 
+    "name": metaTitle,
+    "description": metaDescription,
+    "image": [ogImageUrl],
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": property.indirizzo || "Indirizzo su richiesta",
+      "addressLocality": property.citta,
+      "postalCode": property.cap,
+      "addressCountry": "IT"
+    },
+    "numberOfRooms": property.numLocali,
+    "floorSize": {
+      "@type": "QuantitativeValue",
+      "value": property.superficie,
+      "unitCode": "MTK"
+    },
+    "url": currentUrl,
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "EUR",
+      "price": property.prezzoRichiesto ? Number(property.prezzoRichiesto) : 0,
+      "availability": property.stato === "Venduto" ? "https://schema.org/SoldOut" : "https://schema.org/InStock"
+    }
+  };
+
+
   return (
-    <main className="pt-28 pb-10 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4">
+    <>
+      {/* ----- METADATA SEO (Verranno spostati nell'HEAD) ----- */}
+      <title>{metaTitle}</title>
+      <meta name="description" content={metaDescription} />
+      <link rel="canonical" href={currentUrl} />
 
-        {/* HERO */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 mb-6">
-          {/* 1. Immagine principale */}
-          <div className="bg-[#1E3A8A] rounded-xl overflow-hidden shadow-lg border border-blue-400/30">
-            <img
-              src={mainImage}
-              alt={property.titolo || "Immagine immobile"}
-              className="w-full h-[420px] object-cover cursor-pointer"
-              onClick={() => images.length > 0 && openCarousel(0)}
-              onError={handleImageError} // <--- STRATEGIA APPLICATA QUI
-            />
+      {/* Open Graph (Facebook / WhatsApp) */}
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content={metaTitle} />
+      <meta property="og:description" content={`Occasione a ${property.citta}: ${property.numLocali || ''} locali, ${priceFormatted}. ${metaDescription}`} />
+      <meta property="og:url" content={currentUrl} />
+      <meta property="og:image" content={ogImageUrl} />
 
-            <div className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-2xl font-bold text-orange-500">{priceFormatted}</div>
-                  <div className="text-sm text-blue-200">{pricePerM2}</div>
-                </div>
+      {/* Twitter Card */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={metaTitle} />
+      <meta name="twitter:description" content={metaDescription} />
+      <meta name="twitter:image" content={ogImageUrl} />
 
-                <div className="text-right">
-                  <h1 className="text-xl font-bold text-white">{property.tipoImmobile || ""}</h1>
-                  <div className="text-sm text-blue-100 mt-1">
-                    {property.indirizzo
-                      ? `${property.indirizzo}, ${property.citta}`
-                      : `${property.citta || ""}`}
+      {/* JSON-LD Script */}
+      <script type="application/ld+json">
+        {JSON.stringify(structuredData)}
+      </script>
+      {/* ----------------------------------------------------- */}
+
+      <main className="pt-28 pb-10 min-h-screen">
+        <div className="max-w-7xl mx-auto px-4">
+
+          {/* HERO */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 mb-6">
+            {/* 1. Immagine principale */}
+            <div className="bg-[#1E3A8A] rounded-xl overflow-hidden shadow-lg border border-blue-400/30">
+              <img
+                src={mainImage}
+                alt={property.titolo || "Immagine immobile"}
+                className="w-full h-[420px] object-cover cursor-pointer"
+                onClick={() => images.length > 0 && openCarousel(0)}
+                onError={handleImageError}
+              />
+
+              <div className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-2xl font-bold text-orange-500">{priceFormatted}</div>
+                    <div className="text-sm text-blue-200">{pricePerM2}</div>
+                  </div>
+
+                  <div className="text-right">
+                    <h1 className="text-xl font-bold text-white">{property.tipoImmobile || ""}</h1>
+                    <div className="text-sm text-blue-100 mt-1">
+                      {property.indirizzo
+                        ? `${property.indirizzo}, ${property.citta}`
+                        : `${property.citta || ""}`}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Caratteristiche */}
-              <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
-                <div className="p-3 bg-blue-800/50 rounded-lg border border-blue-400/20">
-                  <div className="font-semibold text-white">{property.numLocali ?? "-"}</div>
-                  <div className="text-xs text-blue-200">Camere</div>
-                </div>
-                <div className="p-3 bg-blue-800/50 rounded-lg border border-blue-400/20">
-                  <div className="font-semibold text-white">{property.numBagni ?? "-"}</div>
-                  <div className="text-xs text-blue-200">Bagni</div>
-                </div>
-                <div className="p-3 bg-blue-800/50 rounded-lg border border-blue-400/20">
-                  <div className="font-semibold text-white">
-                    {property.superficie ? `${property.superficie} m²` : "-"}
+                {/* Caratteristiche */}
+                <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+                  <div className="p-3 bg-blue-800/50 rounded-lg border border-blue-400/20">
+                    <div className="font-semibold text-white">{property.numLocali ?? "-"}</div>
+                    <div className="text-xs text-blue-200">Camere</div>
                   </div>
-                  <div className="text-xs text-blue-200">Superficie</div>
+                  <div className="p-3 bg-blue-800/50 rounded-lg border border-blue-400/20">
+                    <div className="font-semibold text-white">{property.numBagni ?? "-"}</div>
+                    <div className="text-xs text-blue-200">Bagni</div>
+                  </div>
+                  <div className="p-3 bg-blue-800/50 rounded-lg border border-blue-400/20">
+                    <div className="font-semibold text-white">
+                      {property.superficie ? `${property.superficie} m²` : "-"}
+                    </div>
+                    <div className="text-xs text-blue-200">Superficie</div>
+                  </div>
+                  <div className="p-3 bg-blue-800/50 rounded-lg border border-blue-400/20">
+                    <div className="font-semibold text-white">{property.piano ?? "-"}</div>
+                    <div className="text-xs text-blue-200">Piano</div>
+                  </div>
                 </div>
-                <div className="p-3 bg-blue-800/50 rounded-lg border border-blue-400/20">
-                  <div className="font-semibold text-white">{property.piano ?? "-"}</div>
-                  <div className="text-xs text-blue-200">Piano</div>
-                </div>
-              </div>
 
-              {/* Buttons */}
-              <div className="mt-6 flex gap-3">
-                <button
-                  className="px-4 py-2 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition shadow-sm"
-                  onClick={() => navigate("/Home#agentsId")}
-                >
-                  Contatta un agente
-                </button>
+                {/* Buttons */}
+                <div className="mt-6 flex gap-3">
+                  <button
+                    className="px-4 py-2 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition shadow-sm"
+                    onClick={() => navigate("/Home#agentsId")}
+                  >
+                    Contatta un agente
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Colonna destra */}
-          <aside className="space-y-4">
-            <div className="bg-[#1E3A8A] rounded-xl overflow-hidden shadow-lg border border-blue-400/30 p-3">
-              <div className="grid grid-cols-1 gap-2">
-                {/* 2. Immagine Sidebar (Miniatura) */}
-                {images[0] && (
-                  <img
-                    key={images[0].id}
-                    src={images[0].url}
-                    alt="Immagine immobile"
-                    className="w-full h-24 object-cover rounded cursor-pointer"
+            {/* Colonna destra */}
+            <aside className="space-y-4">
+              <div className="bg-[#1E3A8A] rounded-xl overflow-hidden shadow-lg border border-blue-400/30 p-3">
+                <div className="grid grid-cols-1 gap-2">
+                  {/* 2. Immagine Sidebar (Miniatura) */}
+                  {images[0] && (
+                    <img
+                      key={images[0].id}
+                      src={images[0].url}
+                      alt="Immagine immobile"
+                      className="w-full h-24 object-cover rounded cursor-pointer"
+                      onClick={() => images.length > 0 && openCarousel(0)}
+                      onError={handleImageError}
+                    />
+                  )}
+
+                  <button
+                    className="w-full h-24 bg-orange-500 hover:bg-orange-600 rounded flex items-center justify-center text-white text-sm font-semibold cursor-pointer transition shadow-md"
                     onClick={() => images.length > 0 && openCarousel(0)}
-                    onError={handleImageError} // <--- STRATEGIA APPLICATA QUI
-                  />
-                )}
-
-                <button
-                  className="w-full h-24 bg-orange-500 hover:bg-orange-600 rounded flex items-center justify-center text-white text-sm font-semibold cursor-pointer transition shadow-md"
-                  onClick={() => images.length > 0 && openCarousel(0)}
-                >
-                  + Altre foto
-                </button>
+                  >
+                    + Altre foto
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div className="bg-[#1E3A8A] rounded-xl p-4 shadow-lg border border-blue-400/30">
-              <div className="text-sm text-blue-200">Anno costruzione</div>
-              <div className="font-semibold text-white">{property.annoCostruzione ?? "-"}</div>
-              <div className="mt-3 text-sm text-blue-200">Classe energetica</div>
-              <div className="font-semibold text-white">{property.classeEnergetica ?? "-"}</div>
-            </div>
-            <div className="bg-[#1E3A8A] rounded-xl p-4 shadow-lg border border-blue-400/30 mt-4">
-              <div className="text-xs text-blue-200">Inserito il</div>
-              <div className="font-semibold text-sm text-white">{property.dataInserimento ?? property.data_inserimento ?? "-"}</div>
-              <div className="mt-3 text-xs text-blue-200">CAP</div>
-              <div className="font-semibold text-sm text-white">{property.cap ?? "-"}</div>
-            </div>
-          </aside>
-        </div>
-
-        {/* DESCRIZIONE E DETTAGLI */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
-          <section>
-            <div className="bg-[#1E3A8A] rounded-xl p-6 shadow-lg border border-blue-400/30 mb-6">
-              <h3 className="text-lg font-bold text-white mb-3">Descrizione</h3>
-              <p className="text-blue-100 text-sm leading-relaxed">
-                {property.descrizione || "Descrizione non disponibile."}
-              </p>
-            </div>
-
-            <div className="bg-[#1E3A8A] rounded-xl p-6 shadow-lg border border-blue-400/30 mb-6">
-              <h3 className="text-lg font-bold text-white mb-3">Caratteristiche principali</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm text-blue-100">
-                <div>Camere: <span className="font-semibold text-white">{property.numLocali ?? "-"}</span></div>
-                <div>Bagni: <span className="font-semibold text-white">{property.numBagni ?? "-"}</span></div>
-                <div>Superficie: <span className="font-semibold text-white">{property.superficie ? `${property.superficie} m²` : "-"}</span></div>
-                <div>Piano: <span className="font-semibold text-white">{property.piano ?? "-"}</span></div>
-                <div>Prezzo: <span className="font-semibold text-white">{priceFormatted}</span></div>
-                <div>Stato: <span className="font-semibold text-white">{property.stato ?? "-"}</span></div>
+              <div className="bg-[#1E3A8A] rounded-xl p-4 shadow-lg border border-blue-400/30">
+                <div className="text-sm text-blue-200">Anno costruzione</div>
+                <div className="font-semibold text-white">{property.annoCostruzione ?? "-"}</div>
+                <div className="mt-3 text-sm text-blue-200">Classe energetica</div>
+                <div className="font-semibold text-white">{property.classeEnergetica ?? "-"}</div>
               </div>
-            </div>
-          </section>
-        </div>
-      </div>
+              <div className="bg-[#1E3A8A] rounded-xl p-4 shadow-lg border border-blue-400/30 mt-4">
+                <div className="text-xs text-blue-200">Inserito il</div>
+                <div className="font-semibold text-sm text-white">{property.dataInserimento ?? property.data_inserimento ?? "-"}</div>
+                <div className="mt-3 text-xs text-blue-200">CAP</div>
+                <div className="font-semibold text-sm text-white">{property.cap ?? "-"}</div>
+              </div>
+            </aside>
+          </div>
 
-      {/* ===== CAROSELLO SOVRIMPRESSIONE ===== */}
-      {showCarousel && images.length > 0 && (
-        <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[999]"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) closeCarousel();
-          }}>
-          <div
-            className="relative w-[90%] max-w-3xl bg-[#1E3A8A] rounded-xl overflow-hidden shadow-2xl border border-blue-400/30"
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
-            <button
-              className="absolute top-3 right-3 text-white text-2xl bg-orange-500 hover:bg-orange-600 rounded-full w-8 h-8 flex items-center justify-center z-10 transition"
-              onClick={closeCarousel}
-            >
-              ✕
-            </button>
+          {/* DESCRIZIONE E DETTAGLI */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
+            <section>
+              <div className="bg-[#1E3A8A] rounded-xl p-6 shadow-lg border border-blue-400/30 mb-6">
+                <h3 className="text-lg font-bold text-white mb-3">Descrizione</h3>
+                <p className="text-blue-100 text-sm leading-relaxed">
+                  {property.descrizione || "Descrizione non disponibile."}
+                </p>
+              </div>
 
-            {/* 3. Immagine Carosello */}
-            <img
-              src={images[currentIndex].url}
-              alt="Immagine immobile"
-              className="w-full max-h-[75vh] object-contain bg-black"
-              onError={handleImageError} // <--- STRATEGIA APPLICATA QUI
-            />
-
-            <button
-              onClick={prevImage}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-orange-500/90 hover:bg-orange-600 text-white px-4 py-2 rounded-full text-2xl font-bold transition"
-            >
-              ‹
-            </button>
-
-            <button
-              onClick={nextImage}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-orange-500/90 hover:bg-orange-600 text-white px-4 py-2 rounded-full text-2xl font-bold transition"
-            >
-              ›
-            </button>
-
-            <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-2">
-              {images.map((_, i) => (
-                <div
-                  key={i}
-                  className={`w-2 h-2 rounded-full transition ${i === currentIndex ? "bg-orange-500 w-8" : "bg-white/70"
-                    }`}
-                ></div>
-              ))}
-            </div>
+              <div className="bg-[#1E3A8A] rounded-xl p-6 shadow-lg border border-blue-400/30 mb-6">
+                <h3 className="text-lg font-bold text-white mb-3">Caratteristiche principali</h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm text-blue-100">
+                  <div>Camere: <span className="font-semibold text-white">{property.numLocali ?? "-"}</span></div>
+                  <div>Bagni: <span className="font-semibold text-white">{property.numBagni ?? "-"}</span></div>
+                  <div>Superficie: <span className="font-semibold text-white">{property.superficie ? `${property.superficie} m²` : "-"}</span></div>
+                  <div>Piano: <span className="font-semibold text-white">{property.piano ?? "-"}</span></div>
+                  <div>Prezzo: <span className="font-semibold text-white">{priceFormatted}</span></div>
+                  <div>Stato: <span className="font-semibold text-white">{property.stato ?? "-"}</span></div>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
-      )}
-    </main>
+
+        {/* ===== CAROSELLO SOVRIMPRESSIONE ===== */}
+        {showCarousel && images.length > 0 && (
+          <div
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[999]"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) closeCarousel();
+            }}
+          >
+            <div
+              className="relative w-[90%] max-w-3xl bg-[#1E3A8A] rounded-xl overflow-hidden shadow-2xl border border-blue-400/30"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              <button
+                className="absolute top-3 right-3 text-white text-2xl bg-orange-500 hover:bg-orange-600 rounded-full w-8 h-8 flex items-center justify-center z-10 transition"
+                onClick={closeCarousel}
+              >
+                ✕
+              </button>
+
+              {/* 3. Immagine Carosello */}
+              <img
+                src={images[currentIndex].url}
+                alt="Immagine immobile"
+                className="w-full max-h-[75vh] object-contain bg-black"
+                onError={handleImageError}
+              />
+
+              <button
+                onClick={prevImage}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-orange-500/90 hover:bg-orange-600 text-white px-4 py-2 rounded-full text-2xl font-bold transition"
+              >
+                ‹
+              </button>
+
+              <button
+                onClick={nextImage}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-orange-500/90 hover:bg-orange-600 text-white px-4 py-2 rounded-full text-2xl font-bold transition"
+              >
+                ›
+              </button>
+
+              <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-2">
+                {images.map((_, i) => (
+                  <div
+                    key={i}
+                    className={`w-2 h-2 rounded-full transition ${i === currentIndex ? "bg-orange-500 w-8" : "bg-white/70"
+                      }`}
+                  ></div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+    </>
   );
 }
