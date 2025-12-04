@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import placeholderImg from "../assets/img_background.png"; 
 
 export default function PropertyDetail() {
@@ -184,7 +184,16 @@ const currentUrl = "https://www.Immobiliaris.domain/";
 
       <main className="pt-28 pb-10 min-h-screen">
         <div className="max-w-7xl mx-auto px-4">
-
+          {/* PULSANTE INDIETRO */}
+        <Link
+          to="/cerca"
+          className="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-[#1E3A8A] text-white rounded-lg font-medium hover:bg-blue-900 transition shadow-md border border-blue-400/30 w-fit"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          Torna alla ricerca
+        </Link>
           {/* HERO */}
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 mb-6">
             {/* 1. Immagine principale */}
